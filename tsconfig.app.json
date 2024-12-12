@@ -22,9 +22,7 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    "paths": {
-      "@app/*": ["src/*"]
-    }
+    "paths": {}
   },
   "include": ["src"]
 }
