@@ -1,9 +1,14 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { EditorProvider, FloatingMenu, BubbleMenu, useEditor, EditorContent } from '@tiptap/react'
+import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
 import Highlight from '@tiptap/extension-highlight'
 import Typography from '@tiptap/extension-typography'
+import { createPortal } from 'react-dom'
+import { Button } from '@/components/ui/button'
+import { BriefcaseIcon, CircleHelpIcon, FileDownIcon, SaveIcon, WandSparklesIcon } from 'lucide-react'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 
 export const Route = createFileRoute('/(app)/_layout/')({
   component: Index,
@@ -68,25 +73,88 @@ const content = `
       <li>AWS Certified Solutions Architect - Associate</li>
       <li>Certified Kubernetes Administrator (CKA)</li>
   </ul>
-`
+`;
+
+const EditorOptions = () => {
+  return (
+    <>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger>
+            <Button variant={"outline"} size="icon-lg"><SaveIcon /></Button>
+          </TooltipTrigger>
+          <TooltipContent side='left'>
+            Save
+          </TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger>
+            <Popover>
+              <Button variant="outline" size="icon-lg"><BriefcaseIcon /></Button>
+            </Popover>
+          </TooltipTrigger>
+          <TooltipContent side='left'>
+            Adjust to job offer
+          </TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger>
+            <Button variant={"outline"} size="icon-lg" onClick={() => window.print()}><FileDownIcon /></Button>
+          </TooltipTrigger>
+          <TooltipContent side='left'>
+            Download as PDF
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
+      <hr />
+
+      <Popover>
+        <PopoverTrigger>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button variant={"outline"} size="icon-lg"><CircleHelpIcon /></Button>
+              </TooltipTrigger>
+              <TooltipContent side='left'>
+                Help!
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </PopoverTrigger>
+        <PopoverContent className='text-sm [&>p+p]:mt-2' side='left' align="start">
+          <p>Resumes are written using Markdown syntax. Checkout details <a href="https://github.com/adam-p/markdown-here/wiki/markdown-cheatsheet" target="_blank">here</a>.</p>
+          <p>In case of any problems place an issue using <a href="https://github.com/rilek/datresume/issues" target='_blank'>Github issues</a>.</p>
+
+          <p>Links are not handled. I'm working on it.</p>
+        </PopoverContent>
+      </Popover>
+    </>
+  );
+}
 
 function Index() {
   const editor = useEditor({
     extensions,
     content,
-  })
+  });
 
   return (
-    <div className="w-full min-h-screen">
-      <div className='h-full max-w-4xl min-h-screen py-24 mx-auto print:py-0'>
-        <div className='font-serif prose print:prose-xs print:prose-li:my-0 max-w-none'>
-          <EditorContent editor={editor} className="editor"  />
-          {/* <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
+    <>
+      {createPortal(<><hr /><EditorOptions /></>, document.getElementById("actions")!)}
+      <div className="w-full min-h-screen">
+        <div className='h-full max-w-4xl min-h-screen py-24 mx-auto print:py-0'>
+          <div className='font-serif prose print:prose-xs print:prose-li:my-0 max-w-none'>
+            <EditorContent editor={editor} className="editor" />
+            {/* <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
         <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu> */}
+          </div>
+
+
         </div>
-
-
       </div>
-    </div>
+    </>
   )
 }

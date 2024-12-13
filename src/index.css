@@ -69,6 +69,10 @@
   }
 }
 
+a[target="_blank"] {
+  @apply underline text-primary;
+}
+
 .editor {
   .ProseMirror {
     outline-width: 0px;
@@ -88,7 +92,6 @@
     margin-bottom: 0.5em;
     padding-top: 0.25em;
     border-top-width: 1px;
-    text-transform: uppercase;
   }
 
   h3 {
