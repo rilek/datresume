@@ -8,9 +8,12 @@ export const Route = createFileRoute('/(auth)/login')({
 })
 
 function RouteComponent() {
-  return <div className="flex items-center justify-center">
+  return <div className="flex items-center justify-center min-h-screen">
     <div className="w-96">
-      <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />
+      <h1 className='text-3xl font-medium text-center'>Datresume</h1>
+      <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} providers={[
+        'google'
+      ]} />
     </div>
   </div>
 }

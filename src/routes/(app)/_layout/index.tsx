@@ -6,8 +6,8 @@ export const Route = createFileRoute('/(app)/_layout/')({
 
 function Index() {
   return (
-    <div className="p-2">
-      <h3>Welcome Home!</h3>
+    <div className="w-full min-h-screen">
+      INDEX
     </div>
   )
 }

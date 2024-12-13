@@ -1,12 +1,30 @@
+import supabase from "@/utils/supabase";
+import { Button } from "./ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { Cloud, LogOut, SettingsIcon } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+
 export default function Menu() {
   return (
-    <div className="p-2">
-      <h3>Menu</h3>
-      <ul>
-        <li><a href="/menu">Menu</a></li>
-        <li><a href="/menu/1">Menu 1</a></li>
-        <li><a href="/menu/2">Menu 2</a></li>
-      </ul>
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="icon-lg"><SettingsIcon className="w-10 h-10" /></Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link to="/settings/api-keys">
+            <Cloud />
+            <span>API Keys</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={() => supabase.auth.signOut()}>
+          <LogOut />
+          <span>Log out</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

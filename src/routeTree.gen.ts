@@ -16,6 +16,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as authLoginImport } from './routes/(auth)/login'
 import { Route as appLayoutImport } from './routes/(app)/_layout'
 import { Route as appLayoutIndexImport } from './routes/(app)/_layout/index'
+import { Route as appLayoutSettingsApiKeysIndexImport } from './routes/(app)/_layout/settings/api-keys/index'
 
 // Create Virtual Routes
 
@@ -44,6 +45,13 @@ const appLayoutIndexRoute = appLayoutIndexImport.update({
   path: '/',
   getParentRoute: () => appLayoutRoute,
 } as any)
+
+const appLayoutSettingsApiKeysIndexRoute =
+  appLayoutSettingsApiKeysIndexImport.update({
+    id: '/settings/api-keys/',
+    path: '/settings/api-keys/',
+    getParentRoute: () => appLayoutRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -77,6 +85,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appLayoutIndexImport
       parentRoute: typeof appLayoutImport
     }
+    '/(app)/_layout/settings/api-keys/': {
+      id: '/(app)/_layout/settings/api-keys/'
+      path: '/settings/api-keys'
+      fullPath: '/settings/api-keys'
+      preLoaderRoute: typeof appLayoutSettingsApiKeysIndexImport
+      parentRoute: typeof appLayoutImport
+    }
   }
 }
 
@@ -84,10 +99,12 @@ declare module '@tanstack/react-router' {
 
 interface appLayoutRouteChildren {
   appLayoutIndexRoute: typeof appLayoutIndexRoute
+  appLayoutSettingsApiKeysIndexRoute: typeof appLayoutSettingsApiKeysIndexRoute
 }
 
 const appLayoutRouteChildren: appLayoutRouteChildren = {
   appLayoutIndexRoute: appLayoutIndexRoute,
+  appLayoutSettingsApiKeysIndexRoute: appLayoutSettingsApiKeysIndexRoute,
 }
 
 const appLayoutRouteWithChildren = appLayoutRoute._addFileChildren(
@@ -107,11 +124,13 @@ const appRouteWithChildren = appRoute._addFileChildren(appRouteChildren)
 export interface FileRoutesByFullPath {
   '/': typeof appLayoutIndexRoute
   '/login': typeof authLoginRoute
+  '/settings/api-keys': typeof appLayoutSettingsApiKeysIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/login': typeof authLoginRoute
   '/': typeof appLayoutIndexRoute
+  '/settings/api-keys': typeof appLayoutSettingsApiKeysIndexRoute
 }
 
 export interface FileRoutesById {
@@ -120,19 +139,21 @@ export interface FileRoutesById {
   '/(app)/_layout': typeof appLayoutRouteWithChildren
   '/(auth)/login': typeof authLoginRoute
   '/(app)/_layout/': typeof appLayoutIndexRoute
+  '/(app)/_layout/settings/api-keys/': typeof appLayoutSettingsApiKeysIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login'
+  fullPaths: '/' | '/login' | '/settings/api-keys'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/'
+  to: '/login' | '/' | '/settings/api-keys'
   id:
     | '__root__'
     | '/(app)'
     | '/(app)/_layout'
     | '/(auth)/login'
     | '/(app)/_layout/'
+    | '/(app)/_layout/settings/api-keys/'
   fileRoutesById: FileRoutesById
 }
 
@@ -170,7 +191,8 @@ export const routeTree = rootRoute
       "filePath": "(app)/_layout.tsx",
       "parent": "/(app)",
       "children": [
-        "/(app)/_layout/"
+        "/(app)/_layout/",
+        "/(app)/_layout/settings/api-keys/"
       ]
     },
     "/(auth)/login": {
@@ -178,6 +200,10 @@ export const routeTree = rootRoute
     },
     "/(app)/_layout/": {
       "filePath": "(app)/_layout/index.tsx",
+      "parent": "/(app)/_layout"
+    },
+    "/(app)/_layout/settings/api-keys/": {
+      "filePath": "(app)/_layout/settings/api-keys/index.tsx",
       "parent": "/(app)/_layout"
     }
   }
