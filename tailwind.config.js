@@ -7,6 +7,9 @@ export default {
   ],
   theme: {
   	extend: {
+			fontFamily: {
+				serif: ['"Source Serif 4 Variable"', "ui-serif"]
+			},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
@@ -56,6 +59,9 @@ export default {
   		}
   	}
   },
-  plugins: [import("tailwindcss-animate")],
+  plugins: [
+		require("@tailwindcss/typography"),
+		require("tailwindcss-animate")
+	],
 }
 
