@@ -6,9 +6,11 @@ import Highlight from '@tiptap/extension-highlight'
 import Typography from '@tiptap/extension-typography'
 import { createPortal } from 'react-dom'
 import { Button } from '@/components/ui/button'
-import { BriefcaseIcon, CircleHelpIcon, FileDownIcon, SaveIcon, WandSparklesIcon } from 'lucide-react'
+import { BriefcaseIcon, CircleHelpIcon, FileDownIcon, SaveIcon } from 'lucide-react'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
+import { useAppStore } from '@/stores/app'
+import { useEffect } from 'react'
 
 export const Route = createFileRoute('/(app)/_layout/')({
   component: Index,
@@ -16,7 +18,7 @@ export const Route = createFileRoute('/(app)/_layout/')({
 
 const extensions = [StarterKit, Typography, Link, Highlight]
 
-const content = `
+const defaultContent = `
   <h1>John Doe</h1>
   <h5>Software Engineer</h5>
   <p><a href="https://linkedin.com/in/johndoe">LinkedIn</a> | <a href="https://github.com/johndoe">GitHub</a> | john.doe@example.com | (123) 456-7890 | San Francisco, CA</p>
@@ -76,12 +78,14 @@ const content = `
 `;
 
 const EditorOptions = () => {
+  const saveContent = useAppStore(state => state.saveContent);
+
   return (
     <>
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>
-            <Button variant={"outline"} size="icon-lg"><SaveIcon /></Button>
+            <Button variant={"outline"} size="icon-lg" onClick={saveContent}><SaveIcon /></Button>
           </TooltipTrigger>
           <TooltipContent side='left'>
             Save
@@ -90,9 +94,7 @@ const EditorOptions = () => {
 
         <Tooltip>
           <TooltipTrigger>
-            <Popover>
-              <Button variant="outline" size="icon-lg"><BriefcaseIcon /></Button>
-            </Popover>
+            <Button variant="outline" size="icon-lg"><BriefcaseIcon /></Button>
           </TooltipTrigger>
           <TooltipContent side='left'>
             Adjust to job offer
@@ -101,7 +103,7 @@ const EditorOptions = () => {
 
         <Tooltip>
           <TooltipTrigger>
-            <Button variant={"outline"} size="icon-lg" onClick={() => window.print()}><FileDownIcon /></Button>
+            <Button variant="outline" size="icon-lg" onClick={() => window.print()}><FileDownIcon /></Button>
           </TooltipTrigger>
           <TooltipContent side='left'>
             Download as PDF
@@ -116,7 +118,7 @@ const EditorOptions = () => {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
-                <Button variant={"outline"} size="icon-lg"><CircleHelpIcon /></Button>
+                <Button variant="outline" size="icon-lg"><CircleHelpIcon /></Button>
               </TooltipTrigger>
               <TooltipContent side='left'>
                 Help!
@@ -135,26 +137,47 @@ const EditorOptions = () => {
   );
 }
 
-function Index() {
+const Editor = () => {
+  const content = useAppStore(state => state.content) ?? defaultContent;
+  const setContent = useAppStore(state => state.setContent);
+
   const editor = useEditor({
     extensions,
     content,
+    onUpdate: ({ editor: e }) => setContent(e.getHTML()),
+    onCreate: ({ editor: e }) => setContent(e.getHTML()),
   });
+
+  return (
+    <div className="w-full min-h-screen">
+      <div className='h-full max-w-4xl min-h-screen py-24 mx-auto print:py-0'>
+        <div className='font-serif prose print:prose-xs print:prose-li:my-0 max-w-none'>
+          <EditorContent editor={editor} className="editor" />
+          {/* <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
+        <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu> */}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+function Index() {
+  const loadContent = useAppStore(state => state.loadContent);
+  const loading = useAppStore(state => state.loading);
+  const fetched = useAppStore(state => state.fetched);
+
+  useEffect(() => {
+    loadContent();
+  }, []);
+
+  if (loading || !fetched) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
       {createPortal(<><hr /><EditorOptions /></>, document.getElementById("actions")!)}
-      <div className="w-full min-h-screen">
-        <div className='h-full max-w-4xl min-h-screen py-24 mx-auto print:py-0'>
-          <div className='font-serif prose print:prose-xs print:prose-li:my-0 max-w-none'>
-            <EditorContent editor={editor} className="editor" />
-            {/* <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
-        <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu> */}
-          </div>
-
-
-        </div>
-      </div>
+      <Editor />
     </>
   )
 }

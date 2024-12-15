@@ -5,5 +5,7 @@ export const Route = createFileRoute('/(app)/_layout/settings/api-keys/')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/(app)/_layout/settings/api-keys/"!</div>
+  return <div className="container py-12 mx-auto">
+    <h1 className='text-3xl font-bold'>API Keys</h1>
+  </div>
 }

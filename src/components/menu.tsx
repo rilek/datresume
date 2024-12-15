@@ -9,7 +9,7 @@ export default function Menu() {
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+        <DropdownMenuTrigger>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
@@ -19,7 +19,7 @@ export default function Menu() {
             </Tooltip>
           </TooltipProvider>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
+        <DropdownMenuContent className="w-56" align="start" side="left">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
