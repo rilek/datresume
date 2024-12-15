@@ -12,6 +12,11 @@ import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/comp
 import { useAppStore } from '@/stores/app'
 import { useEffect } from 'react'
 import { useToast } from '@/hooks/use-toast'
+import { useForm } from 'react-hook-form'
+import supabase from '@/utils/supabase'
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { PopoverClose } from '@radix-ui/react-popover'
 
 export const Route = createFileRoute('/(app)/_layout/')({
   component: Index,
@@ -80,8 +85,20 @@ const defaultContent = `
 
 const EditorOptions = () => {
   const { toast } = useToast();
-  const saveContentHandler = useAppStore(state => state.saveContent)
+  const saveContentHandler = useAppStore(state => state.saveContent);
+  const regenerateResume = useAppStore(state => state.regenerate);
   const saveContent = () => saveContentHandler(toast);
+
+
+  const form = useForm({
+    defaultValues: {
+      jobUrl: '',
+    }
+  });
+
+  const onSubmit = ({ jobUrl }: { jobUrl: string }) => {
+    regenerateResume(toast, jobUrl);
+  }
 
   return (
     <>
@@ -95,14 +112,43 @@ const EditorOptions = () => {
           </TooltipContent>
         </Tooltip>
 
-        <Tooltip>
-          <TooltipTrigger>
-            <Button variant="outline" size="icon-lg"><BriefcaseIcon /></Button>
-          </TooltipTrigger>
-          <TooltipContent side='left'>
-            Adjust to job offer
-          </TooltipContent>
-        </Tooltip>
+        <Popover>
+          <PopoverTrigger>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button variant="outline" size="icon-lg"><BriefcaseIcon /></Button>
+              </TooltipTrigger>
+              <TooltipContent side='left'>
+                Adjust to job offer
+              </TooltipContent>
+            </Tooltip>
+          </PopoverTrigger>
+          <PopoverContent className='text-sm [&>p+p]:mt-2' side='left' align="start">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <FormField
+                  control={form.control}
+                  name="jobUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Job offer URL</FormLabel>
+                      <FormControl>
+                        <Input placeholder="https://linkedin.com/whatever" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className='mt-8'>
+
+                  <PopoverClose asChild>
+                    <Button type="submit">Submit</Button>
+                  </PopoverClose>
+                </div>
+              </form>
+            </Form>
+          </PopoverContent>
+        </Popover>
 
         <Tooltip>
           <TooltipTrigger>
@@ -143,6 +189,7 @@ const EditorOptions = () => {
 const Editor = () => {
   const content = useAppStore(state => state.content) ?? defaultContent;
   const setContent = useAppStore(state => state.setContent);
+  const setEditor = useAppStore(state => state.setEditor);
 
   const editor = useEditor({
     extensions,
@@ -150,6 +197,10 @@ const Editor = () => {
     onUpdate: ({ editor: e }) => setContent(e.getHTML()),
     onCreate: ({ editor: e }) => setContent(e.getHTML()),
   });
+
+  useEffect(() => {
+    setEditor(editor);
+  }, [editor]);
 
   return (
     <div className="w-full min-h-screen">

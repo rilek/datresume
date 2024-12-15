@@ -1,7 +1,7 @@
 import supabase from "@/utils/supabase";
 import { Button } from "./ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
-import { Cloud, LogOut, SettingsIcon } from "lucide-react";
+import { Cloud, FileText, LogOut, SettingsIcon } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 
@@ -22,6 +22,12 @@ export default function Menu() {
         <DropdownMenuContent className="w-56" align="start" side="left">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <Link to="/">
+              <FileText />
+              <span>Resume</span>
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link to="/settings/api-keys">
               <Cloud />
