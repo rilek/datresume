@@ -11,6 +11,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 import { useAppStore } from '@/stores/app'
 import { useEffect } from 'react'
+import { useToast } from '@/hooks/use-toast'
 
 export const Route = createFileRoute('/(app)/_layout/')({
   component: Index,
@@ -78,7 +79,9 @@ const defaultContent = `
 `;
 
 const EditorOptions = () => {
-  const saveContent = useAppStore(state => state.saveContent);
+  const { toast } = useToast();
+  const saveContentHandler = useAppStore(state => state.saveContent)
+  const saveContent = () => saveContentHandler(toast);
 
   return (
     <>

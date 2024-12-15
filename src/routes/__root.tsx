@@ -2,6 +2,7 @@ import { createRootRoute, Outlet, useNavigate } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { useAuthStore } from '../stores/auth';
 import { useEffect } from 'react';
+import { Toaster } from '@/components/ui/toaster';
 
 export const Route = createRootRoute({
   component: () => {
@@ -16,6 +17,7 @@ export const Route = createRootRoute({
     return (
       <>
         <Outlet />
+        <Toaster />
         {import.meta.env.DEV && <TanStackRouterDevtools />}
       </>
     )

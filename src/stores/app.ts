@@ -1,3 +1,4 @@
+import { useToast } from "@/hooks/use-toast";
 import supabase from "@/utils/supabase";
 import { create } from "zustand";
 
@@ -7,7 +8,7 @@ interface AppStore {
   loading: boolean;
   fetched: boolean;
   setContent: (content: string) => void;
-  saveContent: () => Promise<void>;
+  saveContent: (toast: ReturnType<typeof useToast>["toast"]) => Promise<void>;
   loadContent: () => Promise<void>;
 }
 
@@ -17,14 +18,14 @@ export const useAppStore = create<AppStore>((set, get) => ({
   loading: false,
   fetched: false,
   setContent: (content: string) => set({ content }),
-  saveContent: async () => {
+  saveContent: async (toast) => {
     const userId = (await supabase.auth.getSession()).data.session?.user.id;
     const { status } = await supabase
       .from("resumes")
       .upsert({ id: get().id, content: get().content })
       .eq("user_id", userId);
 
-    if (status >= 200) console.log("Content saved successfully");
+    if (status >= 200) toast({ title: "Saved sucessfully" });
     else console.error("Failed to save content");
   },
   loadContent: async () => {
