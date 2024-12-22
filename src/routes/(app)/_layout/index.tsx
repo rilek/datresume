@@ -10,13 +10,14 @@ import { BriefcaseIcon, CircleHelpIcon, FileDownIcon, SaveIcon } from 'lucide-re
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 import { useAppStore } from '@/stores/app'
-import { useEffect } from 'react'
+import { forwardRef, useEffect } from 'react'
 import { useToast } from '@/hooks/use-toast'
 import { useForm } from 'react-hook-form'
 import supabase from '@/utils/supabase'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { PopoverClose } from '@radix-ui/react-popover'
+import clsx from 'clsx'
 
 export const Route = createFileRoute('/(app)/_layout/')({
   component: Index,
@@ -83,6 +84,30 @@ const defaultContent = `
   </ul>
 `;
 
+const AdjustmentButton = forwardRef<HTMLButtonElement>((props, ref) => {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild ref={ref} {...props}>
+        <Button variant="outline" size="icon-lg"><BriefcaseIcon /></Button>
+      </TooltipTrigger>
+      <TooltipContent side='left'>
+        Adjust to job offer
+      </TooltipContent>
+    </Tooltip>
+  )
+})
+
+const HelpButton = forwardRef<HTMLButtonElement>((props, ref) => (
+  <Tooltip>
+    <TooltipTrigger asChild ref={ref} {...props}>
+      <Button variant="outline" size="icon-lg"><CircleHelpIcon /></Button>
+    </TooltipTrigger>
+    <TooltipContent side='left'>
+      Help!
+    </TooltipContent>
+  </Tooltip>
+))
+
 const EditorOptions = () => {
   const { toast } = useToast();
   const saveContentHandler = useAppStore(state => state.saveContent);
@@ -104,7 +129,7 @@ const EditorOptions = () => {
     <>
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger>
+          <TooltipTrigger asChild>
             <Button variant={"outline"} size="icon-lg" onClick={saveContent}><SaveIcon /></Button>
           </TooltipTrigger>
           <TooltipContent side='left'>
@@ -113,15 +138,8 @@ const EditorOptions = () => {
         </Tooltip>
 
         <Popover>
-          <PopoverTrigger>
-            <Tooltip>
-              <TooltipTrigger>
-                <Button variant="outline" size="icon-lg"><BriefcaseIcon /></Button>
-              </TooltipTrigger>
-              <TooltipContent side='left'>
-                Adjust to job offer
-              </TooltipContent>
-            </Tooltip>
+          <PopoverTrigger asChild>
+            <AdjustmentButton />
           </PopoverTrigger>
           <PopoverContent className='text-sm [&>p+p]:mt-2' side='left' align="start">
             <Form {...form}>
@@ -151,37 +169,28 @@ const EditorOptions = () => {
         </Popover>
 
         <Tooltip>
-          <TooltipTrigger>
+          <TooltipTrigger asChild>
             <Button variant="outline" size="icon-lg" onClick={() => window.print()}><FileDownIcon /></Button>
           </TooltipTrigger>
           <TooltipContent side='left'>
             Download as PDF
           </TooltipContent>
         </Tooltip>
+
+        <hr />
+
+        <Popover>
+          <PopoverTrigger asChild>
+            <HelpButton />
+          </PopoverTrigger>
+          <PopoverContent className='text-sm [&>p+p]:mt-2' side='left' align="start">
+            <p>Resumes are written using Markdown syntax. Checkout details <a href="https://github.com/adam-p/markdown-here/wiki/markdown-cheatsheet" target="_blank">here</a>.</p>
+            <p>In case of any problems place an issue using <a href="https://github.com/rilek/datresume/issues" target='_blank'>Github issues</a>.</p>
+
+            <p>Links are not handled. I'm working on it.</p>
+          </PopoverContent>
+        </Popover>
       </TooltipProvider>
-
-      <hr />
-
-      <Popover>
-        <PopoverTrigger>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <Button variant="outline" size="icon-lg"><CircleHelpIcon /></Button>
-              </TooltipTrigger>
-              <TooltipContent side='left'>
-                Help!
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </PopoverTrigger>
-        <PopoverContent className='text-sm [&>p+p]:mt-2' side='left' align="start">
-          <p>Resumes are written using Markdown syntax. Checkout details <a href="https://github.com/adam-p/markdown-here/wiki/markdown-cheatsheet" target="_blank">here</a>.</p>
-          <p>In case of any problems place an issue using <a href="https://github.com/rilek/datresume/issues" target='_blank'>Github issues</a>.</p>
-
-          <p>Links are not handled. I'm working on it.</p>
-        </PopoverContent>
-      </Popover>
     </>
   );
 }
@@ -190,6 +199,7 @@ const Editor = () => {
   const content = useAppStore(state => state.content) ?? defaultContent;
   const setContent = useAppStore(state => state.setContent);
   const setEditor = useAppStore(state => state.setEditor);
+  const loading = useAppStore(state => state.loading);
 
   const editor = useEditor({
     extensions,
@@ -203,7 +213,7 @@ const Editor = () => {
   }, [editor]);
 
   return (
-    <div className="w-full min-h-screen">
+    <div className={clsx("w-full min-h-screen transition-opacity", { 'opacity-50 pointer-events-none': loading })}>
       <div className='h-full max-w-4xl min-h-screen py-24 mx-auto print:py-0'>
         <div className='font-serif prose print:prose-xs print:prose-li:my-0 max-w-none'>
           <EditorContent editor={editor} className="editor" />
@@ -224,7 +234,7 @@ function Index() {
     loadContent();
   }, []);
 
-  if (loading || !fetched) {
+  if (loading && !fetched) {
     return <div>Loading...</div>;
   }
 

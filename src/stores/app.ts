@@ -25,14 +25,20 @@ export const useAppStore = create<AppStore>((set, get) => ({
   setEditor: (editor) => set({ editor }),
   setContent: (content: string) => set({ content }),
   regenerate: async (toast, jobUrl) => {
+    set({ loading: true });
     const { data, error } = await supabase.functions.invoke("regenerate-resume", { body: { jobUrl } });
 
     get().editor?.commands.setContent(data.choices[0].message.content);
 
-    if (error) console.error(error);
+    if (error) {
+
+      console.error(error);
+      toast({ title: "Failed to regenerate", message: error.message });
+      set({ loading: false })
+    }
 
     toast({ title: "Regenerated successfully" });
-    set({ content: data });
+    set({ content: data, loading: false });
   },
   saveContent: async (toast) => {
     const userId = (await supabase.auth.getSession()).data.session?.user.id;

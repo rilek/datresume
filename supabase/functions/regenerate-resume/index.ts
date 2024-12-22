@@ -9,6 +9,7 @@ import OpenAI from "https://esm.sh/openai@4.10.0";
 import { codeBlock } from "https://esm.sh/common-tags@1.8.2";
 import { OpenAIStream, StreamingTextResponse } from "https://esm.sh/ai@2.2.13";
 
+
 export const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',

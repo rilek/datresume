@@ -12,8 +12,8 @@ export default function Menu() {
         <DropdownMenuTrigger>
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger>
-                <Button variant="outline" size="icon-lg"><SettingsIcon /></Button>
+              <TooltipTrigger asChild>
+                <Button variant="outline" size="icon-lg" component="div"><SettingsIcon /></Button>
               </TooltipTrigger>
               <TooltipContent side="right">Settings</TooltipContent>
             </Tooltip>
