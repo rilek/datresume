@@ -1,46 +1,42 @@
 import supabase from "@/utils/supabase";
 import { Button } from "./ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
-import { Cloud, FileText, LogOut, SettingsIcon } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { LogIn, LogOut } from "lucide-react";
+import { Link, useRouteContext } from "@tanstack/react-router";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 
 export default function Menu() {
+  const { user, fetched } = useRouteContext({ from: "/(app)" });
+
+  // disable logging in for now
+  return;
+
+  if (!fetched) return;
+
+  if (!user) {
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Link to="/login" search={{ redirectTo: window.location.pathname }}>
+              <Button variant="outline" size="icon-lg"><LogIn /></Button>
+            </Link>
+          </TooltipTrigger>
+          <TooltipContent side="right">Log in</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    )
+  }
+
   return (
     <>
-      <DropdownMenu>
-        <DropdownMenuTrigger>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="outline" size="icon-lg" component="div"><SettingsIcon /></Button>
-              </TooltipTrigger>
-              <TooltipContent side="right">Settings</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56" align="start" side="left">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
-            <Link to="/">
-              <FileText />
-              <span>Resume</span>
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to="/settings/api-keys">
-              <Cloud />
-              <span>API Keys</span>
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => supabase.auth.signOut()}>
-            <LogOut />
-            <span>Log out</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="outline" size="icon-lg" onClick={() => supabase.auth.signOut()}><LogOut /></Button>
+          </TooltipTrigger>
+          <TooltipContent side="right">Log out</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     </>
   )
 }

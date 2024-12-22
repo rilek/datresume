@@ -5,6 +5,11 @@ import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/(auth)/login')({
   component: RouteComponent,
+  validateSearch: (search: Record<string, unknown>) => {
+    return {
+      redirectTo: search.redirectTo as string
+    }
+  }
 })
 
 function RouteComponent() {

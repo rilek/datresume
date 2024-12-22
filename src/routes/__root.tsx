@@ -1,45 +1,32 @@
-import { createRootRoute, Outlet, redirect } from '@tanstack/react-router'
+import { createRootRouteWithContext, Outlet, redirect } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
-import { useAuthStore } from '../stores/auth';
 import { Toaster } from '@/components/ui/toaster';
-import supabase from '@/utils/supabase';
-import { Subscription } from '@supabase/supabase-js';
+import { RouterContext } from '@/main';
 
 
-let sub: Subscription | undefined;
+export const Route = createRootRouteWithContext<RouterContext>()({
+  beforeLoad: (ctx) => {
+    const { location, context: { user, fetched }, search } = ctx;
+    const authRequired = false;
 
-export const Route = createRootRoute({
-  beforeLoad: () => {
-    if (!sub)
-      sub = supabase.auth.onAuthStateChange(async (event, session) => {
-        const pathname = window.location.pathname;
-        const authRequired = false;
+    if (fetched) {
+      if (location.pathname.startsWith("/login") && user) {
 
-        if (event === "SIGNED_IN" && session) {
-          useAuthStore.setState({ user: session.user });
-        }
+        throw redirect({
+          to: (search as Record<string, string>).redirectTo || "/",
+          replace: true,
+        });
+      } else if (authRequired && !user && !location.pathname.startsWith("/login") && fetched) {
+        throw redirect({
+          to: "/login",
+          search: { redirectTo: location.pathname }
+        });
+      }
+    }
 
-        if (event === "SIGNED_IN" && pathname.startsWith("/login")) {
-          throw redirect({ to: "/", replace: true });
-        } else if (event === "SIGNED_OUT") {
-          useAuthStore.setState({ user: null, error: null });
-          throw redirect({ to: "/login" });
-        } else if (authRequired && !session && !pathname.startsWith("/login")) {
-          throw redirect({ to: "/login" });
-        } else if (event === "INITIAL_SESSION" && session && pathname.startsWith("/login")) {
-          throw redirect({ to: "/" });
-        }
 
-        useAuthStore.setState({ loading: false });
-      }).data.subscription;
-
-    return sub;
-  },
-  onLeave: () => {
-    sub?.unsubscribe();
   },
   component: () => {
-
     return (
       <>
         <Outlet />
@@ -47,5 +34,5 @@ export const Route = createRootRoute({
         {import.meta.env.DEV && <TanStackRouterDevtools />}
       </>
     )
-  },
+  }
 })

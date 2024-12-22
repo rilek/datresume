@@ -7,7 +7,6 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 import { createClient } from 'jsr:@supabase/supabase-js@2'
 import OpenAI from "https://esm.sh/openai@4.10.0";
 import { codeBlock } from "https://esm.sh/common-tags@1.8.2";
-import { OpenAIStream, StreamingTextResponse } from "https://esm.sh/ai@2.2.13";
 
 
 export const corsHeaders = {
@@ -19,11 +18,7 @@ function buildApiKeyName(userId: string) {
   return `openai_api_key_${userId}`;
 }
 
-Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
-  }
-
+async function getStoredOpenaiKey(req: Request) {
   const authHeader = req.headers.get('Authorization')!
   const supabaseClient = createClient(
     Deno.env.get('SUPABASE_URL') ?? '',
@@ -40,15 +35,47 @@ Deno.serve(async (req) => {
   const { data: userData } = await supabaseClient.auth.getUser(token)
   const id = userData.user.id;
 
-  const { data: apiKey, error: apiKeyError } = await supabaseServiceRoleClient.rpc("read_secret", { secret_name: buildApiKeyName(id) });
+  const { data: apiKey, error } = await supabaseServiceRoleClient.rpc("read_secret", { secret_name: buildApiKeyName(id) });
 
-  if (apiKeyError) throw new Error(apiKeyError.message);
+  if (error) throw new Error(error.message);
+
+  return apiKey;
+
+}
+
+async function getStoredResumeContent(req: Request) {
+  const authHeader = req.headers.get('Authorization')!
+  const supabaseClient = createClient(
+    Deno.env.get('SUPABASE_URL') ?? '',
+    Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+    { global: { headers: { Authorization: authHeader } } }
+  );
+
+  const token = authHeader.replace('Bearer ', '')
+  const { data: userData } = await supabaseClient.auth.getUser(token)
+  const id = userData.user.id;
 
   const { data, error } = await supabaseClient.from("resumes").select("id,content").eq("user_id", id).single();
 
-  const openai = new OpenAI({ apiKey });
+  if (error) throw new Error(error.message);
 
-  const { jobUrl } = await req.json();
+  return data.content;
+}
+
+Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders })
+  }
+
+  const reqBody = await req.json();
+  const { jobUrl } = reqBody;
+
+  console.log(reqBody.openaiKey, reqBody.content)
+
+  const apiKey = reqBody.openaiKey ?? await getStoredOpenaiKey(req);
+  const content = reqBody.content ?? await getStoredResumeContent(req);
+
+  const openai = new OpenAI({ apiKey });
 
   const completionMessages:
     OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
@@ -58,7 +85,7 @@ Deno.serve(async (req) => {
       },
       {
         role: "user",
-        content: data.content,
+        content
       },
     ];
   console.log("Calling GPT:");

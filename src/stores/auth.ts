@@ -11,4 +11,5 @@ export const useAuthStore = create<AuthStore>()(() => ({
   user: null,
   error: null,
   loading: true,
+  setUser: (user: User | null) => ({ user, loading: false }),
 }));
