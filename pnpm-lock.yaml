@@ -11,7 +11,13 @@ importers:
 
   .:
     dependencies:
+      '@fontsource-variable/inter':
+        specifier: ^5.1.0
+        version: 5.1.0
       '@fontsource-variable/source-serif-4':
+        specifier: ^5.1.0
+        version: 5.1.0
+      '@fontsource/poppins':
         specifier: ^5.1.0
         version: 5.1.0
       '@hookform/resolvers':
@@ -595,8 +601,14 @@ packages:
   '@floating-ui/utils@0.2.8':
     resolution: {integrity: sha512-kym7SodPp8/wloecOpcmSnWJsK7M0E5Wg8UcFA+uO4B9s5d0ywXOEro/8HM9x0rW+TljRzul/14UYz3TleT3ig==}
 
+  '@fontsource-variable/inter@5.1.0':
+    resolution: {integrity: sha512-Wj2dUGP0vUpxRGQTXQTCNJO+aLcFcQm+gUPXfj/aS877bQkEPBPv9JvZJpwdm2vzelt8NTZ+ausKlBCJjh2XIg==}
+
   '@fontsource-variable/source-serif-4@5.1.0':
     resolution: {integrity: sha512-8VI/4B1bfwaUCSZjPxn7yzHTrAcL/nKi+MgjQwl6Tz4mh/ndOyRtsYxn/KajWTj+MdlaXEGsgoyy6OlTMx05RA==}
+
+  '@fontsource/poppins@5.1.0':
+    resolution: {integrity: sha512-tpLXlnNi2fwQjiipvuj4uNFHCdoLA8izRsKdoexZuEzjx0r/g1aKLf4ta6lFgF7L+/+AFdmaXFlUwwvmDzYH+g==}
 
   '@hookform/resolvers@3.9.1':
     resolution: {integrity: sha512-ud2HqmGBM0P0IABqoskKWI6PEf6ZDDBZkFqe2Vnl+mTHCEHzr3ISjjZyCwTjC/qpL25JC9aIDkloQejvMeq0ug==}
@@ -3079,7 +3091,11 @@ snapshots:
 
   '@floating-ui/utils@0.2.8': {}
 
+  '@fontsource-variable/inter@5.1.0': {}
+
   '@fontsource-variable/source-serif-4@5.1.0': {}
+
+  '@fontsource/poppins@5.1.0': {}
 
   '@hookform/resolvers@3.9.1(react-hook-form@7.54.1(react@18.3.1))':
     dependencies:

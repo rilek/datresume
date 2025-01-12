@@ -8,6 +8,7 @@ export default {
   theme: {
   	extend: {
 			fontFamily: {
+			  sans: ["'Poppins'", "ui-sans-serif"],
 				serif: ['"Source Serif 4 Variable"', "ui-serif"]
 			},
   		borderRadius: {

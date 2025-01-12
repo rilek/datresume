@@ -2,11 +2,12 @@ import { StrictMode, useEffect, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import '@fontsource-variable/source-serif-4';
+import '@fontsource-variable/inter';
+import '@fontsource/poppins';
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
-import { createRouter, redirect, RouterProvider, useRouter } from '@tanstack/react-router'
-import { useApiKeys } from './stores/keys';
+import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { Subscription, User } from '@supabase/supabase-js';
 import supabase from './utils/supabase';
 
@@ -14,7 +15,7 @@ import supabase from './utils/supabase';
 const router = createRouter({
   routeTree, context: {
     user: null,
-    loading: true,
+    fetched: false,
   }
 })
 

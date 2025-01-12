@@ -1,4 +1,4 @@
-import { createFileRoute, useRouteContext } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
@@ -109,7 +109,7 @@ const AISettingsForm = () => {
   )
 };
 
-const SaveButton = forwardRef((props, ref) => {
+const SaveButton = forwardRef<HTMLButtonElement>((props, ref) => {
   const { toast } = useToast();
   const saveContentHandler = useAppStore(state => state.saveContent);
   const saveContent = () => saveContentHandler(toast);
@@ -237,8 +237,26 @@ function Index() {
 
   return (
     <>
-      {createPortal(<EditorOptions />, document.getElementById("actions")!)}
-      <Editor />
+
+      <div className='max-w-4xl py-24 mx-auto text-center print:hidden'>
+        <div className=''>
+          <h1 className='mb-24 font-serif text-4xl font-bold transition-opacity opacity-25 hover:opacity-100'>Datresume</h1>
+        </div>
+        <h2 className='text-6xl font-light tracking-normal'>Adjust your resume to any job offer in seconds</h2>
+        <p className='mt-8 text-lg'>
+          Use AI to adjust your resume to any job offer in seconds. Just write your resume in editor below, paste the job offer URL and your OpenAI API key and let the magic happen.
+        </p>
+      </div>
+
+      <div className='relative'>
+        <div className='absolute top-0 bottom-0 right-2 print:hidden'>
+          <div className='sticky inline-flex flex-col gap-2 top-2'>
+            <EditorOptions />
+          </div>
+        </div>
+
+        <Editor />
+      </div>
     </>
   )
 }
