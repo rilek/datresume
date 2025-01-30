@@ -79,7 +79,7 @@ const AISettingsForm = () => {
                 <FormControl>
                   <Input placeholder="Place your API key here..." {...field} />
                 </FormControl>
-                <FormDescription className='!mt-0'>We won't save it anywhere</FormDescription>
+                <FormDescription className='mt-0!'>We won't save it anywhere</FormDescription>
                 <FormMessage />
               </FormItem>
             )} />
