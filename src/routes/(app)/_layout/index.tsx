@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useAppStore } from "@/stores/app";
-import { DetailedHTMLProps, InputHTMLAttributes, useEffect, useRef, useState } from "react";
+import { DetailedHTMLProps, DOMAttributes, ElementType, InputHTMLAttributes, KeyboardEventHandler, TextareaHTMLAttributes, useEffect, useRef, useState } from "react";
 import { Editor, EditorOptions } from "@/components/editor";
 import clsx from "clsx";
 import { Button } from "@/components/ui/button";
@@ -24,13 +24,15 @@ const dateFormatter = new Intl.DateTimeFormat('en-GB', {
   timeStyle: 'short'
 });
 
-const ChatMessageForm = ({ inputProps }: { inputProps?: DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> }) => {
+const ChatMessageForm = ({ inputProps }: {
+  inputProps?: DetailedHTMLProps<InputHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>
+}) => {
   const form = useForm({
     defaultValues: {
       message: ""
     }
   });
-  const send = useChatStore(store => store.sendMessage)
+  const send = useChatStore(store => store.sendMessage);
 
   return (
     <form onSubmit={form.handleSubmit(({ message }) => {
@@ -42,9 +44,18 @@ const ChatMessageForm = ({ inputProps }: { inputProps?: DetailedHTMLProps<InputH
         name="message"
         rules={{ required: 'This field is required' }}
         render={({ field }) => (
-          <input type="text" className="w-full ring-0 outline-none" {...field} {...inputProps} />
+          <textarea
+            className="w-full ring-0 bg-slate-100 rounded-lg p-2 outline-none"
+            onKeyUp={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                (e.target as HTMLTextAreaElement).form!.requestSubmit();
+                form.reset();
+              }
+            }}
+            {...field}
+            {...inputProps} />
         )} />
-
     </form>
   );
 };
@@ -84,7 +95,7 @@ const ApiKeyForm = () => {
 
             <TooltipProvider>
               <Tooltip open={showTooltip} onOpenChange={() => setTimeout(() => setShowTooltip(false), 3000)}>
-                <TooltipTrigger>
+                <TooltipTrigger asChild>
                   <Button type="submit">Set</Button>
                 </TooltipTrigger>
                 <TooltipContent>Done!</TooltipContent>
@@ -134,7 +145,9 @@ function Index() {
             seconds. Just use the editor, paste the job offer, or its URL, and
             let the magic happen.
           </p>
-          <Button onClick={() => scrollToEditor(editorAreaId)}>Use it</Button>
+          <div className="mt-8">
+            <Button onClick={() => scrollToEditor(editorAreaId)} size={"lg"} className="text-lg">Use it for free</Button>
+          </div>
         </div>
       </div>
 
@@ -150,9 +163,9 @@ function Index() {
           </a>
         </div>
 
-        <div className="flex items-start mb-12 mx-4 gap-4">
+        <div className="flex items-start mb-12 mx-4 print:m-0 gap-4 max-w-screen overflow-clip">
           <div className="max-w-6xl mx-auto flex-1">
-            <div className="bg-white border shadow-lg p-10 print:border-none print:shadow-none">
+            <div className="bg-white border shadow-lg p-10 print:p-0 print:border-none print:shadow-none">
               <Editor />
             </div>
           </div>
