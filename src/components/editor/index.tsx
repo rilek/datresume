@@ -130,6 +130,7 @@ export const EditorOptions = () => {
   const editor = useAppStore(state => state.editor);
   const storedContent = localStorage.getItem("content")!;
   const setContent = useAppStore(state => state.setContent);
+  const toggleChat = useAppStore(state => state.toggleChat);
   const resetContent = () => {
     setContent(storedContent);
     editor?.commands.setContent(storedContent || "")
@@ -155,14 +156,14 @@ export const EditorOptions = () => {
         </TooltipContent>
       </Tooltip>
 
-      <Popover>
-        <PopoverTrigger asChild>
-          <AdjustmentButton />
-        </PopoverTrigger>
-        <PopoverContent className='text-sm [&>p+p]:mt-2' side='left' align="start">
-          <AISettingsForm />
-        </PopoverContent>
-      </Popover>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button variant="outline" size="icon-lg" onClick={toggleChat}><SparklesIcon className='text-indigo-700' /></Button>
+        </TooltipTrigger>
+        <TooltipContent side='left'>
+          Toggle AI chat
+        </TooltipContent>
+      </Tooltip>
 
       <Tooltip>
         <TooltipTrigger asChild>
@@ -172,20 +173,6 @@ export const EditorOptions = () => {
           Download as PDF
         </TooltipContent>
       </Tooltip>
-
-      <hr />
-
-      <Popover>
-        <PopoverTrigger asChild>
-          <HelpButton />
-        </PopoverTrigger>
-        <PopoverContent className='text-sm [&>p+p]:mt-2' side='left' align="start">
-          <p>Resumes are written using Markdown syntax. Checkout details <a href="https://github.com/adam-p/markdown-here/wiki/markdown-cheatsheet" target="_blank">here</a>.</p>
-          <p>In case of any problems place an issue using <a href="https://github.com/rilek/datresume/issues" target='_blank'>Github issues</a>.</p>
-
-          <p>Links are not handled. I'm working on it.</p>
-        </PopoverContent>
-      </Popover>
     </TooltipProvider>
   );
 }
@@ -209,7 +196,7 @@ export const Editor = () => {
 
   return (
     <div className={clsx("w-full min-h-screen transition-opacity", { 'opacity-50 pointer-events-none': loading })}>
-      <div className='h-full max-w-4xl min-h-screen py-16 mx-auto print:py-0'>
+      <div className='max-w-4xl mx-auto w-full'>
         <div className='font-serif prose print:prose-xs print:prose-li:my-0 max-w-none'>
           <EditorContent editor={editor} className="editor" />
           {/* <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>

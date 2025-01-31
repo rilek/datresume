@@ -10,6 +10,7 @@ interface AppStore {
   content?: string;
   loading: boolean;
   fetched: boolean;
+  showChat: boolean;
   editor?: Editor | null;
   openaiKey?: string;
   setEditor: (editor: Editor | null) => void;
@@ -17,6 +18,7 @@ interface AppStore {
   regenerate: (toast: ReturnType<typeof useToast>["toast"], jobUrl: string, openaiKey: string, content?: string) => Promise<void>;
   saveContent: (toast: ReturnType<typeof useToast>["toast"]) => Promise<void>;
   loadContent: () => Promise<void>;
+  toggleChat: () => void;
 }
 
 export const useAppStore = create<AppStore>((set, get) => ({
@@ -24,6 +26,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
   content: undefined,
   loading: true,
   fetched: false,
+  showChat: false,
   editor: undefined,
   openaiKey: undefined,
   setEditor: (editor) => set({ editor }),
@@ -78,5 +81,6 @@ export const useAppStore = create<AppStore>((set, get) => ({
     }
 
     set({ fetched: true, loading: false });
-  }
+  },
+  toggleChat: () => set((state) => ({ showChat: !state.showChat })),
 }));
