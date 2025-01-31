@@ -2,6 +2,7 @@ import { StrictMode, useEffect, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import '@fontsource-variable/source-serif-4';
+import '@fontsource/source-sans-pro';
 import '@fontsource-variable/inter';
 import '@fontsource/poppins';
 

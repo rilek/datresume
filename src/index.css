@@ -6,7 +6,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --font-sans: 'Poppins', ui-sans-serif;
+  --font-sans: 'Source Sans Pro', ui-sans-serif;
   --font-serif: 'Source Serif 4 Variable', ui-serif;
 
   --radius-lg: var(--radius);
@@ -92,7 +92,6 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem
   }
 
   .dark {
@@ -134,7 +133,7 @@
 }
 
 a[target="_blank"] {
-  @apply underline text-primary;
+  @apply underline;
 }
 
 .editor {

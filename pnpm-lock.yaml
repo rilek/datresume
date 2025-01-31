@@ -20,6 +20,9 @@ importers:
       '@fontsource/poppins':
         specifier: ^5.1.1
         version: 5.1.1
+      '@fontsource/source-sans-pro':
+        specifier: ^5.1.0
+        version: 5.1.0
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.54.2(react@18.3.1))
@@ -651,6 +654,9 @@ packages:
 
   '@fontsource/poppins@5.1.1':
     resolution: {integrity: sha512-PQVKHGQOK+UpVNPzTFF9Z9ez3CIDkunfvRXGH95hiDoqWJc1shW4JFqe4tEoqnq7RtZaYrw9aWQq58L4eny5xg==}
+
+  '@fontsource/source-sans-pro@5.1.0':
+    resolution: {integrity: sha512-GJijHmnPKwA1G8MqUVOZzbIW8jLBFsJGugAb5/IikvTHHmLp+pJy+g8EhyWbfR8pI04i/EStzW0AzOv0KQEhzg==}
 
   '@hookform/resolvers@3.10.0':
     resolution: {integrity: sha512-79Dv+3mDF7i+2ajj7SkypSKHhl1cbln1OGavqrsF7p6mbUv11xpqpacPsGDCTRvCSjEEIez2ef1NveSVL3b0Ag==}
@@ -3187,6 +3193,8 @@ snapshots:
   '@fontsource-variable/source-serif-4@5.1.1': {}
 
   '@fontsource/poppins@5.1.1': {}
+
+  '@fontsource/source-sans-pro@5.1.0': {}
 
   '@hookform/resolvers@3.10.0(react-hook-form@7.54.2(react@18.3.1))':
     dependencies:
