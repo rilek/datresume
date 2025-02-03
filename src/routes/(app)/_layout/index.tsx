@@ -187,9 +187,9 @@ function Index() {
                   ? <FirstMessage />
                   : (
                     <>
-                      {chatMessages.map(({ id, message, timestamp, type }) =>
-                        <div key={id} className={clsx("flex flex-col", { "items-end": type === "user" })}>
-                          <div className={clsx("py-2", { "bg-slate-200 rounded-full px-4": type === "user" })}>
+                      {chatMessages.map(({ id, message, timestamp, role }) =>
+                        <div key={id} className={clsx("flex flex-col", { "items-end": role === "user" })}>
+                          <div className={clsx("py-2", { "bg-slate-200 rounded-lg px-4": role === "user" })}>
                             {message}
                           </div>
                           <small className="text-xs text-slate-500">{dateFormatter.format(Date.parse(timestamp))}</small>

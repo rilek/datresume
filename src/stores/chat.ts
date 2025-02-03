@@ -1,10 +1,12 @@
+import supabase from "@/utils/supabase";
 import { create } from "zustand";
+import { useAppStore } from "./app";
 
 interface ChatMessage {
   id: string;
   timestamp: string;
   message: string;
-  type: "llm" | "user";
+  role: "assistant" | "user";
 }
 
 interface ChatStore {
@@ -27,16 +29,16 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
     set({ loading: true });
 
-    if (!apiKey) {
-      set({ loading: false });
-      throw Error("Missing API Key!");
-    }
+    // if (!apiKey) {
+    //   set({ loading: false });
+    //   throw Error("Missing API Key!");
+    // }
 
     const newUserMessage: ChatMessage = {
       id: generateRandomId(),
       message,
       timestamp: (new Date()).toUTCString(),
-      type: "user"
+      role: "user"
     };
 
     set(({ messages }) => ({
@@ -45,14 +47,22 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
 
     // TOOD: Handle openAPI request
-    const response: string = await new Promise((res) => setTimeout(() => res("Server response"), 1000));
+    // const response: string = await new Promise((res) => setTimeout(() => res("Server response"), 1000));
+    const { data } = await supabase.functions.invoke("chat", {
+      body: {
+        apiKey,
+        messages: get().messages.map(({ message: content, role }) => ({ role, content }))
+      }
+    });
 
     const responseMessage: ChatMessage = {
       id: generateRandomId(),
-      message: response,
+      message: data.text,
       timestamp: (new Date()).toUTCString(),
-      type: "llm"
+      role: "assistant"
     };
+
+    useAppStore.getState().editor?.commands.setContent(data.html);
 
     set(({ messages }) => ({
       loading: false,
