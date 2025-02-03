@@ -1,14 +1,12 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useAppStore } from "@/stores/app";
-import { DetailedHTMLProps, DOMAttributes, ElementType, InputHTMLAttributes, KeyboardEventHandler, TextareaHTMLAttributes, useEffect, useRef, useState } from "react";
+import { DetailedHTMLProps, InputHTMLAttributes, useEffect } from "react";
 import { Editor, EditorOptions } from "@/components/editor";
 import clsx from "clsx";
 import { Button } from "@/components/ui/button";
 import { useChatStore } from "@/stores/chat";
 import { useForm } from "react-hook-form";
 import { FormField } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export const Route = createFileRoute("/(app)/_layout/")({
   component: Index,
@@ -61,8 +59,8 @@ const ChatMessageForm = ({ inputProps }: {
 };
 
 const FirstMessage = () => {
-  const apiKey = useChatStore(store => store.apiKey);
-  const disabled = !apiKey;
+  // const apiKey = useChatStore(store => store.apiKey);
+  const disabled = false //!apiKey;
 
   return (<ChatMessageForm inputProps={{
     disabled,
@@ -71,47 +69,47 @@ const FirstMessage = () => {
   }} />)
 }
 
-const ApiKeyForm = () => {
-  const apiKey = useChatStore(store => store.apiKey);
-  const setApiKey = useChatStore(store => store.setApiKey);
-  const form = useForm({
-    defaultValues: {
-      apiKey: apiKey || ""
-    }
-  });
+// const ApiKeyForm = () => {
+//   const apiKey = useChatStore(store => store.apiKey);
+//   const setApiKey = useChatStore(store => store.setApiKey);
+//   const form = useForm({
+//     defaultValues: {
+//       apiKey: apiKey || ""
+//     }
+//   });
 
-  const [showTooltip, setShowTooltip] = useState(false);
+//   const [showTooltip, setShowTooltip] = useState(false);
 
-  return (
-    <>
-      <div>
-        <h5>OpenAI Key</h5>
-        <form onSubmit={form.handleSubmit(({ apiKey }) => {
-          setApiKey(apiKey)
-          setShowTooltip(true);
-        })}>
-          <div className="flex gap-2">
-            <Input type="password" placeholder="API Key" {...form.register("apiKey")} />
+//   return (
+//     <>
+//       <div>
+//         <h5>OpenAI Key</h5>
+//         <form onSubmit={form.handleSubmit(({ apiKey }) => {
+//           setApiKey(apiKey)
+//           setShowTooltip(true);
+//         })}>
+//           <div className="flex gap-2">
+//             <Input type="password" placeholder="API Key" {...form.register("apiKey")} />
 
-            <TooltipProvider>
-              <Tooltip open={showTooltip} onOpenChange={() => setTimeout(() => setShowTooltip(false), 3000)}>
-                <TooltipTrigger asChild>
-                  <Button type="submit">Set</Button>
-                </TooltipTrigger>
-                <TooltipContent>Done!</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-        </form>
-        <p className="text-sm text-slate-500 leading-4 mt-2">To use AI chat feature you need to provide your own API key. No worries - it will persist only within this session and will not be used elsewhere.</p>
-        {apiKey && (
-          <p className="text-sm text-green-500 leading-4 mt-2">API Key is set. You can use AI chat now.</p>
-        )}
-      </div>
+//             <TooltipProvider>
+//               <Tooltip open={showTooltip} onOpenChange={() => setTimeout(() => setShowTooltip(false), 3000)}>
+//                 <TooltipTrigger asChild>
+//                   <Button type="submit">Set</Button>
+//                 </TooltipTrigger>
+//                 <TooltipContent>Done!</TooltipContent>
+//               </Tooltip>
+//             </TooltipProvider>
+//           </div>
+//         </form>
+//         <p className="text-sm text-slate-500 leading-4 mt-2">To use AI chat feature you need to provide your own API key. No worries - it will persist only within this session and will not be used elsewhere.</p>
+//         {apiKey && (
+//           <p className="text-sm text-green-500 leading-4 mt-2">API Key is set. You can use AI chat now.</p>
+//         )}
+//       </div>
 
-    </>
-  );
-};
+//     </>
+//   );
+// };
 
 function Index() {
   const loadContent = useAppStore((state) => state.loadContent);
@@ -173,14 +171,14 @@ function Index() {
             "w-lg": showChat,
             "w-0 overflow-hidden opacity-0": !showChat
           })}>
-            <div className="w-lg">
+            <div className="w-full overflow-hidden">
               <header className="mb-4">
                 <h2 className="text-lg tracking-tight font-bold">Chat with AI</h2>
               </header>
 
-              <div>
+              {/* <div>
                 <ApiKeyForm />
-              </div>
+              </div> */}
 
               <div className="flex flex-col gap-2 mt-8">
                 {chatMessages.length === 0

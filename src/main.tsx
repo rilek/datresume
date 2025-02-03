@@ -1,10 +1,10 @@
 import { StrictMode, useEffect, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
+// @ts-ignore
 import '@fontsource-variable/source-serif-4';
+// @ts-ignore
 import '@fontsource/source-sans-pro';
-import '@fontsource-variable/inter';
-import '@fontsource/poppins';
 
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'

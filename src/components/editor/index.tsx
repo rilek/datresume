@@ -4,15 +4,15 @@ import Link from '@tiptap/extension-link'
 import Highlight from '@tiptap/extension-highlight'
 import Typography from '@tiptap/extension-typography'
 import { Button } from '@/components/ui/button'
-import { BriefcaseIcon, CircleHelpIcon, FileDownIcon, RotateCcwIcon, SaveIcon, SparklesIcon } from 'lucide-react'
+import { FileDownIcon, RotateCcwIcon, SaveIcon, SparklesIcon } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 import { useAppStore } from '@/stores/app'
 import { forwardRef, useEffect } from 'react'
 import { useToast } from '@/hooks/use-toast'
-import { useForm } from 'react-hook-form'
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { PopoverClose } from '@radix-ui/react-popover'
+// import { useForm } from 'react-hook-form'
+// import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+// import { Input } from '@/components/ui/input'
+// import { PopoverClose } from '@radix-ui/react-popover'
 import clsx from 'clsx'
 
 const extensions = [StarterKit, Typography, Highlight, Link.configure({
@@ -22,90 +22,90 @@ const extensions = [StarterKit, Typography, Highlight, Link.configure({
   },
 })]
 
-const AdjustmentButton = forwardRef<HTMLButtonElement>((props, ref) => {
-  return (
-    <Tooltip>
-      <TooltipTrigger asChild ref={ref} {...props}>
-        <Button variant="outline" size="icon-lg"><BriefcaseIcon /></Button>
-      </TooltipTrigger>
-      <TooltipContent side='left'>
-        Adjust to job offer
-      </TooltipContent>
-    </Tooltip>
-  )
-})
+// const AdjustmentButton = forwardRef<HTMLButtonElement>((props, ref) => {
+//   return (
+//     <Tooltip>
+//       <TooltipTrigger asChild ref={ref} {...props}>
+//         <Button variant="outline" size="icon-lg"><BriefcaseIcon /></Button>
+//       </TooltipTrigger>
+//       <TooltipContent side='left'>
+//         Adjust to job offer
+//       </TooltipContent>
+//     </Tooltip>
+//   )
+// })
 
-const HelpButton = forwardRef<HTMLButtonElement>((props, ref) => (
-  <Tooltip>
-    <TooltipTrigger asChild ref={ref} {...props}>
-      <Button variant="outline" size="icon-lg"><CircleHelpIcon /></Button>
-    </TooltipTrigger>
-    <TooltipContent side='left'>
-      Help!
-    </TooltipContent>
-  </Tooltip>
-));
+// const HelpButton = forwardRef<HTMLButtonElement>((props, ref) => (
+//   <Tooltip>
+//     <TooltipTrigger asChild ref={ref} {...props}>
+//       <Button variant="outline" size="icon-lg"><CircleHelpIcon /></Button>
+//     </TooltipTrigger>
+//     <TooltipContent side='left'>
+//       Help!
+//     </TooltipContent>
+//   </Tooltip>
+// ));
 
-const AISettingsForm = () => {
-  const { toast } = useToast();
-  const regenerateResume = useAppStore(state => state.regenerate);
-  const openaiKey = useAppStore(state => state.openaiKey);
-  const content = useAppStore(state => state.content);
+// const AISettingsForm = () => {
+//   const { toast } = useToast();
+//   const regenerateResume = useAppStore(state => state.regenerate);
+//   const openaiKey = useAppStore(state => state.openaiKey);
+//   const content = useAppStore(state => state.content);
 
-  const form = useForm({
-    defaultValues: {
-      openaiKey: openaiKey || "",
-      jobUrl: "",
-    }
-  });
+//   const form = useForm({
+//     defaultValues: {
+//       openaiKey: openaiKey || "",
+//       jobUrl: "",
+//     }
+//   });
 
-  const onSubmit = ({ jobUrl, openaiKey }: { jobUrl: string, openaiKey: string }) => {
-    regenerateResume(toast, jobUrl, openaiKey, content);
-  }
+//   const onSubmit = ({ jobUrl, openaiKey }: { jobUrl: string, openaiKey: string }) => {
+//     regenerateResume(toast, jobUrl, openaiKey, content);
+//   }
 
-  return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className='flex flex-col gap-4'>
-          <FormField
-            control={form.control}
-            name="openaiKey"
-            rules={{ required: 'This field is required' }}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>OpenAI API Key</FormLabel>
-                <FormControl>
-                  <Input placeholder="Place your API key here..." {...field} />
-                </FormControl>
-                <FormDescription className='mt-0!'>We won't save it anywhere</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )} />
-          <FormField
-            control={form.control}
-            name="jobUrl"
-            rules={{ required: 'This field is required' }}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Job offer URL</FormLabel>
-                <FormControl>
-                  <Input placeholder="https://linkedin.com/whatever" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className='flex justify-end mt-8'>
+//   return (
+//     <Form {...form}>
+//       <form onSubmit={form.handleSubmit(onSubmit)}>
+//         <div className='flex flex-col gap-4'>
+//           <FormField
+//             control={form.control}
+//             name="openaiKey"
+//             rules={{ required: 'This field is required' }}
+//             render={({ field }) => (
+//               <FormItem>
+//                 <FormLabel>OpenAI API Key</FormLabel>
+//                 <FormControl>
+//                   <Input placeholder="Place your API key here..." {...field} />
+//                 </FormControl>
+//                 <FormDescription className='mt-0!'>We won't save it anywhere</FormDescription>
+//                 <FormMessage />
+//               </FormItem>
+//             )} />
+//           <FormField
+//             control={form.control}
+//             name="jobUrl"
+//             rules={{ required: 'This field is required' }}
+//             render={({ field }) => (
+//               <FormItem>
+//                 <FormLabel>Job offer URL</FormLabel>
+//                 <FormControl>
+//                   <Input placeholder="https://linkedin.com/whatever" {...field} />
+//                 </FormControl>
+//                 <FormMessage />
+//               </FormItem>
+//             )}
+//           />
+//         </div>
+//         <div className='flex justify-end mt-8'>
 
-          <PopoverClose asChild>
-            <Button type="submit">Submit</Button>
-          </PopoverClose>
-        </div>
-      </form>
-    </Form>
-  )
-};
+//           <PopoverClose asChild>
+//             <Button type="submit">Submit</Button>
+//           </PopoverClose>
+//         </div>
+//       </form>
+//     </Form>
+//   )
+// };
 
 const SaveButton = forwardRef<HTMLButtonElement>((props, ref) => {
   const { toast } = useToast();

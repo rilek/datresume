@@ -11,13 +11,7 @@ importers:
 
   .:
     dependencies:
-      '@fontsource-variable/inter':
-        specifier: ^5.1.1
-        version: 5.1.1
       '@fontsource-variable/source-serif-4':
-        specifier: ^5.1.1
-        version: 5.1.1
-      '@fontsource/poppins':
         specifier: ^5.1.1
         version: 5.1.1
       '@fontsource/source-sans-pro':
@@ -646,14 +640,8 @@ packages:
   '@floating-ui/utils@0.2.8':
     resolution: {integrity: sha512-kym7SodPp8/wloecOpcmSnWJsK7M0E5Wg8UcFA+uO4B9s5d0ywXOEro/8HM9x0rW+TljRzul/14UYz3TleT3ig==}
 
-  '@fontsource-variable/inter@5.1.1':
-    resolution: {integrity: sha512-OpXFTmiH6tHkYijMvQTycFKBLK4X+SRV6tet1m4YOUH7SzIIlMqDja+ocDtiCA72UthBH/vF+3ZtlMr2rN/wIw==}
-
   '@fontsource-variable/source-serif-4@5.1.1':
     resolution: {integrity: sha512-0ukcJ9U+Ravi38mwwUs3xyd8YdArMBz9cCtK8v6rRMO7Q6myJW1vzz0SLAI3Z6/pzcqsqIYo1ImUqKmOrw4cVw==}
-
-  '@fontsource/poppins@5.1.1':
-    resolution: {integrity: sha512-PQVKHGQOK+UpVNPzTFF9Z9ez3CIDkunfvRXGH95hiDoqWJc1shW4JFqe4tEoqnq7RtZaYrw9aWQq58L4eny5xg==}
 
   '@fontsource/source-sans-pro@5.1.0':
     resolution: {integrity: sha512-GJijHmnPKwA1G8MqUVOZzbIW8jLBFsJGugAb5/IikvTHHmLp+pJy+g8EhyWbfR8pI04i/EStzW0AzOv0KQEhzg==}
@@ -3188,11 +3176,7 @@ snapshots:
 
   '@floating-ui/utils@0.2.8': {}
 
-  '@fontsource-variable/inter@5.1.1': {}
-
   '@fontsource-variable/source-serif-4@5.1.1': {}
-
-  '@fontsource/poppins@5.1.1': {}
 
   '@fontsource/source-sans-pro@5.1.0': {}
 

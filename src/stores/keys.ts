@@ -11,7 +11,7 @@ interface KeyStore {
   loadKey: () => Promise<void>;
 }
 
-export const useApiKeys = create<KeyStore>((set, get) => ({
+export const useApiKeys = create<KeyStore>((set) => ({
   key: undefined,
   loading: false,
   fetched: false,
