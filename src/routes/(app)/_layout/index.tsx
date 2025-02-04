@@ -171,7 +171,7 @@ function Index() {
             "w-lg": showChat,
             "w-0 overflow-hidden opacity-0": !showChat
           })}>
-            <div className="w-full overflow-hidden">
+            <div className="w-full max-h-screen overflow-y-auto overflow-hidden p-1">
               <header className="mb-4">
                 <h2 className="text-lg tracking-tight font-bold">Chat with AI</h2>
               </header>

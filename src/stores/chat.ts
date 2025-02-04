@@ -51,7 +51,8 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     const { data } = await supabase.functions.invoke("chat", {
       body: {
         apiKey,
-        messages: get().messages.map(({ message: content, role }) => ({ role, content }))
+        messages: get().messages.map(({ message: content, role }) => ({ role, content })),
+        content: useAppStore.getState().editor?.getHTML()
       }
     });
 
