@@ -1,6 +1,6 @@
 import supabase from "@/utils/supabase";
 import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 import { useAppStore } from "./app";
 
 type BaseMessage = {
