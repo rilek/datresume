@@ -125,8 +125,8 @@ export const Editor = () => {
 
   return (
     <div className={clsx("w-full min-h-screen transition-opacity", { 'opacity-50 pointer-events-none': loading })}>
-      <div className='max-w-4xl mx-auto w-full'>
-        <div className='font-serif prose print:prose-xs print:prose-li:my-0 max-w-none'>
+      <div className='max-w-[52.5rem] mx-auto w-full'>
+        <div className='font-serif prose prose-sm print:prose-xs print:prose-li:my-0 max-w-none'>
           <EditorContent editor={editor} className="editor" />
           {/* <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
         <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu> */}

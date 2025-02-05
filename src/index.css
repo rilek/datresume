@@ -3,6 +3,10 @@
 @plugin '@tailwindcss/typography';
 @plugin 'tailwindcss-animate';
 
+/* @tailwind base;
+@tailwind components; */
+@tailwind utilities;
+
 @custom-variant dark (&:is(.dark *));
 
 @theme {
@@ -46,6 +50,8 @@
   --color-chart-3: hsl(var(--chart-3));
   --color-chart-4: hsl(var(--chart-4));
   --color-chart-5: hsl(var(--chart-5));
+
+  --breakpoint-3xl: 1920px;
 }
 
 /*

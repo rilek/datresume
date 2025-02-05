@@ -129,9 +129,8 @@ function Index() {
               <Editor />
             </div>
           </div>
-          <div className={clsx("animate-in slide-in-from-right transition-all border-gray-200 sticky top-4 print:hidden", {
-            "w-lg": showChat,
-            "w-0 overflow-hidden opacity-0": !showChat
+          <div className={clsx("animate-in text-sm slide-in-from-right transition-all border-gray-200 sticky top-4 xl:w-md w-xs print:hidden", {
+            "w-0! overflow-hidden opacity-0": !showChat
           })}>
             <div className="w-full max-h-screen overflow-y-auto overflow-hidden p-1 pt-0">
               <header className="pb-4 sticky top-0 bg-white flex justify-between items-center">
