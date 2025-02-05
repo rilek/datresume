@@ -39,6 +39,7 @@ const ChatMessageForm = ({ inputProps }: {
     <form onSubmit={form.handleSubmit(({ message }) => {
       form.reset();
       send(message);
+      window.umami.track("send_chat_message");
     })}>
       <FormField
         control={form.control}
@@ -103,7 +104,7 @@ function Index() {
             let the magic happen.
           </p>
           <div className="mt-8">
-            <Button onClick={() => scrollToEditor(editorAreaId)} size="lg" className="text-lg">
+            <Button onClick={() => scrollToEditor(editorAreaId)} size="lg" className="text-lg" data-umami-event="cta_click" data-umami-event-value="try_it_now">
               Try it now
             </Button>
             <span className="ml-2">No sign in required!</span>

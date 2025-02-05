@@ -14,6 +14,7 @@ import { useToast } from '@/hooks/use-toast'
 // import { Input } from '@/components/ui/input'
 // import { PopoverClose } from '@radix-ui/react-popover'
 import clsx from 'clsx'
+import { useChatStore } from '@/stores/chat'
 
 const extensions = [StarterKit, Typography, Highlight, Link.configure({
   HTMLAttributes: {
@@ -59,7 +60,7 @@ export const EditorOptions = () => {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant={"outline"} size="icon-lg" onClick={() => persistContent(toast)} className='relative'>
+          <Button variant={"outline"} size="icon-lg" onClick={() => persistContent(toast)} className='relative' data-umami-event="persist_content">
             {<span className={clsx('absolute top-0 right-0 w-2 h-2 bg-rose-700 opacity-0 transition-opacity rounded-full',
               { "opacity-100": persistedContent != content }
             )} />}
@@ -73,7 +74,7 @@ export const EditorOptions = () => {
 
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="outline" size="icon-lg" onClick={resetContent}><RotateCcwIcon /></Button>
+          <Button variant="outline" size="icon-lg" onClick={resetContent} data-umami-event="reset_content"><RotateCcwIcon /></Button>
         </TooltipTrigger>
         <TooltipContent side='left'>
           Reset to last saved state
@@ -82,7 +83,9 @@ export const EditorOptions = () => {
 
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="outline" size="icon-lg" onClick={toggleChat}><SparklesIcon className='text-indigo-700' /></Button>
+          <Button variant="outline" size="icon-lg" onClick={toggleChat} data-umami-event="toggle_chat" data-umami-event-value={useAppStore.getState().showChat ? "opening" : "closing"}>
+            <SparklesIcon className='text-indigo-700' />
+            </Button>
         </TooltipTrigger>
         <TooltipContent side='left'>
           Toggle AI chat
@@ -91,7 +94,7 @@ export const EditorOptions = () => {
 
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="outline" size="icon-lg" onClick={() => window.print()}><FileDownIcon /></Button>
+          <Button variant="outline" size="icon-lg" onClick={() => window.print()} data-umami-event="download_resume"><FileDownIcon /></Button>
         </TooltipTrigger>
         <TooltipContent side='left'>
           Download as PDF
@@ -113,6 +116,7 @@ export const Editor = () => {
     content,
     onUpdate: ({ editor: e }) => setContent(e.getHTML()),
     onCreate: ({ editor: e }) => setContent(e.getHTML()),
+    onFocus: () => window.umami.track('editor_focus'),
   });
 
   useEffect(() => {
@@ -127,7 +131,7 @@ export const Editor = () => {
     <div className={clsx("w-full min-h-screen transition-opacity", { 'opacity-50 pointer-events-none': loading })}>
       <div className='max-w-[52.5rem] mx-auto w-full'>
         <div className='font-serif prose prose-sm print:prose-xs print:prose-li:my-0 max-w-none'>
-          <EditorContent editor={editor} className="editor" />
+          <EditorContent editor={editor} className="editor" data-umami-event />
           {/* <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
         <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu> */}
         </div>
