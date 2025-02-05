@@ -59,6 +59,17 @@ export const EditorOptions = () => {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
+          <Button variant="outline" size="icon-lg" onClick={toggleChat} data-umami-event="toggle_chat" data-umami-event-value={useAppStore.getState().showChat ? "opening" : "closing"}>
+            <SparklesIcon className='text-indigo-700' />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side='left'>
+          Toggle AI chat
+        </TooltipContent>
+      </Tooltip>
+
+      <Tooltip>
+        <TooltipTrigger asChild>
           <Button variant={"outline"} size="icon-lg" onClick={() => persistContent(toast)} className='relative' data-umami-event="persist_content">
             {<span className={clsx('absolute top-0 right-0 w-2 h-2 bg-rose-700 opacity-0 transition-opacity rounded-full',
               { "opacity-100": persistedContent != content }
@@ -77,17 +88,6 @@ export const EditorOptions = () => {
         </TooltipTrigger>
         <TooltipContent side='left'>
           Reset to last saved state
-        </TooltipContent>
-      </Tooltip>
-
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button variant="outline" size="icon-lg" onClick={toggleChat} data-umami-event="toggle_chat" data-umami-event-value={useAppStore.getState().showChat ? "opening" : "closing"}>
-            <SparklesIcon className='text-indigo-700' />
-            </Button>
-        </TooltipTrigger>
-        <TooltipContent side='left'>
-          Toggle AI chat
         </TooltipContent>
       </Tooltip>
 
