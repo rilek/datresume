@@ -1,8 +1,6 @@
 import { useToast } from "@/hooks/use-toast";
-import supabase from "@/utils/supabase";
 import { Editor } from "@tiptap/react";
 import { create } from "zustand";
-import { useAuthStore } from "./auth";
 import { defaultContent } from "@/utils/editor";
 
 interface AppStore {

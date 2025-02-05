@@ -1,5 +1,6 @@
 import supabase from "@/utils/supabase";
 import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 import { useAppStore } from "./app";
 
 type BaseMessage = {
@@ -50,47 +51,51 @@ interface ChatStore {
 }
 
 
-export const useChatStore = create<ChatStore>((set, get) => ({
-  loading: true,
-  chat: {
-    threadId: undefined,
-    messages: []
-  },
-  resetChat: () => set({ chat: { threadId: undefined, messages: [] } }),
-  sendMessage: async (message) => {
-    const chat = get().chat;
+export const useChatStore = create<ChatStore>()(
+  persist((set, get) => ({
+    loading: true,
+    chat: {
+      threadId: undefined,
+      messages: []
+    },
+    resetChat: () => set({ chat: { threadId: undefined, messages: [] } }),
+    sendMessage: async (message) => {
+      const chat = get().chat;
 
-    set({
-      loading: true,
-      chat: {
-        threadId: chat?.threadId,
-        messages: [...chat?.messages, { content: message, role: "user" }]
-      }
-    });
+      set({
+        loading: true,
+        chat: {
+          threadId: chat?.threadId,
+          messages: [...chat?.messages, { content: message, role: "user" }]
+        }
+      });
 
-    const { data } = await supabase.functions.invoke("chat", {
-      body: {
-        content: useAppStore.getState().editor?.getHTML(),
-        message,
-        threadId: chat?.threadId
-      }
-    });
+      const { data } = await supabase.functions.invoke("chat", {
+        body: {
+          content: useAppStore.getState().editor?.getHTML(),
+          message,
+          threadId: chat?.threadId
+        }
+      });
 
-    const { threadId, question, answer } = data as ChatResponse;
+      const { threadId, question, answer } = data as ChatResponse;
 
-    useAppStore.getState().editor?.commands.setContent(answer.content.html);
-    useAppStore.getState().setContent(answer.content.html);
+      useAppStore.getState().editor?.commands.setContent(answer.content.html);
+      useAppStore.getState().setContent(answer.content.html);
 
-    set(({ chat }) => ({
-      loading: false,
-      chat: {
-        threadId,
-        messages: [
-          ...chat.messages.slice(0, chat.messages.length - 1),
-          { ...question, role: "user" },
-          { ...answer, role: "assistant" }
-        ]
-      }
+      set(({ chat }) => ({
+        loading: false,
+        chat: {
+          threadId,
+          messages: [
+            ...chat.messages.slice(0, chat.messages.length - 1),
+            { ...question, role: "user" },
+            { ...answer, role: "assistant" }
+          ]
+        }
+      }));
+    }
+  }),
+    {
+      name: "useChatStore"
     }));
-  }
-}));
