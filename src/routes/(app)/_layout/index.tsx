@@ -96,7 +96,8 @@ function Index() {
       <div className="max-w-6xl py-24 mx-auto print:hidden">
         <div className="max-w-2xl">
           <h2 className="text-5xl font-serif font-bold tracking-tight mb-10">
-            Match your resume to your perfect job
+            Make your resume perfect<br />
+            for your perfect job
           </h2>
           <p className="mt-8 text-xl text-black/70 leading-8">
             Use GenAI models to adjust your resume to any job offer in
