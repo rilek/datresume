@@ -14,7 +14,6 @@ import { useToast } from '@/hooks/use-toast'
 // import { Input } from '@/components/ui/input'
 // import { PopoverClose } from '@radix-ui/react-popover'
 import clsx from 'clsx'
-import { useChatStore } from '@/stores/chat'
 
 const extensions = [StarterKit, Typography, Highlight, Link.configure({
   HTMLAttributes: {
