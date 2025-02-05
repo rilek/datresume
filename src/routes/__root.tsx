@@ -3,6 +3,9 @@ import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { Toaster } from '@/components/ui/toaster';
 import { RouterContext } from '@/main';
 
+if (import.meta.env.DEV) {
+  localStorage.setItem('umami.disabled', "1");
+}
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   beforeLoad: (ctx) => {
@@ -23,8 +26,6 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         });
       }
     }
-
-
   },
   component: () => {
     return (
