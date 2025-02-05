@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useChatStore } from "@/stores/chat";
 import { useForm } from "react-hook-form";
 import { FormField } from "@/components/ui/form";
+import { Loader2Icon } from "lucide-react";
 
 export const Route = createFileRoute("/(app)/_layout/")({
   component: Index,
@@ -59,64 +60,18 @@ const ChatMessageForm = ({ inputProps }: {
 };
 
 const FirstMessage = () => {
-  // const apiKey = useChatStore(store => store.apiKey);
-  const disabled = false //!apiKey;
-
   return (<ChatMessageForm inputProps={{
-    disabled,
-    placeholder: disabled ? "Provide API Key before using the chat" : "Paste job offer URL or write a command",
+    placeholder: "Paste job offer URL or write a command",
     autoFocus: true
   }} />)
 }
-
-// const ApiKeyForm = () => {
-//   const apiKey = useChatStore(store => store.apiKey);
-//   const setApiKey = useChatStore(store => store.setApiKey);
-//   const form = useForm({
-//     defaultValues: {
-//       apiKey: apiKey || ""
-//     }
-//   });
-
-//   const [showTooltip, setShowTooltip] = useState(false);
-
-//   return (
-//     <>
-//       <div>
-//         <h5>OpenAI Key</h5>
-//         <form onSubmit={form.handleSubmit(({ apiKey }) => {
-//           setApiKey(apiKey)
-//           setShowTooltip(true);
-//         })}>
-//           <div className="flex gap-2">
-//             <Input type="password" placeholder="API Key" {...form.register("apiKey")} />
-
-//             <TooltipProvider>
-//               <Tooltip open={showTooltip} onOpenChange={() => setTimeout(() => setShowTooltip(false), 3000)}>
-//                 <TooltipTrigger asChild>
-//                   <Button type="submit">Set</Button>
-//                 </TooltipTrigger>
-//                 <TooltipContent>Done!</TooltipContent>
-//               </Tooltip>
-//             </TooltipProvider>
-//           </div>
-//         </form>
-//         <p className="text-sm text-slate-500 leading-4 mt-2">To use AI chat feature you need to provide your own API key. No worries - it will persist only within this session and will not be used elsewhere.</p>
-//         {apiKey && (
-//           <p className="text-sm text-green-500 leading-4 mt-2">API Key is set. You can use AI chat now.</p>
-//         )}
-//       </div>
-
-//     </>
-//   );
-// };
 
 function Index() {
   const loadContent = useAppStore((state) => state.loadContent);
   const loading = useAppStore((state) => state.loading);
   const fetched = useAppStore((state) => state.fetched);
   const showChat = useAppStore((state) => state.showChat);
-  const chatMessages = useChatStore((state) => state.messages);
+  const chatMessages = useChatStore((state) => state.chat.messages);
   const editorAreaId = "editor-area";
 
   useEffect(() => {
@@ -161,7 +116,7 @@ function Index() {
           </a>
         </div>
 
-        <div className="flex items-start mb-12 mx-4 print:m-0 gap-4 max-w-screen overflow-clip">
+        <div className="flex items-start mb-12 mx-4 print:m-0 gap-4 max-w-screen">
           <div className="max-w-6xl mx-auto flex-1">
             <div className="bg-white border shadow-lg p-10 print:p-0 print:border-none print:shadow-none">
               <Editor />
@@ -171,26 +126,24 @@ function Index() {
             "w-lg": showChat,
             "w-0 overflow-hidden opacity-0": !showChat
           })}>
-            <div className="w-full max-h-screen overflow-y-auto overflow-hidden p-1">
-              <header className="mb-4">
+            <div className="w-full max-h-screen overflow-y-auto overflow-hidden p-1 pt-0">
+              <header className="pb-4 sticky top-0 bg-white">
                 <h2 className="text-lg tracking-tight font-bold">Chat with AI</h2>
               </header>
-
-              {/* <div>
-                <ApiKeyForm />
-              </div> */}
 
               <div className="flex flex-col gap-2 mt-8">
                 {chatMessages.length === 0
                   ? <FirstMessage />
                   : (
                     <>
-                      {chatMessages.map(({ id, message, timestamp, role }) =>
-                        <div key={id} className={clsx("flex flex-col", { "items-end": role === "user" })}>
+                      {chatMessages.map(({ id, content, createdAt, role }) =>
+                        <div key={id} className={clsx("flex flex-col", { "items-end": role === "user", "animate-pulse": !createdAt })}>
                           <div className={clsx("py-2", { "bg-slate-200 rounded-lg px-4": role === "user" })}>
-                            {message}
+                            {role === "user" ? content : content["text"] || <i>No answer provided</i>}
                           </div>
-                          <small className="text-xs text-slate-500">{dateFormatter.format(Date.parse(timestamp))}</small>
+                          {createdAt
+                            ? <small className="text-xs text-slate-500">{dateFormatter.format(Date.parse(createdAt))}</small>
+                            : <div className="animate-spin"><Loader2Icon size={16} /></div>}
                         </div>)}
                       <div className="mt-8">
                         <ChatMessageForm inputProps={{ placeholder: "New command..." }} />

@@ -2,72 +2,90 @@ import supabase from "@/utils/supabase";
 import { create } from "zustand";
 import { useAppStore } from "./app";
 
-interface ChatMessage {
+type BaseMessage = {
   id: string;
-  timestamp: string;
-  message: string;
-  role: "assistant" | "user";
+  createdAt: string;
+}
+type UserMessage = BaseMessage & {
+  role: "user";
+  content: string;
+}
+type AssistantMessage = BaseMessage & {
+  role: "assistant";
+  content: {
+    text: string;
+    html: string;
+  };
+}
+type ChatMessage = UserMessage | AssistantMessage;
+type TemporalChatMessage = Partial<UserMessage> & { content: string, role: "user" };
+
+interface Chat {
+  threadId?: string;
+  messages: (ChatMessage | TemporalChatMessage)[];
 }
 
 interface ChatStore {
-  apiKey?: string;
   loading: boolean;
-  messages: ChatMessage[];
-  setApiKey: (apiKey: string) => void;
+  chat: Chat;
   sendMessage: (message: string) => Promise<void>;
 }
 
-const generateRandomId = () => Math.random().toString();
+interface ChatResponse {
+  threadId: string;
+  question: {
+    id: string;
+    createdAt: string;
+    content: string;
+  };
+  answer: {
+    id: string;
+    createdAt: string;
+    content: {
+      text: string;
+      html: string;
+    };
+  }
+}
 
 export const useChatStore = create<ChatStore>((set, get) => ({
-  apiKey: "",
   loading: true,
-  messages: [],
-  setApiKey: (apiKey) => set({ apiKey }),
+  chat: {
+    threadId: undefined,
+    messages: []
+  },
   sendMessage: async (message) => {
-    const apiKey = get().apiKey;
+    const chat = get().chat;
 
-    set({ loading: true });
-
-    // if (!apiKey) {
-    //   set({ loading: false });
-    //   throw Error("Missing API Key!");
-    // }
-
-    const newUserMessage: ChatMessage = {
-      id: generateRandomId(),
-      message,
-      timestamp: (new Date()).toUTCString(),
-      role: "user"
-    };
-
-    set(({ messages }) => ({
-      messages: [...messages, newUserMessage]
-    }));
-
-
-    // TOOD: Handle openAPI request
-    // const response: string = await new Promise((res) => setTimeout(() => res("Server response"), 1000));
-    const { data } = await supabase.functions.invoke("chat", {
-      body: {
-        apiKey,
-        messages: get().messages.map(({ message: content, role }) => ({ role, content })),
-        content: useAppStore.getState().editor?.getHTML()
+    set({
+      loading: true, chat: {
+        threadId: chat?.threadId,
+        messages: [...chat?.messages, { content: message, role: "user" }]
       }
     });
 
-    const responseMessage: ChatMessage = {
-      id: generateRandomId(),
-      message: data.text,
-      timestamp: (new Date()).toUTCString(),
-      role: "assistant"
-    };
+    const { data } = await supabase.functions.invoke("chat", {
+      body: {
+        content: useAppStore.getState().editor?.getHTML(),
+        message,
+        threadId: chat?.threadId
+      }
+    });
 
-    useAppStore.getState().editor?.commands.setContent(data.html);
+    const { threadId, question, answer } = data as ChatResponse;
 
-    set(({ messages }) => ({
+    useAppStore.getState().editor?.commands.setContent(answer.content.html);
+
+    set(({ chat }) => ({
       loading: false,
-      messages: [...messages, responseMessage]
+      chat: {
+        threadId,
+        messages: [
+          ...chat.messages.slice(0, chat.messages.length - 1),
+          { ...question, role: "user" },
+          { ...answer, role: "assistant" }
+        ]
+      }
     }));
   }
 }));
