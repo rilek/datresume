@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button";
 import { useChatStore } from "@/stores/chat";
 import { useForm } from "react-hook-form";
 import { FormField } from "@/components/ui/form";
-import { Loader2Icon } from "lucide-react";
+import { ListXIcon, Loader2Icon } from "lucide-react";
+import { TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
+import { Tooltip, TooltipContent } from "@/components/ui/tooltip";
 
 export const Route = createFileRoute("/(app)/_layout/")({
   component: Index,
@@ -72,6 +74,7 @@ function Index() {
   const fetched = useAppStore((state) => state.fetched);
   const showChat = useAppStore((state) => state.showChat);
   const chatMessages = useChatStore((state) => state.chat.messages);
+  const resetChat = useChatStore((state) => state.resetChat);
   const editorAreaId = "editor-area";
 
   useEffect(() => {
@@ -127,8 +130,16 @@ function Index() {
             "w-0 overflow-hidden opacity-0": !showChat
           })}>
             <div className="w-full max-h-screen overflow-y-auto overflow-hidden p-1 pt-0">
-              <header className="pb-4 sticky top-0 bg-white">
+              <header className="pb-4 sticky top-0 bg-white flex justify-between items-center">
                 <h2 className="text-lg tracking-tight font-bold">Chat with AI</h2>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button onClick={resetChat} size="icon-sm" variant={"ghost"}><ListXIcon /></Button>
+                    </TooltipTrigger>
+                    <TooltipContent sideOffset={8}>Clear chat</TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </header>
 
               <div className="flex flex-col gap-2 mt-8">

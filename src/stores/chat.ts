@@ -25,12 +25,6 @@ interface Chat {
   messages: (ChatMessage | TemporalChatMessage)[];
 }
 
-interface ChatStore {
-  loading: boolean;
-  chat: Chat;
-  sendMessage: (message: string) => Promise<void>;
-}
-
 interface ChatResponse {
   threadId: string;
   question: {
@@ -48,17 +42,27 @@ interface ChatResponse {
   }
 }
 
+interface ChatStore {
+  loading: boolean;
+  chat: Chat;
+  resetChat: () => void;
+  sendMessage: (message: string) => Promise<void>;
+}
+
+
 export const useChatStore = create<ChatStore>((set, get) => ({
   loading: true,
   chat: {
     threadId: undefined,
     messages: []
   },
+  resetChat: () => set({ chat: { threadId: undefined, messages: [] } }),
   sendMessage: async (message) => {
     const chat = get().chat;
 
     set({
-      loading: true, chat: {
+      loading: true,
+      chat: {
         threadId: chat?.threadId,
         messages: [...chat?.messages, { content: message, role: "user" }]
       }
