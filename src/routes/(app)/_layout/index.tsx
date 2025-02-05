@@ -102,7 +102,7 @@ function Index() {
             let the magic happen.
           </p>
           <div className="mt-8">
-            <Button onClick={() => scrollToEditor(editorAreaId)} size={"lg"} className="text-lg">Use it for free</Button>
+            <Button onClick={() => scrollToEditor(editorAreaId)} size={"lg"} className="text-lg">Try it now</Button> <span className="ml-2">No sign in required!</span>
           </div>
         </div>
       </div>
