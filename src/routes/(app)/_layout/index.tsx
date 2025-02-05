@@ -76,6 +76,7 @@ function Index() {
   const chatMessages = useChatStore((state) => state.chat.messages);
   const resetChat = useChatStore((state) => state.resetChat);
   const editorAreaId = "editor-area";
+  const chatLoading = useChatStore((state) => state.loading);
 
   useEffect(() => {
     loadContent();
@@ -102,7 +103,10 @@ function Index() {
             let the magic happen.
           </p>
           <div className="mt-8">
-            <Button onClick={() => scrollToEditor(editorAreaId)} size={"lg"} className="text-lg">Try it now</Button> <span className="ml-2">No sign in required!</span>
+            <Button onClick={() => scrollToEditor(editorAreaId)} size="lg" className="text-lg">
+              Try it now
+            </Button>
+            <span className="ml-2">No sign in required!</span>
           </div>
         </div>
       </div>
@@ -148,7 +152,7 @@ function Index() {
                   : (
                     <>
                       {chatMessages.map(({ id, content, createdAt, role }) =>
-                        <div key={id} className={clsx("flex flex-col", { "items-end": role === "user", "animate-pulse": !createdAt })}>
+                        <div key={id || "temp message"} className={clsx("flex flex-col", { "items-end": role === "user", "animate-pulse": !createdAt })}>
                           <div className={clsx("py-2", { "bg-slate-200 rounded-lg px-4": role === "user" })}>
                             {role === "user" ? content : content["text"] || <i>No answer provided</i>}
                           </div>
@@ -157,7 +161,7 @@ function Index() {
                             : <div className="animate-spin"><Loader2Icon size={16} /></div>}
                         </div>)}
                       <div className="mt-8">
-                        <ChatMessageForm inputProps={{ placeholder: "New command..." }} />
+                        <ChatMessageForm inputProps={{ placeholder: "New command...", disabled: chatLoading }} />
                       </div>
                     </>
                   )}

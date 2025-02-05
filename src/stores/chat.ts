@@ -79,6 +79,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     const { threadId, question, answer } = data as ChatResponse;
 
     useAppStore.getState().editor?.commands.setContent(answer.content.html);
+    useAppStore.getState().setContent(answer.content.html);
 
     set(({ chat }) => ({
       loading: false,

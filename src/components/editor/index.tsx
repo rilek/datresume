@@ -46,100 +46,25 @@ const extensions = [StarterKit, Typography, Highlight, Link.configure({
 //   </Tooltip>
 // ));
 
-// const AISettingsForm = () => {
-//   const { toast } = useToast();
-//   const regenerateResume = useAppStore(state => state.regenerate);
-//   const openaiKey = useAppStore(state => state.openaiKey);
-//   const content = useAppStore(state => state.content);
-
-//   const form = useForm({
-//     defaultValues: {
-//       openaiKey: openaiKey || "",
-//       jobUrl: "",
-//     }
-//   });
-
-//   const onSubmit = ({ jobUrl, openaiKey }: { jobUrl: string, openaiKey: string }) => {
-//     regenerateResume(toast, jobUrl, openaiKey, content);
-//   }
-
-//   return (
-//     <Form {...form}>
-//       <form onSubmit={form.handleSubmit(onSubmit)}>
-//         <div className='flex flex-col gap-4'>
-//           <FormField
-//             control={form.control}
-//             name="openaiKey"
-//             rules={{ required: 'This field is required' }}
-//             render={({ field }) => (
-//               <FormItem>
-//                 <FormLabel>OpenAI API Key</FormLabel>
-//                 <FormControl>
-//                   <Input placeholder="Place your API key here..." {...field} />
-//                 </FormControl>
-//                 <FormDescription className='mt-0!'>We won't save it anywhere</FormDescription>
-//                 <FormMessage />
-//               </FormItem>
-//             )} />
-//           <FormField
-//             control={form.control}
-//             name="jobUrl"
-//             rules={{ required: 'This field is required' }}
-//             render={({ field }) => (
-//               <FormItem>
-//                 <FormLabel>Job offer URL</FormLabel>
-//                 <FormControl>
-//                   <Input placeholder="https://linkedin.com/whatever" {...field} />
-//                 </FormControl>
-//                 <FormMessage />
-//               </FormItem>
-//             )}
-//           />
-//         </div>
-//         <div className='flex justify-end mt-8'>
-
-//           <PopoverClose asChild>
-//             <Button type="submit">Submit</Button>
-//           </PopoverClose>
-//         </div>
-//       </form>
-//     </Form>
-//   )
-// };
-
-const SaveButton = forwardRef<HTMLButtonElement>((props, ref) => {
-  const { toast } = useToast();
-  const saveContentHandler = useAppStore(state => state.saveContent);
-  const saveContent = () => saveContentHandler(toast);
-  const storedContent = localStorage.getItem("content");
-  const content = useAppStore(state => state.content);
-
-
-  return (
-    <Button variant={"outline"} size="icon-lg" onClick={saveContent} className='relative' ref={ref} {...props}>
-      {<span className={clsx('absolute top-0 right-0 w-2 h-2 bg-rose-700 opacity-0 transition-opacity rounded-full',
-        { "opacity-100": storedContent != content }
-      )} />}
-      <SaveIcon />
-    </Button>
-  );
-})
-
 export const EditorOptions = () => {
-  const editor = useAppStore(state => state.editor);
-  const storedContent = localStorage.getItem("content")!;
-  const setContent = useAppStore(state => state.setContent);
+  const { toast } = useToast();
+  const persistContent = useAppStore(state => state.persistContent);
+  const getPersistedContent = useAppStore(state => state.getPersistedContent);
+  const persistedContent = getPersistedContent();
+  const content = useAppStore(state => state.content);
   const toggleChat = useAppStore(state => state.toggleChat);
-  const resetContent = () => {
-    setContent(storedContent);
-    editor?.commands.setContent(storedContent || "")
-  };
+  const resetContent = useAppStore(state => state.loadContent);
 
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <SaveButton />
+          <Button variant={"outline"} size="icon-lg" onClick={() => persistContent(toast)} className='relative'>
+            {<span className={clsx('absolute top-0 right-0 w-2 h-2 bg-rose-700 opacity-0 transition-opacity rounded-full',
+              { "opacity-100": persistedContent != content }
+            )} />}
+            <SaveIcon />
+          </Button>
         </TooltipTrigger>
         <TooltipContent side='left'>
           Save to local storage
@@ -181,6 +106,7 @@ export const Editor = () => {
   const setContent = useAppStore(state => state.setContent);
   const setEditor = useAppStore(state => state.setEditor);
   const loading = useAppStore(state => state.loading);
+  const loadContent = useAppStore(state => state.loadContent);
 
   const editor = useEditor({
     extensions,
@@ -188,6 +114,10 @@ export const Editor = () => {
     onUpdate: ({ editor: e }) => setContent(e.getHTML()),
     onCreate: ({ editor: e }) => setContent(e.getHTML()),
   });
+
+  useEffect(() => {
+    loadContent();
+  }, []);
 
   useEffect(() => {
     setEditor(editor);

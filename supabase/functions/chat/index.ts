@@ -50,9 +50,6 @@ Deno.serve(async (req) => {
 
   const reqBody = await req.json();
   const { message, content, threadId } = reqBody;
-
-  console.log("Calling GPT:");
-
   const thread = threadId ? await openai.beta.threads.retrieve(threadId) : await openai.beta.threads.create();
 
   if (!threadId)
@@ -65,17 +62,12 @@ Deno.serve(async (req) => {
 
   await openai.beta.threads.messages.create(
     thread.id,
-    {
-      role: "user",
-      content: message
-    }
+    { role: "user", content: message }
   );
 
   const run = await openai.beta.threads.runs.createAndPoll(
     thread.id,
-    {
-      assistant_id: assistantId
-    }
+    { assistant_id: assistantId }
   )
 
   if (run.status === "completed") {
@@ -86,9 +78,6 @@ Deno.serve(async (req) => {
 
     const lastAnswer = messagesList.data[0];
     const lastQuestion = messagesList.data[1];
-
-    console.log(messagesList.data[0]);
-    console.log(messagesList.data[1]);
 
     const response = {
       threadId: thread.id,
