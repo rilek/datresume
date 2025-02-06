@@ -1,9 +1,10 @@
 {
   "imports": {
     "@openai/openai": "jsr:@openai/openai@^4.82.0",
+    "node-mailjet": "npm:node-mailjet@^6.0.6",
     "openai": "https://esm.sh/openai@4.82.0",
     "common-tags": "https://esm.sh/common-tags@1.8.2",
     "edge-runtime": "jsr:@supabase/functions-js/edge-runtime.d.ts",
     "zod": "npm:zod@^3.24.1"
-  },
+  }
 }
