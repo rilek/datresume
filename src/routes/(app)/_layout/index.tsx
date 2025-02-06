@@ -7,12 +7,9 @@ import { Button } from "@/components/ui/button";
 import { useChatStore } from "@/stores/chat";
 import { useForm } from "react-hook-form";
 import { FormField } from "@/components/ui/form";
-import { Contact, ListXIcon, Loader2Icon } from "lucide-react";
+import { ListXIcon, Loader2Icon } from "lucide-react";
 import { TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { Tooltip, TooltipContent } from "@/components/ui/tooltip";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { ContactForm } from "@/components/contact";
 
 export const Route = createFileRoute("/(app)/_layout/")({
   component: Index,
