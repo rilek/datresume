@@ -89,8 +89,11 @@ function Index() {
 
   return (
     <>
-      <div className="max-w-6xl py-24 mx-auto print:hidden">
+      <div className="max-w-6xl py-24 mx-auto px-4 print:hidden">
         <div className="max-w-2xl">
+          <div className="bg-amber-300 text-amber-800 font-bold -mt-8 mb-8 rounded block sm:hidden p-4 text-center">
+            This version of app wasn't prepared for mobile devices. Please use it on desktop.
+          </div>
           <h2 className="text-5xl font-serif font-bold tracking-tight mb-10">
             Make your resume perfect<br />
             for your perfect job
@@ -100,11 +103,11 @@ function Index() {
             seconds. Just use the editor, paste the job offer, or its URL, and
             let the magic happen.
           </p>
-          <div className="mt-8">
+          <div className="mt-8 flex gap-2 flex-wrap items-baseline">
             <Button onClick={() => scrollToEditor(editorAreaId)} size="lg" className="text-lg" data-umami-event="cta_click" data-umami-event-value="try_it_now">
               Try it now
             </Button>
-            <span className="ml-2">It's free and no sign in required!</span>
+            <span className="whitespace-nowrap">It's free and no sign in required!</span>
           </div>
         </div>
       </div>
