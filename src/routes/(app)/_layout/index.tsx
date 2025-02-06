@@ -7,9 +7,12 @@ import { Button } from "@/components/ui/button";
 import { useChatStore } from "@/stores/chat";
 import { useForm } from "react-hook-form";
 import { FormField } from "@/components/ui/form";
-import { ListXIcon, Loader2Icon } from "lucide-react";
+import { Contact, ListXIcon, Loader2Icon } from "lucide-react";
 import { TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { Tooltip, TooltipContent } from "@/components/ui/tooltip";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { ContactForm } from "@/components/contact";
 
 export const Route = createFileRoute("/(app)/_layout/")({
   component: Index,
@@ -89,8 +92,23 @@ function Index() {
 
   return (
     <>
-      <header className="p-4 print:hidden">
+      <header className="p-4 flex justify-between items-center print:hidden">
         <h1 className="font-serif text-xl font-extrabold">Datresume</h1>
+        <div>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button size="sm" variant="secondary">Help Us Improve</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>What do you think of <span className="font-serif font-bold">Datresume</span>?</DialogTitle>
+              </DialogHeader>
+
+              <p className="mt-4">We would love to hear your feedback to improve our service. Please let us know what you think of our service.</p>
+              <ContactForm />
+            </DialogContent>
+          </Dialog>
+        </div>
       </header>
 
       <div className="max-w-6xl py-24 mx-auto print:hidden">

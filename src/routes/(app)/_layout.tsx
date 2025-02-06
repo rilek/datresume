@@ -12,5 +12,12 @@ function RouteComponent() {
 
     <Outlet />
 
+    <footer className='print:hidden'>
+      <div className='max-w-[52.5rem] mx-auto px-4 py-8'>
+        <p className='text-center text-xs text-slate-500'>
+          &copy; {new Date().getFullYear()} Datresume | Made with ❤️
+        </p>
+      </div>
+    </footer>
   </div>
 }
