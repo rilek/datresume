@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as PrivacyIndexImport } from './routes/privacy/index'
 import { Route as authLoginImport } from './routes/(auth)/login'
 import { Route as appLayoutImport } from './routes/(app)/_layout'
 import { Route as appLayoutIndexImport } from './routes/(app)/_layout/index'
@@ -25,6 +26,12 @@ const appImport = createFileRoute('/(app)')()
 
 const appRoute = appImport.update({
   id: '/(app)',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PrivacyIndexRoute = PrivacyIndexImport.update({
+  id: '/privacy/',
+  path: '/privacy/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -70,6 +77,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authLoginImport
       parentRoute: typeof rootRoute
     }
+    '/privacy/': {
+      id: '/privacy/'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/(app)/_layout/': {
       id: '/(app)/_layout/'
       path: '/'
@@ -107,10 +121,12 @@ const appRouteWithChildren = appRoute._addFileChildren(appRouteChildren)
 export interface FileRoutesByFullPath {
   '/': typeof appLayoutIndexRoute
   '/login': typeof authLoginRoute
+  '/privacy': typeof PrivacyIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/login': typeof authLoginRoute
+  '/privacy': typeof PrivacyIndexRoute
   '/': typeof appLayoutIndexRoute
 }
 
@@ -119,19 +135,21 @@ export interface FileRoutesById {
   '/(app)': typeof appRouteWithChildren
   '/(app)/_layout': typeof appLayoutRouteWithChildren
   '/(auth)/login': typeof authLoginRoute
+  '/privacy/': typeof PrivacyIndexRoute
   '/(app)/_layout/': typeof appLayoutIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login'
+  fullPaths: '/' | '/login' | '/privacy'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/'
+  to: '/login' | '/privacy' | '/'
   id:
     | '__root__'
     | '/(app)'
     | '/(app)/_layout'
     | '/(auth)/login'
+    | '/privacy/'
     | '/(app)/_layout/'
   fileRoutesById: FileRoutesById
 }
@@ -139,11 +157,13 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   appRoute: typeof appRouteWithChildren
   authLoginRoute: typeof authLoginRoute
+  PrivacyIndexRoute: typeof PrivacyIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   appRoute: appRouteWithChildren,
   authLoginRoute: authLoginRoute,
+  PrivacyIndexRoute: PrivacyIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -157,7 +177,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/(app)",
-        "/(auth)/login"
+        "/(auth)/login",
+        "/privacy/"
       ]
     },
     "/(app)": {
@@ -175,6 +196,9 @@ export const routeTree = rootRoute
     },
     "/(auth)/login": {
       "filePath": "(auth)/login.tsx"
+    },
+    "/privacy/": {
+      "filePath": "privacy/index.tsx"
     },
     "/(app)/_layout/": {
       "filePath": "(app)/_layout/index.tsx",
