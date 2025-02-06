@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { ContactForm } from "../contact";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
@@ -5,7 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 export default function PageHeader() {
   return (
     <header className="p-4 flex justify-between items-center print:hidden">
-      <h1 className="font-serif text-xl font-extrabold">Datresume</h1>
+      <Link to="/" className="hover:opacity-50 transition-opacity"><h1 className="font-serif text-xl font-extrabold">Datresume</h1></Link>
       <div>
         <Dialog>
           <DialogTrigger asChild>
