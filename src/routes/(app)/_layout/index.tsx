@@ -107,7 +107,7 @@ function Index() {
             <Button onClick={() => scrollToEditor(editorAreaId)} size="lg" className="text-lg" data-umami-event="cta_click" data-umami-event-value="try_it_now">
               Try it now
             </Button>
-            <span className="ml-2">No sign in required!</span>
+            <span className="ml-2">It's free and no sign in required!</span>
           </div>
         </div>
       </div>
