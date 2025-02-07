@@ -92,7 +92,7 @@ function Index() {
       <div className="max-w-6xl py-24 mx-auto px-4 print:hidden">
         <div className="max-w-2xl">
           <div className="bg-amber-300 text-amber-800 font-bold -mt-8 mb-8 rounded block sm:hidden p-4 text-center">
-            This version of app wasn't prepared for mobile devices. We suggest using desktop.
+            Experience from using this app on mobile devices is not perfect. We suggest using desktop instead.
           </div>
           <h2 className="text-5xl font-serif font-bold tracking-tight mb-10">
             Make your resume perfect<br />
