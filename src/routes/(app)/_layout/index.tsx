@@ -39,7 +39,7 @@ const ChatMessageForm = ({ inputProps }: {
     <form onSubmit={form.handleSubmit(({ message }) => {
       form.reset();
       send(message);
-      window.umami.track("send_chat_message");
+      window.umami?.track("send_chat_message");
     })}>
       <FormField
         control={form.control}
