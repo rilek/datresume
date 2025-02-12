@@ -109,6 +109,19 @@ function Index() {
             <span className="whitespace-nowrap">It's free and no sign in required!</span>
           </div>
         </div>
+        <div className="">
+          <div className="relative box-content mx-auto max-h-[80vh] max-w-4xl w-full aspect-[2.18] py-10">
+            <iframe
+              src="https://app.supademo.com/embed/cm6tutz160670oeplu8v1r78t?embed_v=2"
+              loading="lazy"
+              title="Datresume demo"
+              allow="clipboard-write"
+              allowFullScreen
+              className="absolute top-0 left-0 w-full h-full"
+            ></iframe>
+          </div>
+
+        </div>
       </div>
 
       <div id={editorAreaId}>
