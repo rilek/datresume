@@ -10,7 +10,7 @@ interface ContactFormProps {
   onSuccess?: () => void;
 }
 
-export const ContactForm = ({ onSuccess }: ContactFormProps) => {
+export const ContactForm = () => {
   const form = useForm({
     defaultValues: {
       name: '',
