@@ -152,11 +152,11 @@ function Index() {
                     <>
                       {chatMessages.map(({ id, content, createdAt, role }) =>
                         <div key={id || "temp message"} className={clsx("flex flex-col", { "items-end": role === "user", "animate-pulse": !createdAt })}>
-                          <div className={clsx("py-2", { "bg-slate-200 rounded-lg px-4": role === "user" })}>
+                          <div className={clsx("py-2", { "bg-indigo-200 rounded-lg px-4": role === "user" })}>
                             {role === "user" ? content : content["text"] || <i>No answer provided</i>}
                           </div>
                           {createdAt
-                            ? <small className="text-xs text-slate-500">{dateFormatter.format(Date.parse(createdAt))}</small>
+                            ? <small className="text-xs opacity-50">{dateFormatter.format(Date.parse(createdAt))}</small>
                             : <div className="animate-spin"><Loader2Icon size={16} /></div>}
                         </div>)}
                       <div className="mt-8">
