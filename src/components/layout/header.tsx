@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ContactForm } from "../contact";
 import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 
 export default function PageHeader() {
   return (
@@ -22,7 +22,7 @@ export default function PageHeader() {
               <DialogTitle>What do you think of <span className="font-serif font-bold">Datresume</span>?</DialogTitle>
             </DialogHeader>
 
-            <p className="mt-4">We would love to hear your feedback to improve our service. Please let us know what you think of our service.</p>
+            <DialogDescription>We would love to hear your feedback to improve our service. Please let us know what you think of our service.</DialogDescription>
             <ContactForm />
           </DialogContent>
         </Dialog>

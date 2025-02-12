@@ -6,7 +6,11 @@ import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import supabase from "@/utils/supabase";
 
-export const ContactForm = () => {
+interface ContactFormProps {
+  onSuccess?: () => void;
+}
+
+export const ContactForm = ({ onSuccess }: ContactFormProps) => {
   const form = useForm({
     defaultValues: {
       name: '',
@@ -19,8 +23,8 @@ export const ContactForm = () => {
 
   const onSubmit = ({ name, email, message }: any) => {
     reset();
-    supabase.functions.invoke("contact", { body: { name, email, message }});
-    window.umami.track("submit_contact_form");
+    supabase.functions.invoke("contact", { body: { name, email, message } });
+    window.umami?.track("submit_contact_form");
   }
 
   return (
@@ -57,7 +61,9 @@ export const ContactForm = () => {
           </div>
         )} />
 
-      <Button type="submit">Submit</Button>
+      <Button type="submit" disabled={form.formState.isSubmitSuccessful}>Submit</Button>
+      {form.formState.isSubmitting && <p className="text-sm text-gray-500">Submitting...</p>}
+      {form.formState.isSubmitSuccessful && <p className="text-sm text-green-600">Thank you for your message. We will get back to you soon.</p>}
     </form>
   )
 };
