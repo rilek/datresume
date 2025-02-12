@@ -14,6 +14,8 @@ import { useToast } from '@/hooks/use-toast'
 // import { Input } from '@/components/ui/input'
 // import { PopoverClose } from '@radix-ui/react-popover'
 import clsx from 'clsx'
+import FloatingMenu from './floating-menu'
+import BubbleMenu from './bubble-menu'
 
 const extensions = [StarterKit, Typography, Highlight, Link.configure({
   HTMLAttributes: {
@@ -115,7 +117,7 @@ export const Editor = () => {
     content,
     onUpdate: ({ editor: e }) => setContent(e.getHTML()),
     onCreate: ({ editor: e }) => setContent(e.getHTML()),
-    onFocus: () => window.umami.track('editor_focus'),
+    // onFocus: () => window.umami?.track('editor_focus'),
   });
 
   useEffect(() => {
@@ -131,8 +133,8 @@ export const Editor = () => {
       <div className='max-w-[52.5rem] mx-auto w-full'>
         <div className='font-serif prose prose-sm print:prose-xs print:prose-li:my-0 max-w-none'>
           <EditorContent editor={editor} className="editor" data-umami-event />
-          {/* <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
-        <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu> */}
+          <FloatingMenu editor={editor} />
+          <BubbleMenu editor={editor} />
         </div>
       </div>
     </div>
