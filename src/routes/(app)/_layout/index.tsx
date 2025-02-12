@@ -99,8 +99,7 @@ function Index() {
             for your perfect job
           </h2>
           <p className="mt-8 text-xl text-black/70 leading-8">
-            Use GenAI models to adjust your resume to any job offer in
-            seconds. Just use the editor, paste the job offer, or its URL, and
+            Adjust your resume to any job offer in seconds with AI Chat. Just write or paste resume in the editor, send job URL or text to chat and
             let the magic happen.
           </p>
           <div className="mt-8 flex gap-2 flex-wrap items-baseline">

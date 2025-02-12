@@ -6,10 +6,6 @@ import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import supabase from "@/utils/supabase";
 
-interface ContactFormProps {
-  onSuccess?: () => void;
-}
-
 export const ContactForm = () => {
   const form = useForm({
     defaultValues: {
