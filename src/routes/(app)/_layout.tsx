@@ -9,7 +9,7 @@ export const Route = createFileRoute('/(app)/_layout')({
 })
 
 function RouteComponent() {
-  return <div className='min-h-screen'>
+  return <div className='min-h-screen bg-indigo-50'>
     {/* {createPortal(<Menu />, document.getElementById('actions')!)} */}
 
     <PageHeader />
