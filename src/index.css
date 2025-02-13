@@ -201,3 +201,9 @@ a[target="_blank"] {
     & li { margin-block: 0; }
   }
 }
+
+
+.editor {
+  .added { @apply bg-green-700; }
+  .removed { @apply bg-red-700; }
+}

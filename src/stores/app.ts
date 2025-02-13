@@ -11,6 +11,8 @@ interface AppStore {
   showChat: boolean;
   editor?: Editor | null;
   openaiKey?: string;
+  showDiff: boolean;
+  setShowDiff: (showDiff: boolean) => void;
   setEditor: (editor: Editor | null) => void;
   setContent: (content: string) => void;
   getPersistedContent: () => string | null;
@@ -27,6 +29,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
   showChat: false,
   editor: undefined,
   openaiKey: undefined,
+  showDiff: false,
+  setShowDiff: (showDiff) => set({ showDiff }),
   setEditor: (editor) => set({ editor }),
   setContent: (content: string) => set({ content }),
   persistContent: (toast) => {

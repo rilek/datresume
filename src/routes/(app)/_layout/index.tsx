@@ -47,7 +47,7 @@ const ChatMessageForm = ({ inputProps }: {
         rules={{ required: 'This field is required' }}
         render={({ field }) => (
           <textarea
-            className="w-full ring-0 bg-white border rounded-lg p-2 outline-none"
+            className="w-full ring-0 bg-white border rounded-lg p-2 outline-none disabled:opacity-50"
             onKeyUp={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
@@ -78,6 +78,7 @@ function Index() {
   const resetChat = useChatStore((state) => state.resetChat);
   const editorAreaId = "editor-area";
   const chatLoading = useChatStore((state) => state.loading);
+  const showDiff = useAppStore((state) => state.showDiff);
 
   useEffect(() => {
     loadContent();
@@ -125,17 +126,6 @@ function Index() {
       </div>
 
       <div id={editorAreaId}>
-        <div className="text-center text-slate-500 text-sm my-2 font-bold print:hidden">
-          Edit content below using{" "}
-          <a
-            href="https://www.markdownguide.org/cheat-sheet/"
-            target="_blank"
-            className="text-sky-700"
-          >
-            Markdown
-          </a>
-        </div>
-
         <div className="flex items-start mb-12 mx-4 print:m-0 gap-4 max-w-screen">
           <div className="max-w-6xl mx-auto flex-1">
             <div className="bg-white border shadow-lg p-10 print:p-0 print:border-none print:shadow-none">
@@ -173,7 +163,7 @@ function Index() {
                             : <div className="animate-spin"><Loader2Icon size={16} /></div>}
                         </div>)}
                       <div className="mt-8">
-                        <ChatMessageForm inputProps={{ placeholder: "New command...", disabled: chatLoading }} />
+                        <ChatMessageForm inputProps={{ placeholder: "New command...", disabled: chatLoading || showDiff, }} />
                       </div>
                     </>
                   )}
