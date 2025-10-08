@@ -1,5 +1,6 @@
-import { useToast } from "@/hooks/use-toast";
+
 import supabase from "@/utils/supabase";
+import { toast } from "sonner";
 import { create } from "zustand";
 
 interface KeyStore {
@@ -7,7 +8,7 @@ interface KeyStore {
   key?: string;
   loading: boolean;
   fetched: boolean;
-  saveKey: (toast: ReturnType<typeof useToast>["toast"], key: string) => Promise<void>;
+  saveKey: (key: string) => Promise<void>;
   loadKey: () => Promise<void>;
 }
 
@@ -15,10 +16,10 @@ export const useApiKeys = create<KeyStore>((set) => ({
   key: undefined,
   loading: false,
   fetched: false,
-  saveKey: async (toast, key) => {
+  saveKey: async (key) => {
     const { data, error } = await supabase.functions.invoke("save-api-key", { body: { key } });
 
-    if (data.status === "ok") toast({ title: "Saved sucessfully" });
+    if (data.status === "ok") toast("Saved sucessfully");
     else console.error("Failed to save content", error);
   },
   loadKey: async () => {

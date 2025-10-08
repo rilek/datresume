@@ -1,6 +1,6 @@
 import { createRootRouteWithContext, Outlet, redirect } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
-import { Toaster } from '@/components/ui/toaster';
+import { Toaster } from '@/components/ui/sonner';
 import { RouterContext } from '@/main';
 
 if (import.meta.env.DEV) {

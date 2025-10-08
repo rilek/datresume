@@ -8,7 +8,6 @@ import { DiffIcon, FileDownIcon, RotateCcwIcon, SaveIcon, SparklesIcon } from 'l
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 import { useAppStore } from '@/stores/app'
 import { useEffect, useRef, useState } from 'react'
-import { useToast } from '@/hooks/use-toast'
 // import { useForm } from 'react-hook-form'
 // import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 // import { Input } from '@/components/ui/input'
@@ -50,7 +49,6 @@ const extensions = [StarterKit, Typography, Highlight.configure({ multicolor: tr
 // ));
 
 export const EditorOptions = () => {
-  const { toast } = useToast();
   const persistContent = useAppStore(state => state.persistContent);
   const showChat = useAppStore(state => state.showChat);
   const getPersistedContent = useAppStore(state => state.getPersistedContent);
@@ -76,7 +74,7 @@ export const EditorOptions = () => {
 
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant={"outline"} size="icon-lg"  disabled={showDiff} onClick={() => persistContent(toast)} className='relative' data-umami-event="persist_content">
+          <Button variant={"outline"} size="icon-lg"  disabled={showDiff} onClick={() => persistContent()} className='relative' data-umami-event="persist_content">
             {<span className={clsx('absolute top-0 right-0 w-2 h-2 bg-rose-700 opacity-0 transition-opacity rounded-full',
               { "opacity-100": persistedContent != content }
             )} />}

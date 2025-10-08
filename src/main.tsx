@@ -6,26 +6,10 @@ import '@fontsource-variable/source-serif-4';
 // @ts-ignore
 import '@fontsource/source-sans-pro';
 
-// Import the generated route tree
-import { routeTree } from './routeTree.gen'
-import { createRouter, RouterProvider } from '@tanstack/react-router'
+import { RouterProvider } from '@tanstack/react-router'
 import { Subscription, User } from '@supabase/supabase-js';
 import supabase from './utils/supabase';
-
-// Create a new router instance
-const router = createRouter({
-  routeTree, context: {
-    user: null,
-    fetched: false,
-  }
-})
-
-// Register the router instance for type safety
-declare module '@tanstack/react-router' {
-  interface Register {
-    router: typeof router
-  }
-}
+import { router } from './router';
 
 export interface RouterContext {
   user: User | null;

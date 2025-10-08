@@ -10,49 +10,75 @@
 
 import { createFileRoute } from '@tanstack/react-router'
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as PrivacyIndexRouteImport } from './routes/privacy/index'
+import { Route as authLoginRouteImport } from './routes/(auth)/login'
+import { Route as appLayoutRouteImport } from './routes/(app)/_layout'
+import { Route as appLayoutIndexRouteImport } from './routes/(app)/_layout/index'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as PrivacyIndexImport } from './routes/privacy/index'
-import { Route as authLoginImport } from './routes/(auth)/login'
-import { Route as appLayoutImport } from './routes/(app)/_layout'
-import { Route as appLayoutIndexImport } from './routes/(app)/_layout/index'
+const appRouteImport = createFileRoute('/(app)')()
 
-// Create Virtual Routes
-
-const appImport = createFileRoute('/(app)')()
-
-// Create/Update Routes
-
-const appRoute = appImport.update({
+const appRoute = appRouteImport.update({
   id: '/(app)',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const PrivacyIndexRoute = PrivacyIndexImport.update({
+const PrivacyIndexRoute = PrivacyIndexRouteImport.update({
   id: '/privacy/',
   path: '/privacy/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const authLoginRoute = authLoginImport.update({
+const authLoginRoute = authLoginRouteImport.update({
   id: '/(auth)/login',
   path: '/login',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const appLayoutRoute = appLayoutImport.update({
+const appLayoutRoute = appLayoutRouteImport.update({
   id: '/_layout',
   getParentRoute: () => appRoute,
 } as any)
-
-const appLayoutIndexRoute = appLayoutIndexImport.update({
+const appLayoutIndexRoute = appLayoutIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => appLayoutRoute,
 } as any)
 
-// Populate the FileRoutesByPath interface
+export interface FileRoutesByFullPath {
+  '/': typeof appLayoutIndexRoute
+  '/login': typeof authLoginRoute
+  '/privacy': typeof PrivacyIndexRoute
+}
+export interface FileRoutesByTo {
+  '/login': typeof authLoginRoute
+  '/privacy': typeof PrivacyIndexRoute
+  '/': typeof appLayoutIndexRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/(app)': typeof appRouteWithChildren
+  '/(app)/_layout': typeof appLayoutRouteWithChildren
+  '/(auth)/login': typeof authLoginRoute
+  '/privacy/': typeof PrivacyIndexRoute
+  '/(app)/_layout/': typeof appLayoutIndexRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/login' | '/privacy'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/login' | '/privacy' | '/'
+  id:
+    | '__root__'
+    | '/(app)'
+    | '/(app)/_layout'
+    | '/(auth)/login'
+    | '/privacy/'
+    | '/(app)/_layout/'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  appRoute: typeof appRouteWithChildren
+  authLoginRoute: typeof authLoginRoute
+  PrivacyIndexRoute: typeof PrivacyIndexRoute
+}
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
@@ -60,41 +86,39 @@ declare module '@tanstack/react-router' {
       id: '/(app)'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof appImport
-      parentRoute: typeof rootRoute
-    }
-    '/(app)/_layout': {
-      id: '/(app)/_layout'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof appLayoutImport
-      parentRoute: typeof appRoute
-    }
-    '/(auth)/login': {
-      id: '/(auth)/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof authLoginImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof appRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/privacy/': {
       id: '/privacy/'
       path: '/privacy'
       fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyIndexImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof PrivacyIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)/login': {
+      id: '/(auth)/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof authLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(app)/_layout': {
+      id: '/(app)/_layout'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof appLayoutRouteImport
+      parentRoute: typeof appRoute
     }
     '/(app)/_layout/': {
       id: '/(app)/_layout/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof appLayoutIndexImport
-      parentRoute: typeof appLayoutImport
+      preLoaderRoute: typeof appLayoutIndexRouteImport
+      parentRoute: typeof appLayoutRoute
     }
   }
 }
-
-// Create and export the route tree
 
 interface appLayoutRouteChildren {
   appLayoutIndexRoute: typeof appLayoutIndexRoute
@@ -118,92 +142,11 @@ const appRouteChildren: appRouteChildren = {
 
 const appRouteWithChildren = appRoute._addFileChildren(appRouteChildren)
 
-export interface FileRoutesByFullPath {
-  '/': typeof appLayoutIndexRoute
-  '/login': typeof authLoginRoute
-  '/privacy': typeof PrivacyIndexRoute
-}
-
-export interface FileRoutesByTo {
-  '/login': typeof authLoginRoute
-  '/privacy': typeof PrivacyIndexRoute
-  '/': typeof appLayoutIndexRoute
-}
-
-export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/(app)': typeof appRouteWithChildren
-  '/(app)/_layout': typeof appLayoutRouteWithChildren
-  '/(auth)/login': typeof authLoginRoute
-  '/privacy/': typeof PrivacyIndexRoute
-  '/(app)/_layout/': typeof appLayoutIndexRoute
-}
-
-export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/privacy'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/privacy' | '/'
-  id:
-    | '__root__'
-    | '/(app)'
-    | '/(app)/_layout'
-    | '/(auth)/login'
-    | '/privacy/'
-    | '/(app)/_layout/'
-  fileRoutesById: FileRoutesById
-}
-
-export interface RootRouteChildren {
-  appRoute: typeof appRouteWithChildren
-  authLoginRoute: typeof authLoginRoute
-  PrivacyIndexRoute: typeof PrivacyIndexRoute
-}
-
 const rootRouteChildren: RootRouteChildren = {
   appRoute: appRouteWithChildren,
   authLoginRoute: authLoginRoute,
   PrivacyIndexRoute: PrivacyIndexRoute,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/(app)",
-        "/(auth)/login",
-        "/privacy/"
-      ]
-    },
-    "/(app)": {
-      "filePath": "(app)",
-      "children": [
-        "/(app)/_layout"
-      ]
-    },
-    "/(app)/_layout": {
-      "filePath": "(app)/_layout.tsx",
-      "parent": "/(app)",
-      "children": [
-        "/(app)/_layout/"
-      ]
-    },
-    "/(auth)/login": {
-      "filePath": "(auth)/login.tsx"
-    },
-    "/privacy/": {
-      "filePath": "privacy/index.tsx"
-    },
-    "/(app)/_layout/": {
-      "filePath": "(app)/_layout/index.tsx",
-      "parent": "/(app)/_layout"
-    }
-  }
-}
-ROUTE_MANIFEST_END */

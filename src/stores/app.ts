@@ -1,7 +1,7 @@
-import { useToast } from "@/hooks/use-toast";
 import { Editor } from "@tiptap/react";
 import { create } from "zustand";
 import { defaultContent } from "@/utils/editor";
+import { toast } from "sonner";
 
 interface AppStore {
   id?: string;
@@ -16,7 +16,7 @@ interface AppStore {
   setEditor: (editor: Editor | null) => void;
   setContent: (content: string) => void;
   getPersistedContent: () => string | null;
-  persistContent: (toast: ReturnType<typeof useToast>["toast"]) => void;
+  persistContent: () => void;
   loadContent: () => void;
   toggleChat: () => void;
 }
@@ -33,9 +33,9 @@ export const useAppStore = create<AppStore>((set, get) => ({
   setShowDiff: (showDiff) => set({ showDiff }),
   setEditor: (editor) => set({ editor }),
   setContent: (content: string) => set({ content }),
-  persistContent: (toast) => {
+  persistContent: () => {
     localStorage.setItem("content", get().content || "");
-    toast({ title: "Saved sucessfully" });
+    toast("Saved sucessfully");
   },
   loadContent: () => {
     const storedContent = get().getPersistedContent();

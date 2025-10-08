@@ -10,15 +10,11 @@ import { FormField } from "@/components/ui/form";
 import { ListXIcon, Loader2Icon } from "lucide-react";
 import { TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { Tooltip, TooltipContent } from "@/components/ui/tooltip";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/(app)/_layout/")({
   component: Index,
 });
-
-const scrollToEditor = (id: string) => {
-  const editor = document.getElementById(id);
-  editor?.scrollIntoView({ behavior: "smooth", inline: "start" });
-}
 
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {
   dateStyle: 'short',
@@ -91,36 +87,44 @@ function Index() {
   return (
     <>
       <div className="max-w-6xl py-24 mx-auto px-4 print:hidden">
-        <div className="max-w-2xl">
+        <div className="max-w-2xl mx-auto flex flex-col justify-center">
           <div className="bg-amber-300 text-amber-800 font-bold -mt-8 mb-8 rounded block sm:hidden p-4 text-center">
             Experience from using this app on mobile devices is not perfect. We suggest using desktop instead.
           </div>
-          <h2 className="text-5xl font-serif font-bold tracking-tight mb-10">
+          <h2 className="text-5xl mx-auto font-serif text-center font-bold tracking-tight mb-10">
             Make your resume perfect<br />
             for your perfect job
           </h2>
-          <p className="mt-8 text-xl text-black/70 leading-8">
+          <p className="mt-8 mx-auto text-xl text-black/70 leading-8">
             Adjust your resume to any job offer in seconds with AI Chat. Just write or paste resume in the editor, send job URL or text to chat and
             let the magic happen.
           </p>
-          <div className="mt-8 flex gap-2 flex-wrap items-baseline">
-            <Button onClick={() => scrollToEditor(editorAreaId)} size="lg" className="text-lg" data-umami-event="cta_click" data-umami-event-value="try_it_now">
-              Try it now
-            </Button>
+          <div className="mt-8 flex justify-center gap-4 flex-wrap items-baseline">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button size="lg" className="text-lg" data-umami-event="cta_click" data-umami-event-value="show_demo">
+                  Show demo
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-none w-auto rounded-2xl">
+                <DialogTitle className="text-center mb-4">Datresume in action</DialogTitle>
+                <div className="relative box-content mx-auto max-h-[80vh] w-5xl aspect-[2.18]">
+                  <iframe
+                    src="https://app.supademo.com/embed/cm6tutz160670oeplu8v1r78t?embed_v=2"
+                    loading="lazy"
+                    title="Datresume demo"
+                    allow="clipboard-write"
+                    allowFullScreen
+                    className="w-full h-full"
+                  ></iframe>
+                </div>
+              </DialogContent>
+            </Dialog>
             <span className="whitespace-nowrap">It's free and no sign in required!</span>
           </div>
         </div>
         <div className="">
-          <div className="relative box-content mx-auto max-h-[80vh] max-w-4xl w-full aspect-[2.18] py-10">
-            <iframe
-              src="https://app.supademo.com/embed/cm6tutz160670oeplu8v1r78t?embed_v=2"
-              loading="lazy"
-              title="Datresume demo"
-              allow="clipboard-write"
-              allowFullScreen
-              className="absolute top-0 left-0 w-full h-full"
-            ></iframe>
-          </div>
+
 
         </div>
       </div>
