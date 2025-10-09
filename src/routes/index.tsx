@@ -1,6 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { ClientOnly, createFileRoute } from "@tanstack/react-router";
 import { useAppStore } from "@/stores/app";
-import { DetailedHTMLProps, InputHTMLAttributes, useEffect } from "react";
+import { CSSProperties, DetailedHTMLProps, InputHTMLAttributes, useEffect, useRef } from "react";
 import { Editor, EditorOptions } from "@/components/editor";
 import clsx from "clsx";
 import { Button } from "@/components/ui/button";
@@ -11,9 +11,17 @@ import { ListXIcon, Loader2Icon } from "lucide-react";
 import { TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { Tooltip, TooltipContent } from "@/components/ui/tooltip";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import PageHeader from "@/components/layout/header";
+import PageFooter from "@/components/layout/footer";
 
-export const Route = createFileRoute("/(app)/_layout/")({
+export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Datresume - Perfect resume for your next perfect job" }
+    ]
+  }),
   component: Index,
+  ssr: false,
 });
 
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {
@@ -65,6 +73,21 @@ const FirstMessage = () => {
   }} />)
 }
 
+const EditorWrapper = () => {
+  const content = useAppStore(state => state.content);
+
+  return (
+    <div
+      style={{ "--cm": "52px" } as CSSProperties}
+    >
+      <div
+        className='py-[calc(1.5_*_var(--cm))] px-[calc(2.5_*_var(--cm))] w-[calc(21_*_var(--cm))] aspect-[0.709]'>
+        <Editor initialContent={content || ""} />
+      </div>
+    </div>
+  )
+};
+
 function Index() {
   const loadContent = useAppStore((state) => state.loadContent);
   const loading = useAppStore((state) => state.loading);
@@ -86,14 +109,15 @@ function Index() {
 
   return (
     <>
+      <PageHeader />
       <div className="max-w-6xl py-24 mx-auto px-4 print:hidden">
         <div className="max-w-2xl mx-auto flex flex-col justify-center">
           <div className="bg-amber-300 text-amber-800 font-bold -mt-8 mb-8 rounded block sm:hidden p-4 text-center">
             Experience from using this app on mobile devices is not perfect. We suggest using desktop instead.
           </div>
           <h2 className="text-5xl mx-auto font-serif text-center font-bold tracking-tight mb-10">
-            Make your resume perfect<br />
-            for your perfect job
+            Make perfect resume <br />
+            for your next perfect job
           </h2>
           <p className="mt-8 mx-auto text-xl text-black/70 leading-8">
             Adjust your resume to any job offer in seconds with AI Chat. Just write or paste resume in the editor, send job URL or text to chat and
@@ -131,9 +155,9 @@ function Index() {
 
       <div id={editorAreaId}>
         <div className="flex items-start mb-12 mx-4 print:m-0 gap-4 max-w-screen">
-          <div className="max-w-6xl mx-auto flex-1">
-            <div className="bg-white border shadow-lg p-10 print:p-0 print:border-none print:shadow-none">
-              <Editor />
+          <div className="flex justify-center flex-1">
+            <div className="inline-block bg-white border shadow-lg print:border-none print:shadow-none">
+              <EditorWrapper />
             </div>
           </div>
           <div className={clsx("animate-in text-sm slide-in-from-right transition-all border-gray-200 sticky top-4 xl:w-md w-xs print:hidden", {
@@ -180,6 +204,7 @@ function Index() {
           </div>
         </div>
       </div>
+      <PageFooter />
     </>
   );
 }

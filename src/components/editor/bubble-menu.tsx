@@ -1,4 +1,4 @@
-import { BubbleMenu as TipTapBubbleMenu, BubbleMenuProps } from "@tiptap/react";
+import { BubbleMenu as TipTapBubbleMenu, BubbleMenuProps } from "@tiptap/react/menus";
 import { BoldIcon, Heading1Icon, Heading2Icon, Heading3Icon, Heading4Icon, Heading5Icon, ItalicIcon, Link2Icon, ListIcon, ListOrderedIcon, StrikethroughIcon } from "lucide-react";
 import { Button, ButtonProps } from "../ui/button";
 import { forwardRef } from "react";
@@ -17,9 +17,7 @@ export default function FloatingMenu(props: Omit<BubbleMenuProps, "children">) {
 
   const editor = props.editor!;
 
-  return <TipTapBubbleMenu tippyOptions={{
-    duration: 100
-  }} {...props}>
+  return <TipTapBubbleMenu {...props}>
     <div className="flex gap-0.5 p-1 rounded bg-background border shadow-xl">
       <MenuButton onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} active={editor.isActive("heading", { level: 1 })}><Heading1Icon /></MenuButton>
       <MenuButton onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} active={editor.isActive("heading", { level: 2 })}><Heading2Icon /></MenuButton>

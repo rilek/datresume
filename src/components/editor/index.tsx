@@ -1,6 +1,5 @@
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import Link from '@tiptap/extension-link'
 import Highlight from '@tiptap/extension-highlight'
 import Typography from '@tiptap/extension-typography'
 import { Button } from '@/components/ui/button'
@@ -17,12 +16,15 @@ import FloatingMenu from './floating-menu'
 import BubbleMenu from './bubble-menu'
 import { diffWords } from "diff";
 
-const extensions = [StarterKit, Typography, Highlight.configure({ multicolor: true }), Link.configure({
-  HTMLAttributes: {
-    target: '_blank',
-    rel: 'noopener noreferrer',
+const extensions = [StarterKit.configure({
+  link: {
+    HTMLAttributes: {
+      target: '_blank',
+      rel: 'noopener noreferrer',
+    },
   },
-})]
+  trailingNode: false
+}), Typography, Highlight.configure({ multicolor: true })]
 
 // const AdjustmentButton = forwardRef<HTMLButtonElement>((props, ref) => {
 //   return (
@@ -59,6 +61,7 @@ export const EditorOptions = () => {
   const showDiff = useAppStore(state => state.showDiff);
   const setShowDiff = useAppStore(state => state.setShowDiff);
 
+
   return (
     <TooltipProvider>
       <Tooltip>
@@ -74,7 +77,7 @@ export const EditorOptions = () => {
 
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant={"outline"} size="icon-lg"  disabled={showDiff} onClick={() => persistContent()} className='relative' data-umami-event="persist_content">
+          <Button variant={"outline"} size="icon-lg" disabled={showDiff} onClick={() => persistContent()} className='relative' data-umami-event="persist_content">
             {<span className={clsx('absolute top-0 right-0 w-2 h-2 bg-rose-700 opacity-0 transition-opacity rounded-full',
               { "opacity-100": persistedContent != content }
             )} />}
@@ -116,23 +119,21 @@ export const EditorOptions = () => {
   );
 }
 
-export const Editor = () => {
-  const content = useAppStore(state => state.content);
+export const Editor = ({ initialContent: content }: { initialContent: string }) => {
+  const loadContent = useAppStore(state => state.loadContent);
   const setContent = useAppStore(state => state.setContent);
   const setEditor = useAppStore(state => state.setEditor);
   const loading = useAppStore(state => state.loading);
-  const loadContent = useAppStore(state => state.loadContent);
   const showDiff = useAppStore(state => state.showDiff);
   const getPersistedContent = useAppStore(state => state.getPersistedContent);
-  const init = useRef(false);
-
   const [tempContent, setTempContent] = useState<string | null>(null);
 
   const editor = useEditor({
     extensions,
     content,
+    immediatelyRender: false,
     onUpdate: ({ editor: e }) => setContent(e.getHTML()),
-    onCreate: ({ editor: e }) => setContent(e.getHTML()),
+    // onCreate: ({ editor: e }) => setContent(e.getHTML()),
     onFocus: () => window.umami?.track('editor_focus'),
   });
 
@@ -156,25 +157,17 @@ export const Editor = () => {
   }, [showDiff])
 
   useEffect(() => {
-    if (!init.current) {
-      loadContent();
-      init.current = true;
-    }
-  }, []);
-
-  useEffect(() => {
     setEditor(editor);
+    loadContent()
   }, [editor]);
 
+  if (!editor) return null;
+
   return (
-    <div className={clsx("w-full min-h-screen transition-opacity", { 'opacity-50 pointer-events-none': loading })}>
-      <div className='max-w-[52.5rem] mx-auto w-full'>
-        <div className='font-serif prose prose-sm print:prose-xs print:prose-li:my-0 max-w-none'>
-          <EditorContent editor={editor} className="editor" data-umami-event />
-          <FloatingMenu editor={editor} />
-          <BubbleMenu editor={editor} />
-        </div>
-      </div>
+    <div className={clsx('font-serif prose prose-sm print:prose-xs max-w-none ', { 'opacity-50 pointer-events-none': loading })}>
+      <EditorContent editor={editor} className="editor" data-umami-event />
+      <FloatingMenu editor={editor} />
+      <BubbleMenu editor={editor} />
     </div>
   );
 };

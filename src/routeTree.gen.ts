@@ -8,18 +8,14 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as PrivacyIndexRouteImport } from './routes/privacy/index'
 import { Route as authLoginRouteImport } from './routes/(auth)/login'
-import { Route as appLayoutRouteImport } from './routes/(app)/_layout'
-import { Route as appLayoutIndexRouteImport } from './routes/(app)/_layout/index'
 
-const appRouteImport = createFileRoute('/(app)')()
-
-const appRoute = appRouteImport.update({
-  id: '/(app)',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyIndexRoute = PrivacyIndexRouteImport.update({
@@ -32,61 +28,44 @@ const authLoginRoute = authLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const appLayoutRoute = appLayoutRouteImport.update({
-  id: '/_layout',
-  getParentRoute: () => appRoute,
-} as any)
-const appLayoutIndexRoute = appLayoutIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => appLayoutRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof appLayoutIndexRoute
+  '/': typeof IndexRoute
   '/login': typeof authLoginRoute
   '/privacy': typeof PrivacyIndexRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/login': typeof authLoginRoute
   '/privacy': typeof PrivacyIndexRoute
-  '/': typeof appLayoutIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/(app)': typeof appRouteWithChildren
-  '/(app)/_layout': typeof appLayoutRouteWithChildren
+  '/': typeof IndexRoute
   '/(auth)/login': typeof authLoginRoute
   '/privacy/': typeof PrivacyIndexRoute
-  '/(app)/_layout/': typeof appLayoutIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths: '/' | '/login' | '/privacy'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/privacy' | '/'
-  id:
-    | '__root__'
-    | '/(app)'
-    | '/(app)/_layout'
-    | '/(auth)/login'
-    | '/privacy/'
-    | '/(app)/_layout/'
+  to: '/' | '/login' | '/privacy'
+  id: '__root__' | '/' | '/(auth)/login' | '/privacy/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  appRoute: typeof appRouteWithChildren
+  IndexRoute: typeof IndexRoute
   authLoginRoute: typeof authLoginRoute
   PrivacyIndexRoute: typeof PrivacyIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/(app)': {
-      id: '/(app)'
+    '/': {
+      id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof appRouteImport
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy/': {
@@ -103,50 +82,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(app)/_layout': {
-      id: '/(app)/_layout'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof appLayoutRouteImport
-      parentRoute: typeof appRoute
-    }
-    '/(app)/_layout/': {
-      id: '/(app)/_layout/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof appLayoutIndexRouteImport
-      parentRoute: typeof appLayoutRoute
-    }
   }
 }
 
-interface appLayoutRouteChildren {
-  appLayoutIndexRoute: typeof appLayoutIndexRoute
-}
-
-const appLayoutRouteChildren: appLayoutRouteChildren = {
-  appLayoutIndexRoute: appLayoutIndexRoute,
-}
-
-const appLayoutRouteWithChildren = appLayoutRoute._addFileChildren(
-  appLayoutRouteChildren,
-)
-
-interface appRouteChildren {
-  appLayoutRoute: typeof appLayoutRouteWithChildren
-}
-
-const appRouteChildren: appRouteChildren = {
-  appLayoutRoute: appLayoutRouteWithChildren,
-}
-
-const appRouteWithChildren = appRoute._addFileChildren(appRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
-  appRoute: appRouteWithChildren,
+  IndexRoute: IndexRoute,
   authLoginRoute: authLoginRoute,
   PrivacyIndexRoute: PrivacyIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

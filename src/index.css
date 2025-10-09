@@ -63,6 +63,7 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+
   *,
   ::after,
   ::before,
@@ -165,7 +166,6 @@ a[target="_blank"] {
 
   h3 {
     margin-top: 0.75em;
-    /* margin-bottom: 0.5em; */
 
     &:has(+ h5) {
       margin-bottom: 0;
@@ -187,23 +187,40 @@ a[target="_blank"] {
   li {
     margin-block: 0.2em;
 
-    > p { margin-block: 0; }
+    >p {
+      margin-block: 0;
+    }
   }
 }
 
 @media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  body {
+    margin: 0;
+  }
+
   .print\:prose-xs {
-    font-size: 0.75rem;
-    line-height: 1.7142857;
+    font-size: 14px;
   }
 
   .editor {
-    & li { margin-block: 0; }
+    & li {
+      margin-block: 0;
+    }
   }
 }
 
 
 .editor {
-  .added { @apply bg-green-700; }
-  .removed { @apply bg-red-700; }
+  .added {
+    @apply bg-green-700;
+  }
+
+  .removed {
+    @apply bg-red-700;
+  }
 }

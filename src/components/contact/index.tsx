@@ -4,7 +4,7 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
-import supabase from "@/utils/supabase";
+import { supabase } from '@/utils/supabase/client';
 
 export const ContactForm = () => {
   const form = useForm({

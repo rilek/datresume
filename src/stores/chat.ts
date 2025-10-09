@@ -1,4 +1,4 @@
-import supabase from "@/utils/supabase";
+import { supabase } from '@/utils/supabase/client';
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { useAppStore } from "./app";

@@ -1,4 +1,4 @@
-import { FloatingMenu as TipTapFloatingMenu, FloatingMenuProps } from "@tiptap/react";
+import { FloatingMenu as TipTapFloatingMenu, FloatingMenuProps } from "@tiptap/react/menus";
 import { Heading1Icon, Heading2Icon, Heading3Icon, Heading4Icon, Heading5Icon, ListIcon, ListOrderedIcon } from "lucide-react";
 import { Button, ButtonProps } from "../ui/button";
 import { forwardRef } from "react";
@@ -14,9 +14,7 @@ export default function FloatingMenu(props: Omit<FloatingMenuProps, "children">)
 
   const editor = props.editor!;
 
-  return <TipTapFloatingMenu tippyOptions={{
-    duration: 100
-  }} {...props}>
+  return <TipTapFloatingMenu {...props}>
     <div className="flex gap-0.5 rounded border">
       <MenuButton onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} active={editor.isActive("heading", { level: 1 })}><Heading1Icon /></MenuButton>
       <MenuButton onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} active={editor.isActive("heading", { level: 2 })}><Heading2Icon /></MenuButton>

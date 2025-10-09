@@ -1,11 +1,11 @@
-import supabase from "@/utils/supabase";
+import { supabase } from '@/utils/supabase/client';
 import { Button } from "./ui/button";
 import { LogIn, LogOut } from "lucide-react";
 import { Link, useRouteContext } from "@tanstack/react-router";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 
 export default function Menu() {
-  const { user, fetched } = useRouteContext({ from: "/(app)" });
+  const { user, fetched } = useRouteContext({ from: "/" });
 
   // disable logging in for now
   return;

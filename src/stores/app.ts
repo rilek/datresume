@@ -39,8 +39,10 @@ export const useAppStore = create<AppStore>((set, get) => ({
   },
   loadContent: () => {
     const storedContent = get().getPersistedContent();
-    get().editor?.commands.setContent(storedContent ?? defaultContent);
-    set({ content: storedContent ?? defaultContent });
+    const newContent = storedContent ?? defaultContent;
+
+    get().editor?.commands.setContent(newContent);
+    set({ content: newContent });
   },
   getPersistedContent: () => localStorage.getItem("content"),
   toggleChat: () => set((state) => ({ showChat: !state.showChat })),

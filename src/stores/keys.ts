@@ -1,5 +1,5 @@
 
-import supabase from "@/utils/supabase";
+import { supabase } from '@/utils/supabase/client';
 import { toast } from "sonner";
 import { create } from "zustand";
 
