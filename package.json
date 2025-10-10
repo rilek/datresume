@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && tsc --noEMit",
+    "build": " tsc --noEMit && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "prepare": "husky",
@@ -45,6 +45,8 @@
     "diff": "^7.0.0",
     "lucide-react": "^0.545.0",
     "next-themes": "^0.4.6",
+    "nitro": "3.0.1-alpha.0",
+    "nitro-nightly": "3.0.0-20251010-091540-0e3dbc69",
     "playwright": "^1.56.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { chromium } from 'playwright';
+// import { chromium } from 'playwright';
 import { defaultContent } from "@/utils/editor";
 import css from "../../index.css?inline";
 import { z } from "zod";
@@ -68,29 +68,29 @@ export const Route = createFileRoute("/api/resume")({
         })
       },
 
-      async POST({ request }) {
-        const body = bodySchema.parse(await request.json());
+      // async POST({ request }) {
+      //   const body = bodySchema.parse(await request.json());
 
-        const filename = `${body.filename || "resume"}.pdf`;
-        const html = buildHtml({
-          name: filename,
-          content: body.content,
-          css
-        })
+      //   const filename = `${body.filename || "resume"}.pdf`;
+      //   const html = buildHtml({
+      //     name: filename,
+      //     content: body.content,
+      //     css
+      //   })
 
-        const browser = await chromium.launch({ args: ["--no-sandbox", "--disable-setuid-sandbox"] });
-        const page = await browser.newPage();
-        await page.setContent(html, { waitUntil: 'networkidle' });
-        const pdfBuffer = await page.pdf({ format: 'A4', printBackground: true });
-        await browser.close();
+      //   const browser = await chromium.launch({ args: ["--no-sandbox", "--disable-setuid-sandbox"] });
+      //   const page = await browser.newPage();
+      //   await page.setContent(html, { waitUntil: 'networkidle' });
+      //   const pdfBuffer = await page.pdf({ format: 'A4', printBackground: true });
+      //   await browser.close();
 
-        return new Response(pdfBuffer as BodyInit, {
-          headers: {
-            "Content-Type": "application/pdf",
-            "Content-Disposition": `attachment; filename="resume.pdf"`,
-          }
-        });
-      }
+      //   return new Response(pdfBuffer as BodyInit, {
+      //     headers: {
+      //       "Content-Type": "application/pdf",
+      //       "Content-Disposition": `attachment; filename="resume.pdf"`,
+      //     }
+      //   });
+      // }
     }
   }
 });
