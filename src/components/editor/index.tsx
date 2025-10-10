@@ -120,6 +120,8 @@ export const EditorOptions = () => {
   );
 }
 
+export const editorClassName = 'editor py-[calc(1.5_*_var(--cm))] px-[calc(2_*_var(--cm))] w-[calc(21_*_var(--cm))] aspect-[0.709] font-serif prose prose-sm max-w-none ';
+
 export const Editor = ({ initialContent: content }: { initialContent: string }) => {
   const loadContent = useAppStore(state => state.loadContent);
   const setContent = useAppStore(state => state.setContent);
@@ -167,7 +169,7 @@ export const Editor = ({ initialContent: content }: { initialContent: string }) 
   return (
     <div
       style={{ "--cm": "52px" } as CSSProperties}
-      className={clsx('editor py-[calc(1.5_*_var(--cm))] px-[calc(2_*_var(--cm))] w-[calc(21_*_var(--cm))] aspect-[0.709] font-serif prose prose-sm print:prose-xs max-w-none ', { 'opacity-50 pointer-events-none': loading })}>
+      className={clsx(editorClassName, { 'opacity-50 pointer-events-none': loading })}>
       <EditorContent editor={editor} data-umami-event />
       <FloatingMenu editor={editor} />
       <BubbleMenu editor={editor} />

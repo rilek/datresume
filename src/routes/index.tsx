@@ -103,7 +103,7 @@ function Index() {
   return (
     <>
       <PageHeader />
-      <div className="max-w-6xl py-24 mx-auto px-4 print:hidden">
+      <div className="max-w-6xl py-24 mx-auto px-4">
         <div className="max-w-2xl mx-auto flex flex-col justify-center">
           <div className="bg-amber-300 text-amber-800 font-bold -mt-8 mb-8 rounded block sm:hidden p-4 text-center">
             Experience from using this app on mobile devices is not perfect. We suggest using desktop instead.
@@ -147,13 +147,13 @@ function Index() {
       </div>
 
       <div id={editorAreaId}>
-        <div className="flex items-start mb-12 mx-4 print:m-0 gap-4 max-w-screen">
+        <div className="flex items-start mb-12 mx-4 gap-4 max-w-screen">
           <div className="flex justify-center flex-1">
-            <div className="inline-block bg-white border shadow-lg print:border-none print:shadow-none">
+            <div className="inline-block bg-white border shadow-lg">
               <EditorWrapper />
             </div>
           </div>
-          <div className={clsx("animate-in text-sm slide-in-from-right transition-all border-gray-200 sticky top-4 xl:w-md w-xs print:hidden", {
+          <div className={clsx("animate-in text-sm slide-in-from-right transition-all border-gray-200 sticky top-4 xl:w-md w-xs", {
             "w-0! overflow-hidden opacity-0": !showChat
           })}>
             <div className="w-full max-h-screen overflow-y-auto overflow-hidden p-1 pt-0">
@@ -192,7 +192,7 @@ function Index() {
             </div>
           </div>
 
-          <div className="sticky top-4 inline-flex flex-col gap-2 print:hidden">
+          <div className="sticky top-4 inline-flex flex-col gap-2">
             <EditorOptions />
           </div>
         </div>

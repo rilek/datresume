@@ -77,10 +77,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <div id="actions" className='fixed flex flex-col gap-2 top-2 right-2 print:hidden' />
+        <div id="actions" className='fixed flex flex-col gap-2 top-2 right-2' />
         {children}
         <Toaster />
-        <TanStackRouterDevtools containerElement={<div className='print:hidden' />} />
+        <TanStackRouterDevtools />
         <Scripts />
       </body>
     </html>

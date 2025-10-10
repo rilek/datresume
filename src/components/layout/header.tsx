@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 
 export default function PageHeader() {
   return (
-    <header className="p-4 flex justify-between items-center print:hidden">
+    <header className="p-4 flex justify-between items-center">
       <Link to="/" className="hover:opacity-50 transition-opacity"><h1 className="font-serif text-xl font-extrabold">Datresume</h1></Link>
 
       <div className="flex gap-4">

@@ -4,6 +4,7 @@ import { defaultContent } from "@/utils/editor";
 import css from "../../index.css?inline";
 import { z } from "zod";
 import { createMiddleware } from "@tanstack/react-start";
+import { editorClassName } from "@/components/editor";
 
 const buildHtml = ({ name = "Resume", content, css = "" }: { name?: string; content: string; css?: string }) => `
 <!DOCTYPE html>
@@ -29,7 +30,7 @@ ${css}
 </style>
 </head>
 <body>
-<div class="editor tiptap ProseMirror py-[calc(1.5_*_var(--cm))] px-[calc(2_*_var(--cm))] w-[calc(21_*_var(--cm))] aspect-[0.709] font-serif prose prose-sm print:prose-xs max-w-none">
+<div class="${editorClassName}">
 ${content}
 </div>
 </body>
