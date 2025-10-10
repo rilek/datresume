@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "vite build && tsc --noEMit",
     "lint": "eslint .",
     "preview": "vite preview",
     "prepare": "husky",
-    "postinstall": "playwright install chromium"
+    "postinstall": "playwright install chromium",
+    "start": "node .output/server/index.mjs"
   },
   "dependencies": {
     "@floating-ui/dom": "^1.7.4",
