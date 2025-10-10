@@ -19,6 +19,7 @@ interface AppStore {
   persistContent: () => void;
   loadContent: () => void;
   toggleChat: () => void;
+  downloadPdf: () => void;
 }
 
 export const useAppStore = create<AppStore>((set, get) => ({
@@ -46,4 +47,14 @@ export const useAppStore = create<AppStore>((set, get) => ({
   },
   getPersistedContent: () => localStorage.getItem("content"),
   toggleChat: () => set((state) => ({ showChat: !state.showChat })),
+  downloadPdf: async () => {
+    const result = await fetch("/api/resume", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/pdf" },
+      body: JSON.stringify({ content: get().content, filename: "resume" })
+    })
+    const blob = await result.blob();
+    const url = URL.createObjectURL(blob);
+    window.open(url)
+  }
 }));

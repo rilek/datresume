@@ -60,6 +60,7 @@ export const EditorOptions = () => {
   const resetContent = useAppStore(state => state.loadContent);
   const showDiff = useAppStore(state => state.showDiff);
   const setShowDiff = useAppStore(state => state.setShowDiff);
+  const downloadPdf = useAppStore(state => state.downloadPdf);
 
 
   return (
@@ -109,7 +110,7 @@ export const EditorOptions = () => {
 
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="outline" size="icon-lg" onClick={() => window.print()} data-umami-event="download_resume"><FileDownIcon /></Button>
+          <Button variant="outline" size="icon-lg" onClick={() => downloadPdf()} data-umami-event="download_resume"><FileDownIcon /></Button>
         </TooltipTrigger>
         <TooltipContent side='left'>
           Download as PDF
