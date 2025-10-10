@@ -77,14 +77,7 @@ const EditorWrapper = () => {
   const content = useAppStore(state => state.content);
 
   return (
-    <div
-      style={{ "--cm": "52px" } as CSSProperties}
-    >
-      <div
-        className='py-[calc(1.5_*_var(--cm))] px-[calc(2.5_*_var(--cm))] w-[calc(21_*_var(--cm))] aspect-[0.709]'>
-        <Editor initialContent={content || ""} />
-      </div>
-    </div>
+    <Editor initialContent={content || ""} />
   )
 };
 

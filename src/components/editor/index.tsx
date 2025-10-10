@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { DiffIcon, FileDownIcon, RotateCcwIcon, SaveIcon, SparklesIcon } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 import { useAppStore } from '@/stores/app'
-import { useEffect, useRef, useState } from 'react'
+import { CSSProperties, useEffect, useState } from 'react'
 // import { useForm } from 'react-hook-form'
 // import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 // import { Input } from '@/components/ui/input'
@@ -164,8 +164,10 @@ export const Editor = ({ initialContent: content }: { initialContent: string }) 
   if (!editor) return null;
 
   return (
-    <div className={clsx('font-serif prose prose-sm print:prose-xs max-w-none ', { 'opacity-50 pointer-events-none': loading })}>
-      <EditorContent editor={editor} className="editor" data-umami-event />
+    <div
+      style={{ "--cm": "52px" } as CSSProperties}
+      className={clsx('editor py-[calc(1.5_*_var(--cm))] px-[calc(2_*_var(--cm))] w-[calc(21_*_var(--cm))] aspect-[0.709] font-serif prose prose-sm print:prose-xs max-w-none ', { 'opacity-50 pointer-events-none': loading })}>
+      <EditorContent editor={editor} data-umami-event />
       <FloatingMenu editor={editor} />
       <BubbleMenu editor={editor} />
     </div>
