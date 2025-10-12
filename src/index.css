@@ -13,10 +13,6 @@
   --font-sans: 'Source Sans Pro', ui-sans-serif;
   --font-serif: 'Source Serif 4 Variable', ui-serif;
 
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
-
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
 
