@@ -1,4 +1,4 @@
-import { ClientOnly, createFileRoute } from "@tanstack/react-router";
+import { ClientOnly, createFileRoute, Link, redirect, useRouteContext } from "@tanstack/react-router";
 import { useAppStore } from "@/stores/app";
 import { CSSProperties, DetailedHTMLProps, InputHTMLAttributes, useEffect, useRef } from "react";
 import { Editor, EditorOptions } from "@/components/editor";
@@ -13,15 +13,15 @@ import { Tooltip, TooltipContent } from "@/components/ui/tooltip";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import PageHeader from "@/components/layout/header";
 import PageFooter from "@/components/layout/footer";
+import { HelpUsImprove } from "@/components/help-us-improve";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Datresume - Perfect resume for your next perfect job" }
-    ]
-  }),
+  beforeLoad: ({ context }) => {
+    if (context.user) {
+      throw redirect({ to: '/app' })
+    }
+  },
   component: Index,
-  ssr: false,
 });
 
 const dateFormatter = new Intl.DateTimeFormat('en-GB', {
@@ -81,6 +81,34 @@ const EditorWrapper = () => {
   )
 };
 
+const GoToAppButton = () => {
+  const { user } = useRouteContext({ from: "__root__" });
+
+  if (!user) {
+    return <Link to="/login">
+      <Button size="sm" variant="outline">Login</Button>
+    </Link>
+  }
+
+  return (
+    <Link to="/app">
+      <Button size="sm" variant="outline">Open app</Button>
+    </Link>
+  )
+}
+
+const HeaderLinks = () => {
+  return (
+    <>
+      {/* <a href="https://www.producthunt.com/posts/datresume?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-datresume" target="_blank">
+          <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=855558&theme=light&t=1738915308541" alt="Datresume - Perfect&#0032;resume&#0032;for&#0032;perfect&#0032;job&#0032;&#0045;&#0032;no&#0032;sign&#0032;up&#0032;required&#0033; | Product Hunt" style={{ width: 148, height: 32 }} width="148" height="32" />
+        </a> */}
+      <HelpUsImprove />
+      <GoToAppButton />
+    </>
+  )
+}
+
 function Index() {
   const loadContent = useAppStore((state) => state.loadContent);
   const loading = useAppStore((state) => state.loading);
@@ -102,7 +130,7 @@ function Index() {
 
   return (
     <>
-      <PageHeader />
+      <PageHeader links={<HeaderLinks />} />
       <div className="max-w-6xl py-24 mx-auto px-4">
         <div className="max-w-2xl mx-auto flex flex-col justify-center">
           <div className="bg-amber-300 text-amber-800 font-bold -mt-8 mb-8 rounded block sm:hidden p-4 text-center">
@@ -139,10 +167,6 @@ function Index() {
             </Dialog>
             <span className="whitespace-nowrap">It's free and no sign in required!</span>
           </div>
-        </div>
-        <div className="">
-
-
         </div>
       </div>
 

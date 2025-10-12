@@ -1,6 +1,6 @@
 
 {
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "src/routes/_authed"],
   "exclude": ["supabase"],
   "compilerOptions": {
     "strict": true,

@@ -12,7 +12,6 @@ export function getRouter() {
     scrollRestoration: true,
     context: {
       user: null,
-      fetched: false,
     }
   })
 

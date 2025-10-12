@@ -56,3 +56,9 @@ export const defaultContent = `
       <li>Certified Kubernetes Administrator (CKA)</li>
   </ul>
 `;
+
+export const getPersistedLocalContent = () => localStorage.getItem("content");
+
+export const persistLocalContent = (content: string) => {
+    localStorage.setItem("content", content || "");
+}

@@ -13,7 +13,6 @@ import '@fontsource/source-sans-pro';
 
 interface GlobalContext {
   user: { id: string; email: string } | null;
-  fetched: boolean;
 }
 
 const fetchUser = createServerFn({ method: 'GET' }).handler(async () => {
@@ -28,25 +27,16 @@ const fetchUser = createServerFn({ method: 'GET' }).handler(async () => {
 })
 
 export const Route = createRootRouteWithContext<GlobalContext>()({
-  beforeLoad: async (ctx) => {
-    const user = await fetchUser();
-    const authRequired = false;
+  beforeLoad: async () => {
+    const user = await fetchUser()
 
-    if (ctx.location.pathname.startsWith("/login") && user) {
-      throw redirect({
-        to: (ctx.search as Record<string, string>).redirectTo || "/",
-        replace: true,
-      });
-    } else if (authRequired && !user && !ctx.location.pathname.startsWith("/login")) {
-      throw redirect({
-        to: "/login",
-        search: { redirectTo: ctx.location.pathname }
-      });
-    }
+    return { user }
   },
+
   head: () => ({
     meta: [
       { charSet: 'utf-8' },
+      { title: "Datresume - Perfect resume for your next perfect job" },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { name: "title", content: "Datresume - Perfect Resume for Perfect Job" },
       { name: 'description', content: 'AI-powered resume builder that helps you create a professional resume in minutes.' },

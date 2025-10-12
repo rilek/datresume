@@ -15,6 +15,8 @@ import clsx from 'clsx'
 import FloatingMenu from './floating-menu'
 import BubbleMenu from './bubble-menu'
 import { diffWords } from "diff";
+import { getPersistedLocalContent, persistLocalContent } from '@/utils/editor'
+import { toast } from 'sonner'
 
 const extensions = [StarterKit.configure({
   link: {
@@ -51,16 +53,19 @@ const extensions = [StarterKit.configure({
 // ));
 
 export const EditorOptions = () => {
-  const persistContent = useAppStore(state => state.persistContent);
   const showChat = useAppStore(state => state.showChat);
-  const getPersistedContent = useAppStore(state => state.getPersistedContent);
-  const persistedContent = getPersistedContent();
   const content = useAppStore(state => state.content);
   const toggleChat = useAppStore(state => state.toggleChat);
   const resetContent = useAppStore(state => state.loadContent);
   const showDiff = useAppStore(state => state.showDiff);
   const setShowDiff = useAppStore(state => state.setShowDiff);
   const downloadPdf = useAppStore(state => state.downloadPdf);
+
+  const [persistedContent, setPersistedContent] = useState<string | null>(null);
+
+  useEffect(() => {
+    setPersistedContent(getPersistedLocalContent());
+  }, [])
 
 
   return (
@@ -78,7 +83,12 @@ export const EditorOptions = () => {
 
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant={"outline"} size="icon-lg" disabled={showDiff} onClick={() => persistContent()} className='relative' data-umami-event="persist_content">
+          <Button variant={"outline"} size="icon-lg" disabled={showDiff} onClick={() => {
+            persistLocalContent(useAppStore.getState().content || "");
+            toast("Saved sucessfully");
+          }}
+            className='relative'
+            data-umami-event="persist_content">
             {<span className={clsx('absolute top-0 right-0 w-2 h-2 bg-rose-700 opacity-0 transition-opacity rounded-full',
               { "opacity-100": persistedContent != content }
             )} />}
@@ -128,7 +138,6 @@ export const Editor = ({ initialContent: content }: { initialContent: string }) 
   const setEditor = useAppStore(state => state.setEditor);
   const loading = useAppStore(state => state.loading);
   const showDiff = useAppStore(state => state.showDiff);
-  const getPersistedContent = useAppStore(state => state.getPersistedContent);
   const [tempContent, setTempContent] = useState<string | null>(null);
 
   const editor = useEditor({
@@ -142,7 +151,7 @@ export const Editor = ({ initialContent: content }: { initialContent: string }) 
 
   useEffect(() => {
     if (showDiff) {
-      const diff = diffWords(getPersistedContent() || "", editor?.getHTML() || "");
+      const diff = diffWords(getPersistedLocalContent() || "", editor?.getHTML() || "");
 
       const newContent = diff.reduce((acc, { value, added, removed }) => {
         if (added) return acc + `<mark data-color="#d8fa99">${value}</mark>`;
