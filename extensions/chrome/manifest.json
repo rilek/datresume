@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/chrome-manifest",
+  "name": "datresume",
+  "description": "Perfect resume for your next perfect job",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": {"16": "icons/16x16.png", "24": "icons/24x24.png", "32": "icons/32x32.png"}
+  },
+  "permissions": [
+    "activeTab"
+  ]
+}
