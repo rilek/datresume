@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import webExtension, { readJsonFile } from 'vite-plugin-web-extension'
+import tailwindcss from '@tailwindcss/vite'
 import { fileURLToPath, URL } from 'node:url'
 
 function generateManifest() {
@@ -18,9 +19,11 @@ function generateManifest() {
 export default defineConfig({
   plugins: [
     react(),
+    tailwindcss(),
     webExtension({
       manifest: generateManifest,
-      watchFilePaths: ['package.json', 'src/manifest.json'],
+      watchFilePaths: ['package.json', 'src'],
+      disableAutoLaunch: true, // Disable automatic browser launch,
     }),
   ],
   resolve: {

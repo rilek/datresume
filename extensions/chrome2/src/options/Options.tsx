@@ -24,13 +24,18 @@ const Options: React.FC = () => {
   }
 
   return (
-    <div>
-      <div className="section">
-        <h2>Supabase Configuration</h2>
-        <p>Configure your Supabase connection settings</p>
+    <div className="max-w-4xl mx-auto py-8 px-6">
+      <div className="mb-8 text-center">
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">DatResume Extension Settings</h1>
+        <p className="text-gray-600">Configure your AI resume assistant</p>
+      </div>
+
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-2">Supabase Configuration</h2>
+        <p className="text-gray-600 mb-6">Configure your Supabase connection settings</p>
         
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', marginBottom: '4px', fontWeight: '500' }}>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Supabase URL
           </label>
           <input
@@ -38,18 +43,12 @@ const Options: React.FC = () => {
             value={supabaseUrl}
             onChange={(e) => setSupabaseUrl(e.target.value)}
             placeholder="https://your-project.supabase.co"
-            style={{
-              width: '100%',
-              padding: '8px 12px',
-              border: '1px solid #d1d5db',
-              borderRadius: '6px',
-              fontSize: '14px'
-            }}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
 
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', marginBottom: '4px', fontWeight: '500' }}>
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Supabase Anon Key
           </label>
           <input
@@ -57,50 +56,28 @@ const Options: React.FC = () => {
             value={supabaseKey}
             onChange={(e) => setSupabaseKey(e.target.value)}
             placeholder="Your Supabase anon key"
-            style={{
-              width: '100%',
-              padding: '8px 12px',
-              border: '1px solid #d1d5db',
-              borderRadius: '6px',
-              fontSize: '14px'
-            }}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
         </div>
 
         <button
           onClick={handleSave}
-          style={{
-            padding: '10px 16px',
-            background: '#3b82f6',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            fontSize: '14px',
-            cursor: 'pointer'
-          }}
+          className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition-colors"
         >
           Save Settings
         </button>
 
         {saved && (
-          <div style={{
-            marginTop: '12px',
-            padding: '8px 12px',
-            background: '#f0fdf4',
-            color: '#16a34a',
-            border: '1px solid #bbf7d0',
-            borderRadius: '6px',
-            fontSize: '14px'
-          }}>
+          <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-md text-sm mt-3">
             Settings saved successfully!
           </div>
         )}
       </div>
 
-      <div className="section">
-        <h2>About</h2>
-        <p>DatResume Chrome Extension v1.0.0</p>
-        <p>AI-powered resume assistant with Supabase backend integration.</p>
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-2">About</h2>
+        <p className="text-gray-600 mb-2">DatResume Chrome Extension v1.0.0</p>
+        <p className="text-gray-600">AI-powered resume assistant with Supabase backend integration.</p>
       </div>
     </div>
   )

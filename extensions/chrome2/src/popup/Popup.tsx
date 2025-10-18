@@ -10,6 +10,14 @@ interface Message {
   data: any
 }
 
+
+const sendMessage = (message: Message): Promise<any> => {
+  return new Promise((resolve) => {
+    chrome.runtime.sendMessage(message, resolve)
+  })
+}
+
+
 const Popup: React.FC = () => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
@@ -21,23 +29,13 @@ const Popup: React.FC = () => {
   const [chatResponse, setChatResponse] = useState<string | null>(null)
   const [chatLoading, setChatLoading] = useState(false)
 
-  useEffect(() => {
-    checkAuthStatus()
-  }, [])
-
-  const sendMessage = (message: Message): Promise<any> => {
-    return new Promise((resolve) => {
-      chrome.runtime.sendMessage(message, resolve)
-    })
-  }
-
   const checkAuthStatus = async () => {
     try {
       const response = await sendMessage({
         type: 'SUPABASE_AUTH',
         data: { action: 'getUser' }
       })
-      
+
       if (response.user) {
         setUser(response.user)
       }
@@ -119,51 +117,65 @@ const Popup: React.FC = () => {
     }
   }
 
+  useEffect(() => {
+    checkAuthStatus()
+  }, [])
+
   if (loading) {
     return (
-      <div className="popup-container">
-        <div className="header">
-          <h1>Loading...</h1>
+      <div className="w-[350px] h-[500px] p-4 bg-gray-50">
+        <div className="text-center mb-4">
+          <h1 className="text-lg font-semibold text-gray-900">Loading...</h1>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="popup-container">
-      <div className="header">
-        <h1>DatResume</h1>
-        <p>AI Resume Assistant</p>
+    <div className="w-[350px] h-[500px] p-4 bg-gray-50 flex flex-col gap-4">
+      <div className="text-center mb-4">
+        <h1 className="text-lg font-semibold text-gray-900 mb-2">Datresume</h1>
+        <p className="text-sm text-gray-600">AI Resume Assistant</p>
       </div>
 
-      {error && <div className="error">{error}</div>}
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-md text-sm">
+          {error}
+        </div>
+      )}
 
       {!user ? (
-        <form className="auth-form" onSubmit={handleAuth}>
-          <div className="input-group">
-            <label>Email</label>
+        <form className="flex flex-col gap-3" onSubmit={handleAuth}>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             />
           </div>
-          <div className="input-group">
-            <label>Password</label>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             />
           </div>
-          <button type="submit" className="button" disabled={loading}>
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-md transition-colors"
+            disabled={loading}
+          >
             {authMode === 'signin' ? 'Sign In' : 'Sign Up'}
           </button>
           <button
             type="button"
-            className="button secondary"
+            className="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-md transition-colors"
             onClick={() => setAuthMode(authMode === 'signin' ? 'signup' : 'signin')}
           >
             {authMode === 'signin' ? 'Need an account?' : 'Have an account?'}
@@ -171,32 +183,40 @@ const Popup: React.FC = () => {
         </form>
       ) : (
         <>
-          <div className="user-info">
-            <h3>Welcome!</h3>
-            <p>{user.email}</p>
-            <button className="button secondary" onClick={handleSignOut}>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+            <h3 className="text-sm font-semibold text-gray-900 mb-2">Welcome!</h3>
+            <p className="text-xs text-gray-600 mb-3">{user.email}</p>
+            <button
+              className="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-md transition-colors w-full"
+              onClick={handleSignOut}
+            >
               Sign Out
             </button>
           </div>
 
-          <div className="chat-section">
-            <form className="chat-input" onSubmit={handleChatSubmit}>
+          <div className="flex flex-col gap-3">
+            <form className="flex gap-2" onSubmit={handleChatSubmit}>
               <input
                 type="text"
                 placeholder="Ask about your resume..."
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 disabled={chatLoading}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent flex-1"
               />
-              <button type="submit" disabled={chatLoading || !message.trim()}>
+              <button
+                type="submit"
+                disabled={chatLoading || !message.trim()}
+                className="bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+              >
                 {chatLoading ? '...' : 'Send'}
               </button>
             </form>
 
             {chatResponse && (
-              <div className="success">
-                <h4>AI Response:</h4>
-                <pre style={{ whiteSpace: 'pre-wrap', fontSize: '11px' }}>
+              <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-md text-sm">
+                <h4 className="font-medium mb-2">AI Response:</h4>
+                <pre className="whitespace-pre-wrap text-xs font-mono">
                   {chatResponse}
                 </pre>
               </div>

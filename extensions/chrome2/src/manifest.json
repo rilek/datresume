@@ -1,8 +1,9 @@
 {
+  "$schema": "https://json.schemastore.org/chrome-manifest",
   "manifest_version": 3,
-  "name": "DatResume Extension",
-  "description": "Resume AI assistant powered by Supabase",
-  "version": "1.0.0",
+  "name": "Datresume",
+  "description": "The easiest way to create perfectly tailored resumes for specific job descirption.",
+  "version": "0.0.1",
   "permissions": [
     "activeTab",
     "storage",
@@ -17,14 +18,18 @@
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["src/content/index.ts"],
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "src/content/index.ts"
+      ],
       "run_at": "document_end"
     }
   ],
   "action": {
     "default_popup": "src/popup/index.html",
-    "default_title": "DatResume"
+    "default_title": "Datresume"
   },
   "options_page": "src/options/index.html",
   "icons": {
@@ -35,8 +40,12 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["src/content/injected.js"],
-      "matches": ["<all_urls>"]
+      "resources": [
+        "src/content/injected.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ]
 }

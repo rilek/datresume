@@ -28,12 +28,25 @@ pnpm install
 
 ### 2. Environment Configuration
 
-The `.env` file is already configured for local development:
+## Environment Configuration
 
-```env
-VITE_SUPABASE_URL=http://127.0.0.1:54321
-VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
+1. Copy the example environment file:
+```bash
+cp .env.example .env
 ```
+
+2. Update the `.env` file with your Supabase credentials:
+```env
+# For local development
+VITE_SUPABASE_URL=http://127.0.0.1:54321
+VITE_SUPABASE_ANON_KEY=your-local-supabase-anon-key
+
+# For production, create .env.production:
+# VITE_SUPABASE_URL=https://your-project.supabase.co
+# VITE_SUPABASE_ANON_KEY=your-production-anon-key
+```
+
+3. The extension will automatically use the appropriate environment variables during build
 
 ### 3. Start Supabase Backend
 

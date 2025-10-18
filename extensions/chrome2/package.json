@@ -7,27 +7,34 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "check-env": "./check-env.sh",
+    "setup": "./setup.sh"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.39.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "@supabase/supabase-js": "^2.75.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "webext-bridge": "^6.0.1"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.268",
-    "@types/node": "^20.11.5",
-    "@types/react": "^18.2.43",
-    "@types/react-dom": "^18.2.17",
-    "@typescript-eslint/eslint-plugin": "^6.14.0",
-    "@typescript-eslint/parser": "^6.14.0",
-    "@vitejs/plugin-react": "^4.2.1",
-    "eslint": "^8.55.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.5",
-    "typescript": "^5.2.2",
-    "vite": "^5.0.8",
-    "vite-plugin-web-extension": "^4.1.1"
+    "@tailwindcss/vite": "^4.1.14",
+    "@types/chrome": "^0.1.24",
+    "@types/node": "^22.18.11",
+    "@types/react": "^18.3.26",
+    "@types/react-dom": "^18.3.7",
+    "@types/webextension-polyfill": "^0.12.4",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@vitejs/plugin-react": "^5.0.4",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^8.57.1",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "tailwindcss": "^4.1.14",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.10",
+    "vite-plugin-web-extension": "^4.4.5",
+    "webextension-polyfill": "^0.12.0"
   }
 }
