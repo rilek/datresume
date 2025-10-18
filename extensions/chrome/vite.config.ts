@@ -14,7 +14,8 @@ export default defineConfig({
     outDir: "dist",
     rolldownOptions: {
       input: {
-        main: "./index.html"
+        main: "./index.html",
+        content: "./scripts/content.ts"
       }
     }
   }
