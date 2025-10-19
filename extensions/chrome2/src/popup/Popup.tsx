@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, ComponentProps } from 'react'
 import logo from "./logo.svg"
+import clsx from 'clsx'
+import { cva, VariantProps } from 'class-variance-authority'
 
 interface User {
   id: string
@@ -18,6 +20,24 @@ const sendMessage = (message: Message): Promise<any> => {
   })
 }
 
+const buttonClasses = cva(
+  "cursor-pointer font-medium py-2 px-4 rounded-md transition-colors",
+  {
+    variants: {
+      variant: {
+        default: "bg-sky-200 hover:bg-sky-400 disabled:bg-gray-400 text-sky-950",
+        secondary: "bg-slate-200 hover:bg-slate-300 text-slate-900",
+        success: "bg-green-200 hover:bg-green-300 disabled:bg-green-100 text-green-900",
+      }
+    },
+    defaultVariants: {
+      variant: "default"
+    }
+  }
+)
+
+const Button = ({ variant, className, ...props }: ComponentProps<"button"> & VariantProps<typeof buttonClasses>) =>
+  <button {...props} className={clsx(buttonClasses({ variant, className }))} />
 
 const Popup: React.FC = () => {
   const [user, setUser] = useState<User | null>(null)
@@ -166,32 +186,28 @@ const Popup: React.FC = () => {
               required
             />
           </div>
-          <button
-            type="submit"
-            className="cursor-pointer bg-sky-300 hover:bg-blue-600 disabled:bg-gray-400 font-medium py-2 px-4 rounded-md transition-colors"
-            disabled={loading}
-          >
+          <Button type="submit" disabled={loading}>
             {authMode === 'signin' ? 'Sign In' : 'Sign Up'}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
-            className="cursor-pointer bg-slate-200 hover:bg-slate-400 font-medium py-2 px-4 rounded-md transition-colors"
+            variant={"secondary"}
             onClick={() => setAuthMode(authMode === 'signin' ? 'signup' : 'signin')}
           >
             {authMode === 'signin' ? 'Need an account?' : 'Have an account?'}
-          </button>
+          </Button>
         </form>
       ) : (
         <>
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
             <h3 className="text-sm font-semibold text-gray-900 mb-2">Welcome!</h3>
             <p className="text-xs text-gray-600 mb-3">{user.email}</p>
-            <button
-              className="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-md transition-colors w-full"
+            <Button
+              variant={"secondary"}
               onClick={handleSignOut}
             >
               Sign Out
-            </button>
+            </Button>
           </div>
 
           <div className="flex flex-col gap-3">
@@ -204,13 +220,13 @@ const Popup: React.FC = () => {
                 disabled={chatLoading}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent flex-1"
               />
-              <button
+              <Button
                 type="submit"
                 disabled={chatLoading || !message.trim()}
-                className="bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                variant={"success"}
               >
                 {chatLoading ? '...' : 'Send'}
-              </button>
+              </Button>
             </form>
 
             {chatResponse && (
