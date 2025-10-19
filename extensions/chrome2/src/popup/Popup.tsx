@@ -2,23 +2,7 @@ import React, { useState, useEffect, ComponentProps } from 'react'
 import logo from "./logo.svg"
 import clsx from 'clsx'
 import { cva, VariantProps } from 'class-variance-authority'
-
-interface User {
-  id: string
-  email?: string
-}
-
-interface Message {
-  type: string
-  data: any
-}
-
-
-const sendMessage = (message: Message): Promise<any> => {
-  return new Promise((resolve) => {
-    chrome.runtime.sendMessage(message, resolve)
-  })
-}
+import { useAuth, useChat } from '../hooks'
 
 const buttonClasses = cva(
   "cursor-pointer font-medium py-2 px-4 rounded-md transition-colors",
@@ -40,106 +24,58 @@ const Button = ({ variant, className, ...props }: ComponentProps<"button"> & Var
   <button {...props} className={clsx(buttonClasses({ variant, className }))} />
 
 const Popup: React.FC = () => {
-  const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
+  // Zustand hooks
+  const {
+    user,
+    loading,
+    error: authError,
+    checkAuthStatus,
+    signIn,
+    signUp,
+    signOut
+  } = useAuth()
+
+  const {
+    message,
+    chatResponse,
+    loading: chatLoading,
+    error: chatError,
+    setMessage,
+    sendChatMessage
+  } = useChat()
+
+  // Local component state
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin')
-  const [error, setError] = useState<string | null>(null)
-  const [message, setMessage] = useState('')
-  const [chatResponse, setChatResponse] = useState<string | null>(null)
-  const [chatLoading, setChatLoading] = useState(false)
-  const checkAuthStatus = async () => {
-    try {
-      const response = await sendMessage({
-        type: 'SUPABASE_AUTH',
-        data: { action: 'getUser' }
-      })
 
-      if (response.user) {
-        setUser(response.user)
-      }
-    } catch (error) {
-      console.error('Auth check failed:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
+  // Combine errors from both stores
+  const error = authError || chatError
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault()
-    setError(null)
-    setLoading(true)
 
-    try {
-      const response = await sendMessage({
-        type: 'SUPABASE_AUTH',
-        data: {
-          action: authMode === 'signin' ? 'signIn' : 'signUp',
-          email,
-          password
-        }
-      })
+    const success = authMode === 'signin'
+      ? await signIn(email, password)
+      : await signUp(email, password)
 
-      if (response.error) {
-        setError(response.error)
-      } else if (response.success) {
-        setUser(response.user)
-        setEmail('')
-        setPassword('')
-      }
-    } catch (error) {
-      setError('Authentication failed')
-    } finally {
-      setLoading(false)
+    if (success) {
+      setEmail('')
+      setPassword('')
     }
   }
 
   const handleSignOut = async () => {
-    try {
-      await sendMessage({
-        type: 'SUPABASE_AUTH',
-        data: { action: 'signOut' }
-      })
-      setUser(null)
-    } catch (error) {
-      setError('Sign out failed')
-    }
+    await signOut()
   }
 
   const handleChatSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!message.trim()) return
-
-    setChatLoading(true)
-    setChatResponse(null)
-    setError(null)
-
-    try {
-      const response = await sendMessage({
-        type: 'SUPABASE_FUNCTION',
-        data: {
-          functionName: 'chat',
-          payload: { message: message.trim() }
-        }
-      })
-
-      if (response.error) {
-        setError(response.error)
-      } else {
-        setChatResponse(JSON.stringify(response.data, null, 2))
-      }
-    } catch (error) {
-      setError('Chat request failed')
-    } finally {
-      setChatLoading(false)
-      setMessage('')
-    }
+    await sendChatMessage(message)
   }
 
   useEffect(() => {
     checkAuthStatus()
-  }, [])
+  }, [checkAuthStatus])
 
   if (loading) {
     return (
