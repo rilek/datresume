@@ -1,2 +1,2 @@
 export { useAuthStore } from './auth'
-export { useChatStore } from './chat'
+export { useRouterStore, type Route } from './router'
