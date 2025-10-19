@@ -22,7 +22,7 @@ export default defineConfig({
     tailwindcss(),
     webExtension({
       manifest: generateManifest,
-      watchFilePaths: ['package.json', 'src'],
+      watchFilePaths: ['package.json', 'src/*'],
       disableAutoLaunch: true, // Disable automatic browser launch,
     }),
   ],

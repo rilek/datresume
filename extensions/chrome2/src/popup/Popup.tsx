@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import logo from "./logo.svg"
 
 interface User {
   id: string
@@ -28,7 +29,6 @@ const Popup: React.FC = () => {
   const [message, setMessage] = useState('')
   const [chatResponse, setChatResponse] = useState<string | null>(null)
   const [chatLoading, setChatLoading] = useState(false)
-
   const checkAuthStatus = async () => {
     try {
       const response = await sendMessage({
@@ -132,10 +132,10 @@ const Popup: React.FC = () => {
   }
 
   return (
-    <div className="w-[350px] h-[500px] p-4 bg-gray-50 flex flex-col gap-4">
+    <div className="w-[350px] px-8 py-8 bg-gray-50 flex flex-col gap-4">
       <div className="text-center mb-4">
-        <h1 className="text-lg font-semibold text-gray-900 mb-2">Datresume</h1>
-        <p className="text-sm text-gray-600">AI Resume Assistant</p>
+        <h1 className="mb-2 mx-auto text-center"><img src={logo} alt="" className='inline-block' /></h1>
+        <p className="text-sm text-gray-600">Login to generate perfect resume</p>
       </div>
 
       {error && (
@@ -168,14 +168,14 @@ const Popup: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-md transition-colors"
+            className="cursor-pointer bg-sky-300 hover:bg-blue-600 disabled:bg-gray-400 font-medium py-2 px-4 rounded-md transition-colors"
             disabled={loading}
           >
             {authMode === 'signin' ? 'Sign In' : 'Sign Up'}
           </button>
           <button
             type="button"
-            className="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-md transition-colors"
+            className="cursor-pointer bg-slate-200 hover:bg-slate-400 font-medium py-2 px-4 rounded-md transition-colors"
             onClick={() => setAuthMode(authMode === 'signin' ? 'signup' : 'signin')}
           >
             {authMode === 'signin' ? 'Need an account?' : 'Have an account?'}
