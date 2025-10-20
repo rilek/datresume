@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { defaultContent } from "@/utils/editor";
-import css from "../../index.css?inline";
+import css from "@/index.css?inline";
 import { z } from "zod";
 import { createMiddleware } from "@tanstack/react-start";
 import { editorClassName } from "@/components/editor";
@@ -43,7 +43,7 @@ const bodySchema = z.object({
   content: z.string().min(1, "Resume HTML is required"),
 })
 
-export const Route = createFileRoute("/api/resume")({
+export const Route = createFileRoute("/api/resume/render")({
   server: {
     middleware: [createMiddleware({ type: "request" }).server(async ({ next, ...rest }) => {
       try {

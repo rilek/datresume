@@ -82,14 +82,6 @@ const EditorWrapper = () => {
 };
 
 const GoToAppButton = () => {
-  const { user } = useRouteContext({ from: "__root__" });
-
-  if (!user) {
-    return <Link to="/login">
-      <Button size="sm" variant="outline">Login</Button>
-    </Link>
-  }
-
   return (
     <Link to="/app">
       <Button size="sm" variant="outline">Open app</Button>
@@ -165,7 +157,7 @@ function Index() {
                 </div>
               </DialogContent>
             </Dialog>
-            <span className="whitespace-nowrap">It's free and no sign in required!</span>
+            <span className="whitespace-nowrap">It's free and no sign in required to try!</span>
           </div>
         </div>
       </div>

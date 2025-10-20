@@ -36,6 +36,7 @@ export const HomeRoute: React.FC = () => {
             size="icon"
             onClick={fetchResumes}
             disabled={loading}
+            title='Refresh resumes'
           ><RefreshCwIcon /></Button>
         </header>
 

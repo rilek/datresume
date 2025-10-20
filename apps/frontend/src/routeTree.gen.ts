@@ -15,8 +15,8 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PrivacyIndexRouteImport } from './routes/privacy/index'
-import { Route as ApiResumeRouteImport } from './routes/api/resume'
 import { Route as AuthedAppIndexRouteImport } from './routes/_authed/app/index'
+import { Route as ApiResumeRenderRouteImport } from './routes/api/resume/render'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -47,15 +47,15 @@ const PrivacyIndexRoute = PrivacyIndexRouteImport.update({
   path: '/privacy/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiResumeRoute = ApiResumeRouteImport.update({
-  id: '/api/resume',
-  path: '/api/resume',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthedAppIndexRoute = AuthedAppIndexRouteImport.update({
   id: '/app/',
   path: '/app/',
   getParentRoute: () => AuthedRoute,
+} as any)
+const ApiResumeRenderRoute = ApiResumeRenderRouteImport.update({
+  id: '/api/resume/render',
+  path: '/api/resume/render',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -63,8 +63,8 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/signup': typeof SignupRoute
-  '/api/resume': typeof ApiResumeRoute
   '/privacy': typeof PrivacyIndexRoute
+  '/api/resume/render': typeof ApiResumeRenderRoute
   '/app': typeof AuthedAppIndexRoute
 }
 export interface FileRoutesByTo {
@@ -72,8 +72,8 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/signup': typeof SignupRoute
-  '/api/resume': typeof ApiResumeRoute
   '/privacy': typeof PrivacyIndexRoute
+  '/api/resume/render': typeof ApiResumeRenderRoute
   '/app': typeof AuthedAppIndexRoute
 }
 export interface FileRoutesById {
@@ -83,8 +83,8 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/signup': typeof SignupRoute
-  '/api/resume': typeof ApiResumeRoute
   '/privacy/': typeof PrivacyIndexRoute
+  '/api/resume/render': typeof ApiResumeRenderRoute
   '/_authed/app/': typeof AuthedAppIndexRoute
 }
 export interface FileRouteTypes {
@@ -94,8 +94,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/logout'
     | '/signup'
-    | '/api/resume'
     | '/privacy'
+    | '/api/resume/render'
     | '/app'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -103,8 +103,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/logout'
     | '/signup'
-    | '/api/resume'
     | '/privacy'
+    | '/api/resume/render'
     | '/app'
   id:
     | '__root__'
@@ -113,8 +113,8 @@ export interface FileRouteTypes {
     | '/login'
     | '/logout'
     | '/signup'
-    | '/api/resume'
     | '/privacy/'
+    | '/api/resume/render'
     | '/_authed/app/'
   fileRoutesById: FileRoutesById
 }
@@ -124,8 +124,8 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   LogoutRoute: typeof LogoutRoute
   SignupRoute: typeof SignupRoute
-  ApiResumeRoute: typeof ApiResumeRoute
   PrivacyIndexRoute: typeof PrivacyIndexRoute
+  ApiResumeRenderRoute: typeof ApiResumeRenderRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -172,19 +172,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/resume': {
-      id: '/api/resume'
-      path: '/api/resume'
-      fullPath: '/api/resume'
-      preLoaderRoute: typeof ApiResumeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_authed/app/': {
       id: '/_authed/app/'
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AuthedAppIndexRouteImport
       parentRoute: typeof AuthedRoute
+    }
+    '/api/resume/render': {
+      id: '/api/resume/render'
+      path: '/api/resume/render'
+      fullPath: '/api/resume/render'
+      preLoaderRoute: typeof ApiResumeRenderRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -206,8 +206,8 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   LogoutRoute: LogoutRoute,
   SignupRoute: SignupRoute,
-  ApiResumeRoute: ApiResumeRoute,
   PrivacyIndexRoute: PrivacyIndexRoute,
+  ApiResumeRenderRoute: ApiResumeRenderRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
