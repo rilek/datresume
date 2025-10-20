@@ -1,22 +1,34 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { viteStaticCopy } from 'vite-plugin-static-copy';
+import webExtension, { readJsonFile } from 'vite-plugin-web-extension'
+import tailwindcss from '@tailwindcss/vite'
+import { fileURLToPath, URL } from 'node:url'
 
-// https://vite.dev/config/
+function generateManifest() {
+  const manifest = readJsonFile('src/manifest.json')
+  const pkg = readJsonFile('package.json')
+  return {
+    name: pkg.name,
+    description: pkg.description,
+    version: pkg.version,
+    ...manifest,
+  }
+}
+
+// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
-    viteStaticCopy({
-      targets: [{ src: "public/manifest.json", dest: "." }, { src: "public/icons", dest: "." }]
-    })
+    tailwindcss(),
+    webExtension({
+      manifest: generateManifest,
+      watchFilePaths: ['package.json', 'src/*'],
+      disableAutoLaunch: true, // Disable automatic browser launch,
+    }),
   ],
-  build: {
-    outDir: "dist",
-    rolldownOptions: {
-      input: {
-        main: "./index.html",
-        content: "./scripts/content.ts"
-      }
-    }
-  }
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
 })
