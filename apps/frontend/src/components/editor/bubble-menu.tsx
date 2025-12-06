@@ -1,4 +1,6 @@
-import { BubbleMenu as TipTapBubbleMenu, BubbleMenuProps } from "@tiptap/react/menus";
+import { PopoverTrigger } from "@radix-ui/react-popover";
+import { type BubbleMenuProps, BubbleMenu as TipTapBubbleMenu } from "@tiptap/react/menus";
+import clsx from "clsx";
 import {
   BoldIcon,
   Heading1Icon,
@@ -12,12 +14,10 @@ import {
   ListOrderedIcon,
   StrikethroughIcon,
 } from "lucide-react";
-import { Button, ButtonProps } from "../ui/button";
 import { forwardRef } from "react";
-import clsx from "clsx";
-import { Popover, PopoverContent } from "../ui/popover";
-import { PopoverTrigger } from "@radix-ui/react-popover";
+import { Button, type ButtonProps } from "../ui/button";
 import { Input } from "../ui/input";
+import { Popover, PopoverContent } from "../ui/popover";
 
 type MenuButtonProps = ButtonProps & { active?: boolean };
 

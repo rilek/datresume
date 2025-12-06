@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
+import { supabase } from "@/utils/supabase/client";
+import { Button } from "../ui/button";
 import { FormField } from "../ui/form";
 import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
-import { Button } from "../ui/button";
-import { supabase } from "@/utils/supabase/client";
+import { Textarea } from "../ui/textarea";
 
 export const ContactForm = () => {
   const form = useForm({

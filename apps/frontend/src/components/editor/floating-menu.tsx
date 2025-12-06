@@ -1,4 +1,5 @@
-import { FloatingMenu as TipTapFloatingMenu, FloatingMenuProps } from "@tiptap/react/menus";
+import { type FloatingMenuProps, FloatingMenu as TipTapFloatingMenu } from "@tiptap/react/menus";
+import clsx from "clsx";
 import {
   Heading1Icon,
   Heading2Icon,
@@ -8,9 +9,8 @@ import {
   ListIcon,
   ListOrderedIcon,
 } from "lucide-react";
-import { Button, ButtonProps } from "../ui/button";
 import { forwardRef } from "react";
-import clsx from "clsx";
+import { Button, type ButtonProps } from "../ui/button";
 
 type MenuButtonProps = ButtonProps & { active?: boolean };
 

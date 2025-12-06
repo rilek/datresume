@@ -1,22 +1,22 @@
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
 import Typography from "@tiptap/extension-typography";
-import { Button } from "@/components/ui/button";
-import { DiffIcon, FileDownIcon, RotateCcwIcon, SaveIcon, SparklesIcon } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
-import { useAppStore } from "@/stores/app";
-import { CSSProperties, useEffect, useState } from "react";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 // import { useForm } from 'react-hook-form'
 // import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 // import { Input } from '@/components/ui/input'
 // import { PopoverClose } from '@radix-ui/react-popover'
 import clsx from "clsx";
-import FloatingMenu from "./floating-menu";
-import BubbleMenu from "./bubble-menu";
 import { diffWords } from "diff";
-import { getPersistedLocalContent, persistLocalContent } from "@/utils/editor";
+import { DiffIcon, FileDownIcon, RotateCcwIcon, SaveIcon, SparklesIcon } from "lucide-react";
+import { type CSSProperties, useEffect, useState } from "react";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useAppStore } from "@/stores/app";
+import { getPersistedLocalContent, persistLocalContent } from "@/utils/editor";
+import BubbleMenu from "./bubble-menu";
+import FloatingMenu from "./floating-menu";
 
 const extensions = [
   StarterKit.configure({
@@ -207,7 +207,9 @@ export const Editor = ({ initialContent: content }: { initialContent: string }) 
   return (
     <div
       style={{ "--cm": "52px" } as CSSProperties}
-      className={clsx(editorClassName, { "opacity-50 pointer-events-none": loading })}
+      className={clsx(editorClassName, {
+        "opacity-50 pointer-events-none": loading,
+      })}
     >
       <EditorContent editor={editor} data-umami-event />
       <FloatingMenu editor={editor} />

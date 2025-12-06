@@ -1,9 +1,9 @@
-import { cn } from "@/lib/utils";
+import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils";
 import { Field, FieldGroup } from "../ui/field";
-import { ReactNode } from "react";
 
 export function Auth({
   title,

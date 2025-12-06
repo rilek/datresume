@@ -17,5 +17,8 @@
     "overrides": {
       "vite": "npm:rolldown-vite@latest"
     }
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.3.8"
   }
 }

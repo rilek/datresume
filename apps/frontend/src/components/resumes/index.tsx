@@ -1,10 +1,10 @@
-import { H1 } from "../ui/typography";
-import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { EllipsisVerticalIcon, StarIcon } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
+import type { Resume } from "@/types/supabase/entities";
 import { Button } from "../ui/button";
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { Resume } from "@/types/supabase/entities";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
+import { H1 } from "../ui/typography";
 
 export const Resumes = ({ resumes }: { resumes: Resume[] }) => {
   return (

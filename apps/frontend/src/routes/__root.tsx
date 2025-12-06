@@ -1,12 +1,6 @@
 /// <reference types="vite/client" />
 
-import {
-  createRootRouteWithContext,
-  ErrorComponent,
-  HeadContent,
-  Outlet,
-  Scripts,
-} from "@tanstack/react-router";
+import { createRootRouteWithContext, ErrorComponent, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { Toaster } from "@/components/ui/sonner";
 import { createServerFn } from "@tanstack/react-start";
@@ -47,8 +41,7 @@ export const Route = createRootRouteWithContext<GlobalContext>()({
       { name: "title", content: "Datresume - Perfect Resume for Perfect Job" },
       {
         name: "description",
-        content:
-          "AI-powered resume builder that helps you create a professional resume in minutes.",
+        content: "AI-powered resume builder that helps you create a professional resume in minutes.",
       },
     ],
     links: [
