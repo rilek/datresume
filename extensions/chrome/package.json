@@ -13,12 +13,13 @@
   },
   "dependencies": {
     "@radix-ui/react-select": "^2.2.6",
+    "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.75.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "lucide-react": "^0.546.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
+    "lucide-react": "^0.556.0",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
     "tailwind-merge": "^2.6.0",
     "webext-bridge": "^6.0.1",
     "zustand": "^5.0.8"
@@ -26,21 +27,21 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.14",
     "@types/chrome": "^0.1.24",
-    "@types/node": "^22.18.11",
+    "@types/node": "^22.19.1",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@types/webextension-polyfill": "^0.12.4",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
-    "@vitejs/plugin-react": "^5.0.4",
-    "autoprefixer": "^10.4.21",
+    "@vitejs/plugin-react": "^5.1.1",
+    "autoprefixer": "^10.4.22",
     "eslint": "^8.57.1",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.24",
     "tailwindcss": "^4.1.14",
     "typescript": "^5.9.3",
     "vite": "npm:rolldown-vite@latest",
-    "vite-plugin-web-extension": "^4.4.5",
+    "vite-plugin-web-extension": "^4.5.0",
     "webextension-polyfill": "^0.12.0"
   }
 }
