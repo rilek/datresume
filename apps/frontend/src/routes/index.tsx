@@ -173,7 +173,7 @@ function Index() {
             "w-0! overflow-hidden opacity-0": !showChat
           })}>
             <div className="w-full max-h-screen overflow-y-auto overflow-hidden p-1 pt-0">
-              <header className="pb-4 sticky top-0 bg-indigo-50 flex justify-between items-center">
+              <header className="pb-4 sticky top-0 bg-white flex justify-between items-center">
                 <h2 className="text-lg tracking-tight font-bold">Chat with AI</h2>
                 <TooltipProvider>
                   <Tooltip>

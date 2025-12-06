@@ -1,18 +1,18 @@
 import { Resumes } from '@/components/resumes'
-import { getSupabaseServerClient } from '@/utils/supabase/server'
+import { Resume } from '@/types/supabase/entities'
+import { createSupabaseServerClient } from '@/utils/supabase/server'
 import { createFileRoute } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 
 const fetchResumes = createServerFn({ method: "GET" }).handler(async () => {
-  const supabase = getSupabaseServerClient();
+  const supabase = createSupabaseServerClient();
   const { data, error } = await supabase.from('resumes').select('*');
 
   if (error) {
     throw new Error(error.message);
   }
 
-  return data;
-
+  return data as Resume[];
 })
 
 export const Route = createFileRoute('/_authed/app/')({

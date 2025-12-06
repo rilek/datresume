@@ -4,7 +4,7 @@ import { createRootRoute, createRootRouteWithContext, ErrorComponent, HeadConten
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { Toaster } from '@/components/ui/sonner';
 import { createServerFn } from '@tanstack/react-start';
-import { getSupabaseServerClient } from '@/utils/supabase/server';
+import { createSupabaseServerClient } from '@/utils/supabase/server';
 
 import appCss from "../index.css?url";
 
@@ -16,7 +16,7 @@ interface GlobalContext {
 }
 
 const fetchUser = createServerFn({ method: 'GET' }).handler(async () => {
-  const supabase = getSupabaseServerClient()
+  const supabase = createSupabaseServerClient()
   const { data, error: _error } = await supabase.auth.getUser()
 
   if (!data.user?.email) {

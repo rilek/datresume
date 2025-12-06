@@ -1,12 +1,11 @@
-import { Database } from "@/types/supabase";
 import { H1 } from "../ui/typography";
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { EllipsisVerticalIcon, StarIcon } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 import { Button } from "../ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { Resume } from "@/types/supabase/entities";
 
-type Resume = Database["public"]["Tables"]["resumes"]["Row"];
 
 export const Resumes = ({ resumes }: { resumes: Resume[] }) => {
   return <div>
@@ -46,7 +45,7 @@ export const Resumes = ({ resumes }: { resumes: Resume[] }) => {
               </TooltipProvider>
             )}
             <div className="prose font-serif max-h-54 overflow-hidden max-w-none select-none" style={{ fontSize: "4px" }}>
-              <div dangerouslySetInnerHTML={{ __html: (content as any).html || "" }} />
+              <div dangerouslySetInnerHTML={{ __html: content.html || "" }} />
             </div>
           </CardContent>
         </Card>
