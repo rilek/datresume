@@ -1,6 +1,6 @@
-import { ClientOnly, createFileRoute, Link, redirect, useRouteContext } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { useAppStore } from "@/stores/app";
-import { CSSProperties, DetailedHTMLProps, InputHTMLAttributes, useEffect, useRef } from "react";
+import { DetailedHTMLProps, InputHTMLAttributes, useEffect } from "react";
 import { Editor, EditorOptions } from "@/components/editor";
 import clsx from "clsx";
 import { Button } from "@/components/ui/button";

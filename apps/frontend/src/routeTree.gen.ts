@@ -8,208 +8,217 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./routes/__root";
-import { Route as SignupRouteImport } from "./routes/signup";
-import { Route as LogoutRouteImport } from "./routes/logout";
-import { Route as LoginRouteImport } from "./routes/login";
-import { Route as AuthedRouteImport } from "./routes/_authed";
-import { Route as IndexRouteImport } from "./routes/index";
-import { Route as PrivacyIndexRouteImport } from "./routes/privacy/index";
-import { Route as AuthedAppIndexRouteImport } from "./routes/_authed/app/index";
-import { Route as PublicResumeGenerateRouteImport } from "./routes/public/resume/generate";
-import { Route as ApiResumeDownloadRouteImport } from "./routes/api/resume/download";
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as LogoutRouteImport } from './routes/logout'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as AuthedRouteImport } from './routes/_authed'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as PrivacyIndexRouteImport } from './routes/privacy/index'
+import { Route as AuthedAppIndexRouteImport } from './routes/_authed/app/index'
+import { Route as PublicResumeGenerateRouteImport } from './routes/public/resume/generate'
+import { Route as ApiResumeDownloadRouteImport } from './routes/api/resume/download'
 
 const SignupRoute = SignupRouteImport.update({
-  id: "/signup",
-  path: "/signup",
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const LogoutRoute = LogoutRouteImport.update({
-  id: "/logout",
-  path: "/logout",
+  id: '/logout',
+  path: '/logout',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const LoginRoute = LoginRouteImport.update({
-  id: "/login",
-  path: "/login",
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const AuthedRoute = AuthedRouteImport.update({
-  id: "/_authed",
+  id: '/_authed',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const IndexRoute = IndexRouteImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const PrivacyIndexRoute = PrivacyIndexRouteImport.update({
-  id: "/privacy/",
-  path: "/privacy/",
+  id: '/privacy/',
+  path: '/privacy/',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const AuthedAppIndexRoute = AuthedAppIndexRouteImport.update({
-  id: "/app/",
-  path: "/app/",
+  id: '/app/',
+  path: '/app/',
   getParentRoute: () => AuthedRoute,
-} as any);
+} as any)
 const PublicResumeGenerateRoute = PublicResumeGenerateRouteImport.update({
-  id: "/public/resume/generate",
-  path: "/public/resume/generate",
+  id: '/public/resume/generate',
+  path: '/public/resume/generate',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ApiResumeDownloadRoute = ApiResumeDownloadRouteImport.update({
-  id: "/api/resume/download",
-  path: "/api/resume/download",
+  id: '/api/resume/download',
+  path: '/api/resume/download',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute;
-  "/login": typeof LoginRoute;
-  "/logout": typeof LogoutRoute;
-  "/signup": typeof SignupRoute;
-  "/privacy": typeof PrivacyIndexRoute;
-  "/api/resume/download": typeof ApiResumeDownloadRoute;
-  "/public/resume/generate": typeof PublicResumeGenerateRoute;
-  "/app": typeof AuthedAppIndexRoute;
+  '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
+  '/signup': typeof SignupRoute
+  '/privacy': typeof PrivacyIndexRoute
+  '/api/resume/download': typeof ApiResumeDownloadRoute
+  '/public/resume/generate': typeof PublicResumeGenerateRoute
+  '/app': typeof AuthedAppIndexRoute
 }
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute;
-  "/login": typeof LoginRoute;
-  "/logout": typeof LogoutRoute;
-  "/signup": typeof SignupRoute;
-  "/privacy": typeof PrivacyIndexRoute;
-  "/api/resume/download": typeof ApiResumeDownloadRoute;
-  "/public/resume/generate": typeof PublicResumeGenerateRoute;
-  "/app": typeof AuthedAppIndexRoute;
+  '/': typeof IndexRoute
+  '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
+  '/signup': typeof SignupRoute
+  '/privacy': typeof PrivacyIndexRoute
+  '/api/resume/download': typeof ApiResumeDownloadRoute
+  '/public/resume/generate': typeof PublicResumeGenerateRoute
+  '/app': typeof AuthedAppIndexRoute
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  "/": typeof IndexRoute;
-  "/_authed": typeof AuthedRouteWithChildren;
-  "/login": typeof LoginRoute;
-  "/logout": typeof LogoutRoute;
-  "/signup": typeof SignupRoute;
-  "/privacy/": typeof PrivacyIndexRoute;
-  "/api/resume/download": typeof ApiResumeDownloadRoute;
-  "/public/resume/generate": typeof PublicResumeGenerateRoute;
-  "/_authed/app/": typeof AuthedAppIndexRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/_authed': typeof AuthedRouteWithChildren
+  '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
+  '/signup': typeof SignupRoute
+  '/privacy/': typeof PrivacyIndexRoute
+  '/api/resume/download': typeof ApiResumeDownloadRoute
+  '/public/resume/generate': typeof PublicResumeGenerateRoute
+  '/_authed/app/': typeof AuthedAppIndexRoute
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | "/"
-    | "/login"
-    | "/logout"
-    | "/signup"
-    | "/privacy"
-    | "/api/resume/download"
-    | "/public/resume/generate"
-    | "/app";
-  fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/login" | "/logout" | "/signup" | "/privacy" | "/api/resume/download" | "/public/resume/generate" | "/app";
+    | '/'
+    | '/login'
+    | '/logout'
+    | '/signup'
+    | '/privacy'
+    | '/api/resume/download'
+    | '/public/resume/generate'
+    | '/app'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/login'
+    | '/logout'
+    | '/signup'
+    | '/privacy'
+    | '/api/resume/download'
+    | '/public/resume/generate'
+    | '/app'
   id:
-    | "__root__"
-    | "/"
-    | "/_authed"
-    | "/login"
-    | "/logout"
-    | "/signup"
-    | "/privacy/"
-    | "/api/resume/download"
-    | "/public/resume/generate"
-    | "/_authed/app/";
-  fileRoutesById: FileRoutesById;
+    | '__root__'
+    | '/'
+    | '/_authed'
+    | '/login'
+    | '/logout'
+    | '/signup'
+    | '/privacy/'
+    | '/api/resume/download'
+    | '/public/resume/generate'
+    | '/_authed/app/'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  AuthedRoute: typeof AuthedRouteWithChildren;
-  LoginRoute: typeof LoginRoute;
-  LogoutRoute: typeof LogoutRoute;
-  SignupRoute: typeof SignupRoute;
-  PrivacyIndexRoute: typeof PrivacyIndexRoute;
-  ApiResumeDownloadRoute: typeof ApiResumeDownloadRoute;
-  PublicResumeGenerateRoute: typeof PublicResumeGenerateRoute;
+  IndexRoute: typeof IndexRoute
+  AuthedRoute: typeof AuthedRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  LogoutRoute: typeof LogoutRoute
+  SignupRoute: typeof SignupRoute
+  PrivacyIndexRoute: typeof PrivacyIndexRoute
+  ApiResumeDownloadRoute: typeof ApiResumeDownloadRoute
+  PublicResumeGenerateRoute: typeof PublicResumeGenerateRoute
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/signup": {
-      id: "/signup";
-      path: "/signup";
-      fullPath: "/signup";
-      preLoaderRoute: typeof SignupRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/logout": {
-      id: "/logout";
-      path: "/logout";
-      fullPath: "/logout";
-      preLoaderRoute: typeof LogoutRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/login": {
-      id: "/login";
-      path: "/login";
-      fullPath: "/login";
-      preLoaderRoute: typeof LoginRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/_authed": {
-      id: "/_authed";
-      path: "";
-      fullPath: "";
-      preLoaderRoute: typeof AuthedRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/privacy/": {
-      id: "/privacy/";
-      path: "/privacy";
-      fullPath: "/privacy";
-      preLoaderRoute: typeof PrivacyIndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/_authed/app/": {
-      id: "/_authed/app/";
-      path: "/app";
-      fullPath: "/app";
-      preLoaderRoute: typeof AuthedAppIndexRouteImport;
-      parentRoute: typeof AuthedRoute;
-    };
-    "/public/resume/generate": {
-      id: "/public/resume/generate";
-      path: "/public/resume/generate";
-      fullPath: "/public/resume/generate";
-      preLoaderRoute: typeof PublicResumeGenerateRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/api/resume/download": {
-      id: "/api/resume/download";
-      path: "/api/resume/download";
-      fullPath: "/api/resume/download";
-      preLoaderRoute: typeof ApiResumeDownloadRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/logout': {
+      id: '/logout'
+      path: '/logout'
+      fullPath: '/logout'
+      preLoaderRoute: typeof LogoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authed': {
+      id: '/_authed'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy/': {
+      id: '/privacy/'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authed/app/': {
+      id: '/_authed/app/'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AuthedAppIndexRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/public/resume/generate': {
+      id: '/public/resume/generate'
+      path: '/public/resume/generate'
+      fullPath: '/public/resume/generate'
+      preLoaderRoute: typeof PublicResumeGenerateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/resume/download': {
+      id: '/api/resume/download'
+      path: '/api/resume/download'
+      fullPath: '/api/resume/download'
+      preLoaderRoute: typeof ApiResumeDownloadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface AuthedRouteChildren {
-  AuthedAppIndexRoute: typeof AuthedAppIndexRoute;
+  AuthedAppIndexRoute: typeof AuthedAppIndexRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedAppIndexRoute: AuthedAppIndexRoute,
-};
+}
 
-const AuthedRouteWithChildren = AuthedRoute._addFileChildren(AuthedRouteChildren);
+const AuthedRouteWithChildren =
+  AuthedRoute._addFileChildren(AuthedRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -220,14 +229,16 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyIndexRoute: PrivacyIndexRoute,
   ApiResumeDownloadRoute: ApiResumeDownloadRoute,
   PublicResumeGenerateRoute: PublicResumeGenerateRoute,
-};
-export const routeTree = rootRouteImport._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>();
+}
+export const routeTree = rootRouteImport
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
-import type { getRouter } from "./router.tsx";
-import type { createStart } from "@tanstack/react-start";
-declare module "@tanstack/react-start" {
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
   interface Register {
-    ssr: true;
-    router: Awaited<ReturnType<typeof getRouter>>;
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
   }
 }

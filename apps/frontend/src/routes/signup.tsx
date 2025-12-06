@@ -4,33 +4,46 @@ import { useMutation } from "../hooks/useMutation";
 import { Auth } from "../components/login/auth";
 import { createSupabaseServerClient } from "../utils/supabase/server";
 import { defaultContent, getPersistedLocalContent } from "@/utils/editor";
+import z from "zod";
+import { setResponseStatus } from "@tanstack/react-start/server";
+
+const signupSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6, "Password must be at least 6 characters long"),
+  initialResume: z.string(),
+  redirectUrl: z.string().optional(),
+});
 
 export const signupFn = createServerFn({ method: "POST" })
-  .inputValidator((d: { email: string; password: string; initialResume: string; redirectUrl?: string }) => d)
+  .inputValidator(data => {
+    const parsed = signupSchema.safeParse(data);
+    if(parsed.success) return parsed.data;
+    else {
+      setResponseStatus(400);
+      throw { error: true, message: parsed.error.errors.at(0)?.message }
+    }
+  })
   .handler(async ({ data }) => {
     const supabase = createSupabaseServerClient();
     const { error } = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
     });
+
     if (error) {
-      return {
-        error: true,
-        message: error.message,
-      };
+      setResponseStatus(400);
+      throw { error: true, message: error.message };
     }
 
     // Create initial resume for the user
-    const result = await supabase.from("resumes").insert({
+    await supabase.from("resumes").insert({
       name: "My first resume",
       content: { html: data.initialResume },
       is_default: true,
     });
 
     // Redirect to the prev page stored in the "redirect" search param
-    throw redirect({
-      href: data.redirectUrl || "/app",
-    });
+    throw redirect({ href: data.redirectUrl || "/app" });
   });
 
 export const Route = createFileRoute("/signup")({
@@ -41,6 +54,18 @@ function SignupComp() {
   const signupMutation = useMutation({
     fn: useServerFn(signupFn),
   });
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const formData = new FormData(e.target as HTMLFormElement);
+
+    const r = await signupMutation.mutate({
+      data: {
+        email: formData.get("email") as string,
+        password: formData.get("password") as string,
+        initialResume: getPersistedLocalContent() || defaultContent,
+      },
+    });
+  }
 
   return (
     <div className="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
@@ -57,21 +82,11 @@ function SignupComp() {
           }
           actionText="Sign Up"
           status={signupMutation.status}
-          onSubmit={(e) => {
-            const formData = new FormData(e.target as HTMLFormElement);
-
-            signupMutation.mutate({
-              data: {
-                email: formData.get("email") as string,
-                password: formData.get("password") as string,
-                initialResume: getPersistedLocalContent() || defaultContent,
-              },
-            });
-          }}
+          onSubmit={onSubmit}
           afterSubmit={
-            signupMutation.data?.error ? (
+            signupMutation.error ? (
               <>
-                <div className="text-red-400">{signupMutation.data.message}</div>
+                <div className="text-red-400">{signupMutation.error.message}</div>
               </>
             ) : null
           }
