@@ -1,1 +1,0 @@
-cd apps/frontend && pnpm tsc -b
