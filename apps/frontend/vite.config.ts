@@ -11,10 +11,10 @@ export default defineConfig({
     tsConfigPaths({
       projects: ["./tsconfig.json"],
     }),
+    nitro({}),
     tanstackStart({
       srcDirectory: "./src",
     }),
-    nitro({}),
     react(),
     tailwindcss(),
   ],

@@ -1,7 +1,4 @@
-import { Link, useRouteContext } from "@tanstack/react-router";
-import { ContactForm } from "../contact";
-import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Link } from "@tanstack/react-router";
 
 export default function PageHeader({ links }: { links?: React.ReactNode }) {
   return (
