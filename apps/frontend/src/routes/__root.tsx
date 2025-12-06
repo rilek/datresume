@@ -1,6 +1,12 @@
 /// <reference types="vite/client" />
 
-import { createRootRouteWithContext, ErrorComponent, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
+import {
+  createRootRouteWithContext,
+  ErrorComponent,
+  HeadContent,
+  Outlet,
+  Scripts,
+} from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { Toaster } from "@/components/ui/sonner";
 import { createServerFn } from "@tanstack/react-start";
@@ -17,9 +23,7 @@ interface GlobalContext {
 
 const fetchUser = createServerFn({ method: "GET" }).handler(async () => {
   const supabase = createSupabaseServerClient();
-  const { data, error } = await supabase.auth.getUser();
-
-  if (error) throw new Error(error.message);
+  const { data } = await supabase.auth.getUser();
 
   if (!data.user?.email) {
     return null;
@@ -43,7 +47,8 @@ export const Route = createRootRouteWithContext<GlobalContext>()({
       { name: "title", content: "Datresume - Perfect Resume for Perfect Job" },
       {
         name: "description",
-        content: "AI-powered resume builder that helps you create a professional resume in minutes.",
+        content:
+          "AI-powered resume builder that helps you create a professional resume in minutes.",
       },
     ],
     links: [
