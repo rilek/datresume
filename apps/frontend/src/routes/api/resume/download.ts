@@ -3,49 +3,53 @@ import { defaultContent } from "@/utils/editor";
 import css from "@/index.css?inline";
 import { z } from "zod";
 import { createMiddleware } from "@tanstack/react-start";
-import Cloudflare from 'cloudflare';
+import Cloudflare from "cloudflare";
 import { buildHtml } from "./_template";
 
 const bodySchema = z.object({
   filename: z.string().optional(),
   content: z.string().min(1, "Resume HTML is required"),
-})
+});
 
 export const Route = createFileRoute("/api/resume/download")({
   server: {
-    middleware: [createMiddleware({ type: "request" }).server(async ({ next, ...rest }) => {
-      try {
-        return await next();
-      } catch (e) {
-        console.error(e);
-        return {
-          ...rest,
-          response:
-            new Response(JSON.stringify({ error: JSON.parse((e as Error)?.message) || "Something went wrong" }), {
-              status: 500,
-              headers: { "Content-Type": "application/json" }
-            })
+    middleware: [
+      createMiddleware({ type: "request" }).server(async ({ next, ...rest }) => {
+        try {
+          return await next();
+        } catch (e) {
+          console.error(e);
+          return {
+            ...rest,
+            response: new Response(
+              JSON.stringify({ error: JSON.parse((e as Error)?.message) || "Something went wrong" }),
+              {
+                status: 500,
+                headers: { "Content-Type": "application/json" },
+              },
+            ),
+          };
         }
-      }
-    })],
+      }),
+    ],
     handlers: {
       async GET() {
         const html = buildHtml({ content: defaultContent, css: css });
         return new Response(html, {
-          headers: { "Content-Type": "text/html" }
-        })
+          headers: { "Content-Type": "text/html" },
+        });
       },
 
       async POST({ request }) {
-        console.log("@@@@@@@@@@@")
+        console.log("@@@@@@@@@@@");
         const body = bodySchema.parse(await request.json());
 
         const filename = `${body.filename || "resume"}.pdf`;
         const html = buildHtml({
           name: filename,
           content: body.content,
-          css
-        })
+          css,
+        });
 
         const cloudflare = new Cloudflare({ apiToken: process.env.CLOUDFLARE_API_TOKEN });
         const pdf = await cloudflare.browserRendering.pdf.create({
@@ -57,9 +61,9 @@ export const Route = createFileRoute("/api/resume/download")({
           headers: {
             "Content-Type": "application/pdf",
             "Content-Disposition": `attachment; filename="resume.pdf"`,
-          }
+          },
         });
-      }
-    }
-  }
+      },
+    },
+  },
 });

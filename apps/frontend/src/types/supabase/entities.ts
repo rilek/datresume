@@ -5,5 +5,5 @@ export type Resume = Database["public"]["Tables"]["resumes"]["Row"] & {
     html: string;
     name: string;
     is_default: boolean;
-  }
+  };
 };

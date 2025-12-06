@@ -60,5 +60,5 @@ export const defaultContent = `
 export const getPersistedLocalContent = () => localStorage.getItem("content");
 
 export const persistLocalContent = (content: string) => {
-    localStorage.setItem("content", content || "");
-}
+  localStorage.setItem("content", content || "");
+};

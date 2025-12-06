@@ -1,7 +1,6 @@
-import { Editor } from "@tiptap/react";
+import type { Editor } from "@tiptap/react";
 import { create } from "zustand";
 import { defaultContent, getPersistedLocalContent } from "@/utils/editor";
-import { toast } from "sonner";
 
 interface AppStore {
   id?: string;
@@ -43,11 +42,11 @@ export const useAppStore = create<AppStore>((set, get) => ({
   downloadPdf: async () => {
     const result = await fetch("/api/resume", {
       method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/pdf" },
-      body: JSON.stringify({ content: get().content, filename: "resume" })
-    })
+      headers: { "Content-Type": "application/json", Accept: "application/pdf" },
+      body: JSON.stringify({ content: get().content, filename: "resume" }),
+    });
     const blob = await result.blob();
     const url = URL.createObjectURL(blob);
-    window.open(url)
-  }
+    window.open(url);
+  },
 }));

@@ -1,6 +1,14 @@
 import { editorClassName } from "@/components/editor";
 
-export const buildHtml = ({ name = "Resume", content, css = "" }: { name?: string; content: string; css?: string }) => `<!DOCTYPE html>
+export const buildHtml = ({
+  name = "Resume",
+  content,
+  css = "",
+}: {
+  name?: string;
+  content: string;
+  css?: string;
+}) => `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />

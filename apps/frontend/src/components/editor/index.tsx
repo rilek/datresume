@@ -1,32 +1,36 @@
-import { useEditor, EditorContent } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import Highlight from '@tiptap/extension-highlight'
-import Typography from '@tiptap/extension-typography'
-import { Button } from '@/components/ui/button'
-import { DiffIcon, FileDownIcon, RotateCcwIcon, SaveIcon, SparklesIcon } from 'lucide-react'
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
-import { useAppStore } from '@/stores/app'
-import { CSSProperties, useEffect, useState } from 'react'
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Highlight from "@tiptap/extension-highlight";
+import Typography from "@tiptap/extension-typography";
+import { Button } from "@/components/ui/button";
+import { DiffIcon, FileDownIcon, RotateCcwIcon, SaveIcon, SparklesIcon } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
+import { useAppStore } from "@/stores/app";
+import { CSSProperties, useEffect, useState } from "react";
 // import { useForm } from 'react-hook-form'
 // import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 // import { Input } from '@/components/ui/input'
 // import { PopoverClose } from '@radix-ui/react-popover'
-import clsx from 'clsx'
-import FloatingMenu from './floating-menu'
-import BubbleMenu from './bubble-menu'
+import clsx from "clsx";
+import FloatingMenu from "./floating-menu";
+import BubbleMenu from "./bubble-menu";
 import { diffWords } from "diff";
-import { getPersistedLocalContent, persistLocalContent } from '@/utils/editor'
-import { toast } from 'sonner'
+import { getPersistedLocalContent, persistLocalContent } from "@/utils/editor";
+import { toast } from "sonner";
 
-const extensions = [StarterKit.configure({
-  link: {
-    HTMLAttributes: {
-      target: '_blank',
-      rel: 'noopener noreferrer',
+const extensions = [
+  StarterKit.configure({
+    link: {
+      HTMLAttributes: {
+        target: "_blank",
+        rel: "noopener noreferrer",
+      },
     },
-  },
-  trailingNode: false
-}), Typography, Highlight.configure({ multicolor: true })]
+    trailingNode: false,
+  }),
+  Typography,
+  Highlight.configure({ multicolor: true }),
+];
 
 // const AdjustmentButton = forwardRef<HTMLButtonElement>((props, ref) => {
 //   return (
@@ -53,91 +57,116 @@ const extensions = [StarterKit.configure({
 // ));
 
 export const EditorOptions = () => {
-  const showChat = useAppStore(state => state.showChat);
-  const content = useAppStore(state => state.content);
-  const toggleChat = useAppStore(state => state.toggleChat);
-  const resetContent = useAppStore(state => state.loadContent);
-  const showDiff = useAppStore(state => state.showDiff);
-  const setShowDiff = useAppStore(state => state.setShowDiff);
-  const downloadPdf = useAppStore(state => state.downloadPdf);
+  const showChat = useAppStore((state) => state.showChat);
+  const content = useAppStore((state) => state.content);
+  const toggleChat = useAppStore((state) => state.toggleChat);
+  const resetContent = useAppStore((state) => state.loadContent);
+  const showDiff = useAppStore((state) => state.showDiff);
+  const setShowDiff = useAppStore((state) => state.setShowDiff);
+  const downloadPdf = useAppStore((state) => state.downloadPdf);
 
   const [persistedContent, setPersistedContent] = useState<string | null>(null);
 
   useEffect(() => {
     setPersistedContent(getPersistedLocalContent());
-  }, [])
-
+  }, []);
 
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="outline" size="icon-lg" onClick={toggleChat} data-umami-event="toggle_chat" data-umami-event-value={useAppStore.getState().showChat ? "opening" : "closing"} className={clsx({ "bg-indigo-200": showChat })}>
-            <SparklesIcon className='text-indigo-700' />
+          <Button
+            variant="outline"
+            size="icon-lg"
+            onClick={toggleChat}
+            data-umami-event="toggle_chat"
+            data-umami-event-value={useAppStore.getState().showChat ? "opening" : "closing"}
+            className={clsx({ "bg-indigo-200": showChat })}
+          >
+            <SparklesIcon className="text-indigo-700" />
           </Button>
         </TooltipTrigger>
-        <TooltipContent side='left'>
-          Toggle AI chat
-        </TooltipContent>
+        <TooltipContent side="left">Toggle AI chat</TooltipContent>
       </Tooltip>
 
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant={"outline"} size="icon-lg" disabled={showDiff} onClick={() => {
-            persistLocalContent(useAppStore.getState().content || "");
-            toast("Saved sucessfully");
-          }}
-            className='relative'
-            data-umami-event="persist_content">
-            {<span className={clsx('absolute top-0 right-0 w-2 h-2 bg-rose-700 opacity-0 transition-opacity rounded-full',
-              { "opacity-100": persistedContent != content }
-            )} />}
+          <Button
+            variant={"outline"}
+            size="icon-lg"
+            disabled={showDiff}
+            onClick={() => {
+              persistLocalContent(useAppStore.getState().content || "");
+              toast("Saved sucessfully");
+            }}
+            className="relative"
+            data-umami-event="persist_content"
+          >
+            {
+              <span
+                className={clsx(
+                  "absolute top-0 right-0 w-2 h-2 bg-rose-700 opacity-0 transition-opacity rounded-full",
+                  { "opacity-100": persistedContent != content },
+                )}
+              />
+            }
             <SaveIcon />
           </Button>
         </TooltipTrigger>
-        <TooltipContent side='left'>
-          Save to local storage
-        </TooltipContent>
+        <TooltipContent side="left">Save to local storage</TooltipContent>
       </Tooltip>
 
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="outline" size="icon-lg" onClick={resetContent} disabled={showDiff} data-umami-event="reset_content"><RotateCcwIcon /></Button>
+          <Button
+            variant="outline"
+            size="icon-lg"
+            onClick={resetContent}
+            disabled={showDiff}
+            data-umami-event="reset_content"
+          >
+            <RotateCcwIcon />
+          </Button>
         </TooltipTrigger>
-        <TooltipContent side='left'>
-          Reset to last saved state
-        </TooltipContent>
+        <TooltipContent side="left">Reset to last saved state</TooltipContent>
       </Tooltip>
 
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="outline" size="icon-lg" onClick={() => setShowDiff(!showDiff)} data-umami-event="reload_editor" className={clsx({ "bg-indigo-200": showDiff })}><DiffIcon /></Button>
+          <Button
+            variant="outline"
+            size="icon-lg"
+            onClick={() => setShowDiff(!showDiff)}
+            data-umami-event="reload_editor"
+            className={clsx({ "bg-indigo-200": showDiff })}
+          >
+            <DiffIcon />
+          </Button>
         </TooltipTrigger>
-        <TooltipContent side='left'>
-          Show diff with last saved state
-        </TooltipContent>
+        <TooltipContent side="left">Show diff with last saved state</TooltipContent>
       </Tooltip>
 
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="outline" size="icon-lg" onClick={() => downloadPdf()} data-umami-event="download_resume"><FileDownIcon /></Button>
+          <Button variant="outline" size="icon-lg" onClick={() => downloadPdf()} data-umami-event="download_resume">
+            <FileDownIcon />
+          </Button>
         </TooltipTrigger>
-        <TooltipContent side='left'>
-          Download as PDF
-        </TooltipContent>
+        <TooltipContent side="left">Download as PDF</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
-}
+};
 
-export const editorClassName = 'editor py-[calc(1.5_*_var(--cm))] px-[calc(2_*_var(--cm))] w-[calc(21_*_var(--cm))] aspect-[0.709] font-serif prose prose-sm max-w-none ';
+export const editorClassName =
+  "editor py-[calc(1.5_*_var(--cm))] px-[calc(2_*_var(--cm))] w-[calc(21_*_var(--cm))] aspect-[0.709] font-serif prose prose-sm max-w-none ";
 
 export const Editor = ({ initialContent: content }: { initialContent: string }) => {
-  const loadContent = useAppStore(state => state.loadContent);
-  const setContent = useAppStore(state => state.setContent);
-  const setEditor = useAppStore(state => state.setEditor);
-  const loading = useAppStore(state => state.loading);
-  const showDiff = useAppStore(state => state.showDiff);
+  const loadContent = useAppStore((state) => state.loadContent);
+  const setContent = useAppStore((state) => state.setContent);
+  const setEditor = useAppStore((state) => state.setEditor);
+  const loading = useAppStore((state) => state.loading);
+  const showDiff = useAppStore((state) => state.showDiff);
   const [tempContent, setTempContent] = useState<string | null>(null);
 
   const editor = useEditor({
@@ -146,7 +175,7 @@ export const Editor = ({ initialContent: content }: { initialContent: string }) 
     immediatelyRender: false,
     onUpdate: ({ editor: e }) => setContent(e.getHTML()),
     // onCreate: ({ editor: e }) => setContent(e.getHTML()),
-    onFocus: () => window.umami?.track('editor_focus'),
+    onFocus: () => window.umami?.track("editor_focus"),
   });
 
   useEffect(() => {
@@ -166,11 +195,11 @@ export const Editor = ({ initialContent: content }: { initialContent: string }) 
       editor?.commands.setContent(tempContent || "");
       editor?.setEditable(true);
     }
-  }, [showDiff])
+  }, [showDiff]);
 
   useEffect(() => {
     setEditor(editor);
-    loadContent()
+    loadContent();
   }, [editor]);
 
   if (!editor) return null;
@@ -178,7 +207,8 @@ export const Editor = ({ initialContent: content }: { initialContent: string }) 
   return (
     <div
       style={{ "--cm": "52px" } as CSSProperties}
-      className={clsx(editorClassName, { 'opacity-50 pointer-events-none': loading })}>
+      className={clsx(editorClassName, { "opacity-50 pointer-events-none": loading })}
+    >
       <EditorContent editor={editor} data-umami-event />
       <FloatingMenu editor={editor} />
       <BubbleMenu editor={editor} />

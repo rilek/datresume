@@ -1,7 +1,6 @@
-
-import { supabase } from '@/utils/supabase/client';
 import { toast } from "sonner";
 import { create } from "zustand";
+import { supabase } from "@/utils/supabase/client";
 
 interface KeyStore {
   id?: string;
@@ -34,5 +33,5 @@ export const useApiKeys = create<KeyStore>((set) => ({
     }
 
     set({ fetched: true, loading: false });
-  }
+  },
 }));
