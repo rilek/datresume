@@ -7,6 +7,22 @@ chrome.runtime.onInstalled.addListener(() => {
   console.log('Extension installed')
 })
 
+// Helper function to check if user is authenticated
+async function checkAuthSession() {
+  const { data: sessionData, error } = await supabase.auth.getSession()
+
+  if (error) {
+    console.error('Session check error:', error)
+    return { isAuthenticated: false, session: null, error }
+  }
+
+  if (!sessionData.session) {
+    return { isAuthenticated: false, session: null, error: null }
+  }
+
+  return { isAuthenticated: true, session: sessionData.session, error: null }
+}
+
 // Handle messages from content script or popup
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   console.log('Background received message:', message, message.type)
@@ -30,10 +46,58 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
         .catch((error) => sendResponse({ error: error.message }))
       return true
 
+    case 'SERVICE_GENERATE':
+      handleServiceGenerate(message.data)
+        .then(sendResponse)
+        .catch((error) => sendResponse({ error: error.message }));
+      return true;
+
     default:
       sendResponse({ error: 'Unknown message type' })
   }
 })
+
+async function handleServiceGenerate(data: any) {
+  console.log("Handling service request:", data);
+
+  // Check authentication status
+  const authStatus = await checkAuthSession()
+
+  if (!authStatus.isAuthenticated) {
+    throw new Error('Authentication required. Please sign in first.')
+  }
+
+  // const accessToken = authStatus.session!.access_token
+
+  try {
+    const result = await fetch(`${import.meta.env.VITE_APP_URL}/public/resume/generate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ html: data.html })
+    });
+
+    if (!result.ok) {
+      const errorText = await result.text()
+
+      // Handle specific authentication errors
+      if (result.status === 401) {
+        throw new Error('Session expired. Please sign in again.')
+      } else if (result.status === 403) {
+        throw new Error('Access denied. Please check your permissions.')
+      } else {
+        throw new Error(`Resume generation failed: ${result.status} ${errorText}`)
+      }
+    }
+
+    const responseData = await result.json()
+    return { success: true, data: responseData }
+  } catch (fetchError) {
+    console.error('Fetch error:', fetchError)
+    throw fetchError
+  }
+}
 
 async function handleSupabaseAuth(data: any) {
   try {
@@ -76,7 +140,6 @@ async function handleSupabaseAuth(data: any) {
 }
 
 async function handleSupabaseQuery(data: any) {
-  console.log("Handling Supabase query:", data);
   try {
     switch (data.action) {
       case 'select':

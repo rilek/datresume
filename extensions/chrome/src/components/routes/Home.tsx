@@ -12,7 +12,8 @@ export const HomeRoute: React.FC = () => {
     loading,
     error,
     fetchResumes,
-    setCurrentResume
+    setCurrentResume,
+    generateResume
   } = useResumeStore()
 
   useEffect(() => {
@@ -93,6 +94,7 @@ export const HomeRoute: React.FC = () => {
             variant="success"
             disabled={resumes.length === 0}
             className='w-full text-center'
+            onClick={() => generateResume("")}
           >
             Tailor Resume for this page
           </Button>

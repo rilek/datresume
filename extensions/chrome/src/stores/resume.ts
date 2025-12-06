@@ -26,6 +26,8 @@ interface ResumeState {
   // Utility functions
   getDefaultResume: () => Resume | null
   clearResumes: () => void
+
+  generateResume: (pageContent: string) => Promise<void>;
 }
 
 const sendMessage = (message: Message): Promise<any> => {
@@ -95,7 +97,36 @@ export const useResumeStore = create<ResumeState>()(
         resumes: [],
         currentResume: null,
         error: null
-      }, false, 'clearResumes')
+      }, false, 'clearResumes'),
+
+      generateResume: async () => {
+        set({ loading: true, error: null }, false, 'generateResume/start')
+
+        try {
+          const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+          const [{ result: html }] = await chrome.scripting.executeScript({
+            target: { tabId: tab.id!},
+            func: () => document.documentElement.outerHTML
+          });
+
+          const response = await sendMessage({
+            type: 'SERVICE_GENERATE',
+            data: { html }
+          })
+
+          if (response.error) {
+            set({ error: response.error, loading: false }, false, 'generateResume/error')
+          } else {
+            set({ loading: false }, false, 'generateResume/success')
+          }
+        } catch (error) {
+          console.log(error)
+          set({
+            error: 'Failed to generate resume',
+            loading: false
+          }, false, 'generateResume/catch-error')
+        }
+      }
     }),
     {
       name: 'resume-store'
