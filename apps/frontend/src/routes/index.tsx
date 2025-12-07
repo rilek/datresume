@@ -1,19 +1,19 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
-import { useAppStore } from "@/stores/app";
-import { DetailedHTMLProps, InputHTMLAttributes, useEffect } from "react";
-import { Editor, EditorOptions } from "@/components/editor";
-import clsx from "clsx";
-import { Button } from "@/components/ui/button";
-import { useChatStore } from "@/stores/chat";
-import { useForm } from "react-hook-form";
-import { FormField } from "@/components/ui/form";
-import { ListXIcon, Loader2Icon } from "lucide-react";
 import { TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip";
-import { Tooltip, TooltipContent } from "@/components/ui/tooltip";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import PageHeader from "@/components/layout/header";
-import PageFooter from "@/components/layout/footer";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import clsx from "clsx";
+import { ListXIcon, Loader2Icon } from "lucide-react";
+import { type DetailedHTMLProps, type InputHTMLAttributes, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { Editor, EditorOptions } from "@/components/editor";
 import { HelpUsImprove } from "@/components/help-us-improve";
+import PageFooter from "@/components/layout/footer";
+import PageHeader from "@/components/layout/header";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { FormField } from "@/components/ui/form";
+import { Tooltip, TooltipContent } from "@/components/ui/tooltip";
+import { useAppStore } from "@/stores/app";
+import { useChatStore } from "@/stores/chat";
 
 export const Route = createFileRoute("/")({
   beforeLoad: ({ context }) => {
@@ -59,7 +59,7 @@ const ChatMessageForm = ({
             onKeyUp={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
-                (e.target as HTMLTextAreaElement).form!.requestSubmit();
+                (e.target as HTMLTextAreaElement)?.form?.requestSubmit();
                 form.reset();
               }
             }}
@@ -124,7 +124,7 @@ function Index() {
 
   useEffect(() => {
     loadContent();
-  }, []);
+  }, [loadContent]);
 
   if (loading && !fetched) {
     return <div>Loading...</div>;

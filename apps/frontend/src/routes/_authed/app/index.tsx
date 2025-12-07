@@ -1,8 +1,9 @@
-import { Resumes } from "@/components/resumes";
-import { Resume } from "@/types/supabase/entities";
-import { createSupabaseServerClient } from "@/utils/supabase/server";
 import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
+import { Resumes } from "@/components/resumes";
+import { H1 } from "@/components/ui/typography";
+import type { Resume } from "@/types/supabase/entities";
+import { createSupabaseServerClient } from "@/utils/supabase/server";
 
 const fetchResumes = createServerFn({ method: "GET" }).handler(async () => {
   const supabase = createSupabaseServerClient();
@@ -27,7 +28,10 @@ function RouteComponent() {
 
   return (
     <div className="max-w-7xl w-full mx-auto my-4">
-      <Resumes resumes={resumes} />
+      <div className="flex flex-col gap-10">
+        <H1>Resumes</H1>
+        <Resumes resumes={resumes} />
+      </div>
     </div>
   );
 }
