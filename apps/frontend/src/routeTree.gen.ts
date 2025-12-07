@@ -17,7 +17,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as PrivacyIndexRouteImport } from './routes/privacy/index'
 import { Route as AuthedAppIndexRouteImport } from './routes/_authed/app/index'
 import { Route as PublicResumeGenerateRouteImport } from './routes/public/resume/generate'
-import { Route as ApiResumeDownloadRouteImport } from './routes/api/resume/download'
+import { Route as ApiResumesDownloadRouteImport } from './routes/api/resumes/download'
+import { Route as AuthedAppResumesResumeIdRouteImport } from './routes/_authed/app/resumes/$resumeId'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -58,11 +59,17 @@ const PublicResumeGenerateRoute = PublicResumeGenerateRouteImport.update({
   path: '/public/resume/generate',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiResumeDownloadRoute = ApiResumeDownloadRouteImport.update({
-  id: '/api/resume/download',
-  path: '/api/resume/download',
+const ApiResumesDownloadRoute = ApiResumesDownloadRouteImport.update({
+  id: '/api/resumes/download',
+  path: '/api/resumes/download',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthedAppResumesResumeIdRoute =
+  AuthedAppResumesResumeIdRouteImport.update({
+    id: '/app/resumes/$resumeId',
+    path: '/app/resumes/$resumeId',
+    getParentRoute: () => AuthedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -70,9 +77,10 @@ export interface FileRoutesByFullPath {
   '/logout': typeof LogoutRoute
   '/signup': typeof SignupRoute
   '/privacy': typeof PrivacyIndexRoute
-  '/api/resume/download': typeof ApiResumeDownloadRoute
+  '/api/resumes/download': typeof ApiResumesDownloadRoute
   '/public/resume/generate': typeof PublicResumeGenerateRoute
   '/app': typeof AuthedAppIndexRoute
+  '/app/resumes/$resumeId': typeof AuthedAppResumesResumeIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -80,9 +88,10 @@ export interface FileRoutesByTo {
   '/logout': typeof LogoutRoute
   '/signup': typeof SignupRoute
   '/privacy': typeof PrivacyIndexRoute
-  '/api/resume/download': typeof ApiResumeDownloadRoute
+  '/api/resumes/download': typeof ApiResumesDownloadRoute
   '/public/resume/generate': typeof PublicResumeGenerateRoute
   '/app': typeof AuthedAppIndexRoute
+  '/app/resumes/$resumeId': typeof AuthedAppResumesResumeIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -92,9 +101,10 @@ export interface FileRoutesById {
   '/logout': typeof LogoutRoute
   '/signup': typeof SignupRoute
   '/privacy/': typeof PrivacyIndexRoute
-  '/api/resume/download': typeof ApiResumeDownloadRoute
+  '/api/resumes/download': typeof ApiResumesDownloadRoute
   '/public/resume/generate': typeof PublicResumeGenerateRoute
   '/_authed/app/': typeof AuthedAppIndexRoute
+  '/_authed/app/resumes/$resumeId': typeof AuthedAppResumesResumeIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -104,9 +114,10 @@ export interface FileRouteTypes {
     | '/logout'
     | '/signup'
     | '/privacy'
-    | '/api/resume/download'
+    | '/api/resumes/download'
     | '/public/resume/generate'
     | '/app'
+    | '/app/resumes/$resumeId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -114,9 +125,10 @@ export interface FileRouteTypes {
     | '/logout'
     | '/signup'
     | '/privacy'
-    | '/api/resume/download'
+    | '/api/resumes/download'
     | '/public/resume/generate'
     | '/app'
+    | '/app/resumes/$resumeId'
   id:
     | '__root__'
     | '/'
@@ -125,9 +137,10 @@ export interface FileRouteTypes {
     | '/logout'
     | '/signup'
     | '/privacy/'
-    | '/api/resume/download'
+    | '/api/resumes/download'
     | '/public/resume/generate'
     | '/_authed/app/'
+    | '/_authed/app/resumes/$resumeId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -137,7 +150,7 @@ export interface RootRouteChildren {
   LogoutRoute: typeof LogoutRoute
   SignupRoute: typeof SignupRoute
   PrivacyIndexRoute: typeof PrivacyIndexRoute
-  ApiResumeDownloadRoute: typeof ApiResumeDownloadRoute
+  ApiResumesDownloadRoute: typeof ApiResumesDownloadRoute
   PublicResumeGenerateRoute: typeof PublicResumeGenerateRoute
 }
 
@@ -199,22 +212,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicResumeGenerateRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/resume/download': {
-      id: '/api/resume/download'
-      path: '/api/resume/download'
-      fullPath: '/api/resume/download'
-      preLoaderRoute: typeof ApiResumeDownloadRouteImport
+    '/api/resumes/download': {
+      id: '/api/resumes/download'
+      path: '/api/resumes/download'
+      fullPath: '/api/resumes/download'
+      preLoaderRoute: typeof ApiResumesDownloadRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authed/app/resumes/$resumeId': {
+      id: '/_authed/app/resumes/$resumeId'
+      path: '/app/resumes/$resumeId'
+      fullPath: '/app/resumes/$resumeId'
+      preLoaderRoute: typeof AuthedAppResumesResumeIdRouteImport
+      parentRoute: typeof AuthedRoute
     }
   }
 }
 
 interface AuthedRouteChildren {
   AuthedAppIndexRoute: typeof AuthedAppIndexRoute
+  AuthedAppResumesResumeIdRoute: typeof AuthedAppResumesResumeIdRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedAppIndexRoute: AuthedAppIndexRoute,
+  AuthedAppResumesResumeIdRoute: AuthedAppResumesResumeIdRoute,
 }
 
 const AuthedRouteWithChildren =
@@ -227,7 +249,7 @@ const rootRouteChildren: RootRouteChildren = {
   LogoutRoute: LogoutRoute,
   SignupRoute: SignupRoute,
   PrivacyIndexRoute: PrivacyIndexRoute,
-  ApiResumeDownloadRoute: ApiResumeDownloadRoute,
+  ApiResumesDownloadRoute: ApiResumesDownloadRoute,
   PublicResumeGenerateRoute: PublicResumeGenerateRoute,
 }
 export const routeTree = rootRouteImport

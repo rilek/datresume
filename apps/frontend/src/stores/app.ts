@@ -40,7 +40,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
   },
   toggleChat: () => set((state) => ({ showChat: !state.showChat })),
   downloadPdf: async () => {
-    const result = await fetch("/api/resume", {
+    const result = await fetch("/api/resumes/download", {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/pdf" },
       body: JSON.stringify({ content: get().content, filename: "resume" }),

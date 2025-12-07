@@ -1,15 +1,17 @@
 /// <reference types="vite/client" />
 
-import { createRootRouteWithContext, ErrorComponent, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
+import { createRootRouteWithContext, ErrorComponent, HeadContent, Link, Outlet, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { Toaster } from "@/components/ui/sonner";
 import { createServerFn } from "@tanstack/react-start";
+import { Toaster } from "@/components/ui/sonner";
 import { createSupabaseServerClient } from "@/utils/supabase/server";
 
 import appCss from "../index.css?url";
 
 import "@fontsource-variable/source-serif-4";
 import "@fontsource/source-sans-pro";
+import { H1 } from "@/components/ui/typography";
+import { Button } from "@/components/ui/button";
 
 interface GlobalContext {
   user: { id: string; email: string } | null;
@@ -56,7 +58,14 @@ export const Route = createRootRouteWithContext<GlobalContext>()({
       },
     ],
   }),
-  notFoundComponent: () => <div>Not Found</div>,
+  notFoundComponent: () => (
+    <div className="p-10 w-screen h-screen flex flex-col gap-4 justify-center items-center">
+      <H1>Page Not Found</H1>
+      <Link to="/">
+        <Button variant="link">Go to homepage</Button>
+      </Link>
+    </div>
+  ),
   errorComponent: ({ error }) => <ErrorComponent error={error} />,
   component: () => {
     return (
@@ -69,7 +78,7 @@ export const Route = createRootRouteWithContext<GlobalContext>()({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html>
+    <html lang="en">
       <head>
         <HeadContent />
       </head>
