@@ -25,7 +25,9 @@ const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(({ active, ...
 ));
 
 export default function FloatingMenu(props: Omit<FloatingMenuProps, "children">) {
-  const editor = props.editor!;
+  const editor = props.editor;
+
+  if (!editor) return null;
 
   return (
     <TipTapFloatingMenu {...props}>

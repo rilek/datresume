@@ -32,7 +32,9 @@ const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(({ active, ...
 ));
 
 export default function FloatingMenu(props: Omit<BubbleMenuProps, "children">) {
-  const editor = props.editor!;
+  const editor = props.editor;
+
+  if (!editor) return null;
 
   return (
     <TipTapBubbleMenu {...props}>

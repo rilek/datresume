@@ -3,7 +3,6 @@ import { create } from "zustand";
 import { defaultContent, getPersistedLocalContent } from "@/utils/editor";
 
 interface AppStore {
-  id?: string;
   content?: string;
   loading: boolean;
   fetched: boolean;
@@ -11,6 +10,7 @@ interface AppStore {
   editor?: Editor | null;
   openaiKey?: string;
   showDiff: boolean;
+
   setShowDiff: (showDiff: boolean) => void;
   setEditor: (editor: Editor | null) => void;
   setContent: (content: string) => void;
@@ -20,7 +20,6 @@ interface AppStore {
 }
 
 export const useAppStore = create<AppStore>((set, get) => ({
-  id: undefined,
   content: undefined,
   loading: false,
   fetched: false,
