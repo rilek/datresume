@@ -1,9 +1,11 @@
 import type { Editor } from "@tiptap/react";
 import { toast } from "sonner";
 import { create } from "zustand";
+import type { LocalResume, Resume } from "@/types/supabase/entities";
 import { defaultContent, getPersistedLocalContent } from "@/utils/editor";
 
 interface AppStore {
+  resumes: Record<string, Resume | LocalResume>;
   content?: string;
   loading: boolean;
   fetched: boolean;
@@ -16,11 +18,13 @@ interface AppStore {
   setEditor: (editor: Editor | null) => void;
   setContent: (content: string) => void;
   loadContent: () => void;
+  loadLocalResume: () => void;
   toggleChat: () => void;
   downloadPdf: () => void;
 }
 
 export const useAppStore = create<AppStore>((set, get) => ({
+  resumes: {},
   content: undefined,
   loading: false,
   fetched: false,
@@ -31,6 +35,10 @@ export const useAppStore = create<AppStore>((set, get) => ({
   setShowDiff: (showDiff) => set({ showDiff }),
   setEditor: (editor) => set({ editor }),
   setContent: (content: string) => set({ content }),
+  loadLocalResume: async () => {
+    const storedResumeContent = getPersistedLocalContent();
+    set({ resumes: { local: { content: { html: storedResumeContent || defaultContent } } as LocalResume } });
+  },
   loadContent: () => {
     const storedContent = getPersistedLocalContent();
     const newContent = storedContent ?? defaultContent;

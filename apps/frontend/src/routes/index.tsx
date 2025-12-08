@@ -16,6 +16,7 @@ import { Tooltip, TooltipContent } from "@/components/ui/tooltip";
 import { useAppStore } from "@/stores/app";
 import { useChatStore } from "@/stores/chat";
 import { dateFormatter } from "@/utils";
+import type { LocalResume } from "@/types/supabase/entities";
 
 export const Route = createFileRoute("/")({
   beforeLoad: ({ context }) => {
@@ -81,9 +82,21 @@ const FirstMessage = () => {
 };
 
 const EditorWrapper = () => {
-  const content = useAppStore((state) => state.content);
+  const resume = useAppStore((state) => state.resumes.local as LocalResume | null | undefined);
+  const loadLocalResume = useAppStore((state) => state.loadLocalResume);
+  const loading = useAppStore((state) => state.loading);
+  const showDiff = useAppStore((state) => state.showDiff);
+  const setContent = useAppStore((state) => state.setContent);
 
-  return <Editor initialContent={content || ""} />;
+  useEffect(() => {
+    loadLocalResume();
+  }, [loadLocalResume]);
+
+  if (resume === null || resume === undefined) return null;
+
+  return (
+    <Editor initialContent={resume.content.html || ""} loading={loading} compare={showDiff} onChange={setContent} />
+  );
 };
 
 const GoToAppButton = () => {

@@ -7,3 +7,7 @@ export type Resume = Database["public"]["Tables"]["resumes"]["Row"] & {
     is_default: boolean;
   };
 };
+
+export type LocalResume = {
+  content: { html: string };
+};
