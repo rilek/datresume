@@ -1,4 +1,5 @@
 import type { Editor } from "@tiptap/react";
+import { toast } from "sonner";
 import { create } from "zustand";
 import { defaultContent, getPersistedLocalContent } from "@/utils/editor";
 
@@ -39,13 +40,17 @@ export const useAppStore = create<AppStore>((set, get) => ({
   },
   toggleChat: () => set((state) => ({ showChat: !state.showChat })),
   downloadPdf: async () => {
-    const result = await fetch("/api/resumes/download", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/pdf" },
-      body: JSON.stringify({ content: get().content, filename: "resume" }),
-    });
-    const blob = await result.blob();
-    const url = URL.createObjectURL(blob);
-    window.open(url);
+    try {
+      const result = await fetch("/api/resumes/download", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/pdf" },
+        body: JSON.stringify({ content: get().content, filename: "resume" }),
+      });
+      const blob = await result.blob();
+      const url = URL.createObjectURL(blob);
+      window.open(url);
+    } catch {
+      toast.error("Failed to download PDF. Please try again.");
+    }
   },
 }));

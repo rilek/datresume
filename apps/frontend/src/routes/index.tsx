@@ -15,6 +15,7 @@ import { FormField } from "@/components/ui/form";
 import { Tooltip, TooltipContent } from "@/components/ui/tooltip";
 import { useAppStore } from "@/stores/app";
 import { useChatStore } from "@/stores/chat";
+import { dateFormatter } from "@/utils";
 
 export const Route = createFileRoute("/")({
   beforeLoad: ({ context }) => {
@@ -23,11 +24,6 @@ export const Route = createFileRoute("/")({
     }
   },
   component: Index,
-});
-
-const dateFormatter = new Intl.DateTimeFormat("en-GB", {
-  dateStyle: "short",
-  timeStyle: "short",
 });
 
 const ChatMessageForm = ({
@@ -214,7 +210,7 @@ function Index() {
                         className={clsx("flex flex-col", { "items-end": role === "user", "animate-pulse": !createdAt })}
                       >
                         <div className={clsx("py-2", { "bg-indigo-200 rounded-lg px-4": role === "user" })}>
-                          {role === "user" ? content : content["text"] || <i>No answer provided</i>}
+                          {role === "user" ? content : content.text || <i>No answer provided</i>}
                         </div>
                         {createdAt ? (
                           <small className="text-xs opacity-50">{dateFormatter.format(Date.parse(createdAt))}</small>

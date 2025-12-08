@@ -1,5 +1,5 @@
-import { createSupabasePublicServerClient, createSupabaseServerClient } from "@/utils/supabase/server";
 import { createFileRoute } from "@tanstack/react-router";
+import { createSupabaseServerClient } from "@/utils/supabase/server";
 
 export const Route = createFileRoute("/public/resume/generate")({
   server: {

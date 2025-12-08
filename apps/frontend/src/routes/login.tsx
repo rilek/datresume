@@ -1,6 +1,6 @@
+import { createFileRoute, Link, redirect, useRouter } from "@tanstack/react-router";
 import { Auth } from "@/components/login/auth";
 import { useMutation } from "@/hooks/useMutation";
-import { createFileRoute, Link, redirect, useRouter } from "@tanstack/react-router";
 import { loginFn } from "./_authed";
 
 export const Route = createFileRoute("/login")({

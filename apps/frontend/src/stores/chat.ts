@@ -66,7 +66,7 @@ export const useChatStore = create<ChatStore>()(
           loading: true,
           chat: {
             threadId: chat?.threadId,
-            messages: [...chat?.messages, { content: message, role: "user" }],
+            messages: [...chat.messages, { content: message, role: "user" }],
           },
         });
 

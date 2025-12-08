@@ -41,7 +41,9 @@ export const Route = createFileRoute("/api/resumes/download")({
       },
 
       async POST({ request }) {
-        console.log("@@@@@@@@@@@");
+        if (!process.env.CLOUDFLARE_ACCOUNT_ID) throw new Error("Env var CLOUDFLARE_ACCOUNT_ID is required");
+        if (!process.env.CLOUDFLARE_API_TOKEN) throw new Error("Env var CLOUDFLARE_API_TOKEN is required");
+
         const body = bodySchema.parse(await request.json());
 
         const filename = `${body.filename || "resume"}.pdf`;
@@ -53,7 +55,7 @@ export const Route = createFileRoute("/api/resumes/download")({
 
         const cloudflare = new Cloudflare({ apiToken: process.env.CLOUDFLARE_API_TOKEN });
         const pdf = await cloudflare.browserRendering.pdf.create({
-          account_id: process.env.CLOUDFLARE_ACCOUNT_ID!,
+          account_id: process.env.CLOUDFLARE_ACCOUNT_ID,
           html,
         });
 

@@ -1,6 +1,6 @@
+import { createFileRoute } from "@tanstack/react-router";
 import PageFooter from "@/components/layout/footer";
 import PageHeader from "@/components/layout/header";
-import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/privacy/")({
   component: RouteComponent,

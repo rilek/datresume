@@ -1,10 +1,13 @@
-import { getCookies, setCookie, getRequestHeader } from "@tanstack/react-start/server";
 import { createServerClient } from "@supabase/ssr";
-import { Database } from "@/types/supabase/db";
 import { createClient } from "@supabase/supabase-js";
+import { getCookies, getRequestHeader, setCookie } from "@tanstack/react-start/server";
+import type { Database } from "@/types/supabase/db";
 
 export function createSupabaseServerClient() {
-  return createServerClient<Database>(process.env.VITE_SUPABASE_URL!, process.env.VITE_SUPABASE_ANON_KEY!, {
+  if (!process.env.VITE_SUPABASE_URL || !process.env.VITE_SUPABASE_ANON_KEY)
+    throw new Error("Supabase environment variables are not set");
+
+  return createServerClient<Database>(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY, {
     cookies: {
       getAll() {
         return Object.entries(getCookies()).map(([name, value]) => ({
@@ -22,7 +25,10 @@ export function createSupabaseServerClient() {
 }
 
 export function createSupabasePublicServerClient() {
-  return createClient<Database>(process.env.VITE_SUPABASE_URL!, process.env.VITE_SUPABASE_ANON_KEY!, {
+  if (!process.env.VITE_SUPABASE_URL || !process.env.VITE_SUPABASE_ANON_KEY)
+    throw new Error("Supabase environment variables are not set");
+
+  return createClient<Database>(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY, {
     accessToken: async () => {
       const token = getRequestHeader("authentication")?.replace("Bearer ", "");
 

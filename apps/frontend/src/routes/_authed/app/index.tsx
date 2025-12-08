@@ -9,9 +9,7 @@ const fetchResumes = createServerFn({ method: "GET" }).handler(async () => {
   const supabase = createSupabaseServerClient();
   const { data, error } = await supabase.from("resumes").select("*");
 
-  if (error) {
-    throw new Error(error.message);
-  }
+  if (error) throw new Error(error.message);
 
   return data as Resume[];
 });

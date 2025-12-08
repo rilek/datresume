@@ -1,4 +1,4 @@
-import { Database } from "./db";
+import type { Database } from "./db";
 
 export type Resume = Database["public"]["Tables"]["resumes"]["Row"] & {
   content: {

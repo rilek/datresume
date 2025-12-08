@@ -10,8 +10,8 @@ import appCss from "../index.css?url";
 
 import "@fontsource-variable/source-serif-4";
 import "@fontsource/source-sans-pro";
-import { H1 } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
+import { H1 } from "@/components/ui/typography";
 
 interface GlobalContext {
   user: { id: string; email: string } | null;

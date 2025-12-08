@@ -1,11 +1,11 @@
-import { redirect, createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { createServerFn, useServerFn } from "@tanstack/react-start";
-import { useMutation } from "../hooks/useMutation";
-import { Auth } from "../components/login/auth";
-import { createSupabaseServerClient } from "../utils/supabase/server";
-import { defaultContent, getPersistedLocalContent } from "@/utils/editor";
-import z from "zod";
 import { setResponseStatus } from "@tanstack/react-start/server";
+import z from "zod";
+import { defaultContent, getPersistedLocalContent } from "@/utils/editor";
+import { Auth } from "../components/login/auth";
+import { useMutation } from "../hooks/useMutation";
+import { createSupabaseServerClient } from "../utils/supabase/server";
 
 const signupSchema = z.object({
   email: z.string().email(),
@@ -15,12 +15,12 @@ const signupSchema = z.object({
 });
 
 export const signupFn = createServerFn({ method: "POST" })
-  .inputValidator(data => {
+  .inputValidator((data) => {
     const parsed = signupSchema.safeParse(data);
-    if(parsed.success) return parsed.data;
+    if (parsed.success) return parsed.data;
     else {
       setResponseStatus(400);
-      throw { error: true, message: parsed.error.errors.at(0)?.message }
+      throw { error: true, message: parsed.error.errors.at(0)?.message };
     }
   })
   .handler(async ({ data }) => {
@@ -65,7 +65,7 @@ function SignupComp() {
         initialResume: getPersistedLocalContent() || defaultContent,
       },
     });
-  }
+  };
 
   return (
     <div className="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
@@ -83,13 +83,7 @@ function SignupComp() {
           actionText="Sign Up"
           status={signupMutation.status}
           onSubmit={onSubmit}
-          afterSubmit={
-            signupMutation.error ? (
-              <>
-                <div className="text-red-400">{signupMutation.error.message}</div>
-              </>
-            ) : null
-          }
+          afterSubmit={signupMutation.error ? <div className="text-red-400">{signupMutation.error.message}</div> : null}
         />
       </div>
     </div>
