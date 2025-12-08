@@ -1,4 +1,4 @@
-import { Database } from "./db";
+import type { Database } from "./db";
 
 export type Resume = Database["public"]["Tables"]["resumes"]["Row"] & {
   content: {
@@ -6,4 +6,8 @@ export type Resume = Database["public"]["Tables"]["resumes"]["Row"] & {
     name: string;
     is_default: boolean;
   };
+};
+
+export type LocalResume = {
+  content: { html: string };
 };
