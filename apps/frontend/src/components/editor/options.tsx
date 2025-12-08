@@ -11,7 +11,6 @@ export const EditorOptions = () => {
   const showChat = useAppStore((state) => state.showChat);
   const content = useAppStore((state) => state.content);
   const toggleChat = useAppStore((state) => state.toggleChat);
-  const resetContent = useAppStore((state) => state.loadContent);
   const showDiff = useAppStore((state) => state.showDiff);
   const setShowDiff = useAppStore((state) => state.setShowDiff);
   const downloadPdf = useAppStore((state) => state.downloadPdf);
@@ -57,7 +56,7 @@ export const EditorOptions = () => {
               <span
                 className={clsx(
                   "absolute top-0 right-0 w-2 h-2 bg-rose-700 opacity-0 transition-opacity rounded-full",
-                  { "opacity-100": persistedContent != content },
+                  { "opacity-100": persistedContent !== content },
                 )}
               />
             }
@@ -66,7 +65,7 @@ export const EditorOptions = () => {
         </TooltipTrigger>
         <TooltipContent side="left">Save to local storage</TooltipContent>
       </Tooltip>
-
+      {/*
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
@@ -80,7 +79,7 @@ export const EditorOptions = () => {
           </Button>
         </TooltipTrigger>
         <TooltipContent side="left">Reset to last saved state</TooltipContent>
-      </Tooltip>
+      </Tooltip>*/}
 
       <Tooltip>
         <TooltipTrigger asChild>

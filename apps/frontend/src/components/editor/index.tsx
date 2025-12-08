@@ -28,17 +28,14 @@ export const editorClassName =
   "editor py-[calc(1.5_*_var(--cm))] px-[calc(2_*_var(--cm))] w-[calc(21_*_var(--cm))] aspect-[0.709] font-serif prose prose-sm max-w-none ";
 
 interface EditorProps {
-  initialContent: string;
+  content: string;
   loading: boolean;
   compare: boolean;
 
   onChange: (content: string) => void;
 }
 
-export const Editor = ({ initialContent: content, loading = false, compare = false, onChange }: EditorProps) => {
-  const setEditor = useAppStore((state) => state.setEditor);
-  const [tempContent, setTempContent] = useState<string | null>(null);
-
+export const Editor = ({ content, loading = false, compare = false, onChange }: EditorProps) => {
   const editor = useEditor({
     extensions,
     content,
@@ -48,30 +45,25 @@ export const Editor = ({ initialContent: content, loading = false, compare = fal
     onFocus: () => window.umami?.track("editor_focus"),
   });
 
-  // useEffect(() => {
-  //   if (editor) {
-  //     if (compare) {
-  //       const diff = diffWords(getPersistedLocalContent() || "", editor.getHTML() || "");
-
-  //       const newContent = diff.reduce((acc, { value, added, removed }) => {
-  //         if (added) return `${acc}<mark data-color="#d8fa99">${value}</mark>`;
-  //         if (removed) return `${acc}<s><mark data-color="#ffc9c9">${value}</mark></s>`;
-  //         return acc + value;
-  //       }, "");
-
-  //       setTempContent(editor.getHTML() || "");
-  //       editor.commands.setContent(newContent);
-  //       editor.setEditable(false);
-  //     } else {
-  //       editor.commands.setContent(tempContent || "");
-  //       editor.setEditable(true);
-  //     }
-  //   }
-  // }, [editor, compare]);
-
   useEffect(() => {
-    setEditor(editor);
-  }, [setEditor, editor]);
+    if (editor) {
+      if (compare) {
+        const diff = diffWords(content, editor.getHTML());
+
+        const newContent = diff.reduce((acc, { value, added, removed }) => {
+          if (added) return `${acc}<mark data-color="#d8fa99">${value}</mark>`;
+          if (removed) return `${acc}<s><mark data-color="#ffc9c9">${value}</mark></s>`;
+          return acc + value;
+        }, "");
+
+        editor.commands.setContent(newContent);
+        editor.setEditable(false);
+      } else {
+        editor.commands.setContent(content);
+        editor.setEditable(true);
+      }
+    }
+  }, [content, editor, compare]);
 
   if (!editor) return null;
 
