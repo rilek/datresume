@@ -80,8 +80,10 @@ export const useChatStore = create<ChatStore>()(
 
         const { threadId, question, answer } = data as ChatResponse;
 
-        useAppStore.getState().editor?.commands.setContent(answer.content.html);
-        useAppStore.getState().setContent(answer.content.html);
+        const newContent = (answer.content.html === "" ? useAppStore.getState().content : answer.content.html) || "";
+
+        useAppStore.getState().editor?.commands.setContent(newContent);
+        useAppStore.getState().setContent(newContent);
 
         set(({ chat }) => ({
           loading: false,
